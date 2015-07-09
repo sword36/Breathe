@@ -23,8 +23,15 @@ module.exports = function(grunt) {
         },
 
         browserify: {
-            files: {
-                '../src/js/*.js': '../dist/js/main.js'
+            options: {
+                browserifyOptions: {
+                    debug: true
+                }
+            },
+            dist: {
+                files: {
+                    'dist/js/main.js': ['src/js/*.js']
+                }
             }
         },
 
@@ -41,7 +48,7 @@ module.exports = function(grunt) {
     });
 
     grunt.registerTask('check', ['jshint']);
-    grunt.registerTask('default', ['html', 'js', 'css']);
+    grunt.registerTask('default', ['check', 'browserify']);
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-uglify');

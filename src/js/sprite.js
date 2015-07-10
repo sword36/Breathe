@@ -1,7 +1,7 @@
 /**
  * Created by USER on 10.07.2015.
  */
-var resources = require("./resources.js");
+var core = require("./core.js");
 
 function Sprite(url, pos, size, speed, frames, dir, once) {
     this.pos = pos;
@@ -40,7 +40,7 @@ Sprite.prototype.render = function (ctx) {
         x += frame * this.size[0];
     }
 
-    ctx.drawImage(resources.get(this.url), x, y, this.size[0], this.size[1], 0, 0, this.size[0], this.size[1]);
+    ctx.drawImage(core.getResource(this.url), x, y, this.size[0], this.size[1], 0, 0, this.size[0], this.size[1]);
 };
 
 module.exports = Sprite;

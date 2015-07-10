@@ -3,6 +3,7 @@
  */
 var resources = require("./resources.js");
 var Sprite = require("./sprite.js");
+var input = require(".input.js");
 
 //resources
 function loadResources(urls) {
@@ -26,9 +27,17 @@ function createSprite(url, pos, size, speed, frames, dir, once) {
     return new Sprite(url, pos, size, speed, frames, dir, once);
 }
 
+//input
+function getInput(window, type) {
+    "use strict";
+    return input(window, type);
+}
+
 module.exports = {
     loadResources: loadResources,
     getResource: getResource,
-    onResourcesReady: onResourcesReady
+    onResourcesReady: onResourcesReady,
+    createSprite: createSprite,
+    getInput: getInput
 };
 

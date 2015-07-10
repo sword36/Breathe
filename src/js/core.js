@@ -4,6 +4,7 @@
 var resources = require("./resources.js");
 var Sprite = require("./sprite.js");
 var input = require(".input.js");
+var model = require("./model.js");
 
 //resources
 function loadResources(urls) {
@@ -32,6 +33,8 @@ function getInput(window, type) {
     "use strict";
     return input(window, type);
 }
+
+//model
 
 module.exports = {
     loadResources: loadResources,

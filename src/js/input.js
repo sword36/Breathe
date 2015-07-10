@@ -1,4 +1,3 @@
-module.exports = input;
 /**
  * @param window Global object
  * @param {string} type Can be:keyboard, medicine, smartphone
@@ -40,4 +39,6 @@ module.exports = input;
         }
     }
     return pressed;
-};
+}
+
+module.exports = input;

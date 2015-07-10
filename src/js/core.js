@@ -1,46 +1,31 @@
-/**
- * Created by USER on 10.07.2015.
- */
 var resources = require("./resources.js");
 var Sprite = require("./sprite.js");
 var input = require(".input.js");
 var model = require("./model.js");
+var display = new require("./display.js")();
 
-//resources
-function loadResources(urls) {
-    "use strict";
-    resources.load(urls);
-}
-
-function getResource(url) {
-    "use strict";
-    return resources.get(url);
-}
-
-function onResourcesReady(func) {
-    "use strict";
-    resources.onReady(func);
-}
-
-//sprite
 function createSprite(url, pos, size, speed, frames, dir, once) {
     "use strict";
     return new Sprite(url, pos, size, speed, frames, dir, once);
 }
 
-//input
-function getInput(window, type) {
-    "use strict";
-    return input(window, type);
-}
-
-//model
-
 module.exports = {
-    loadResources: loadResources,
-    getResource: getResource,
-    onResourcesReady: onResourcesReady,
+    loadResources: resources.load,
+    getResource: resources.get,
+    onResourcesReady: resources.onReady,
     createSprite: createSprite,
-    getInput: getInput
+    getInput: input,
+    createPlayer: model.createPlayer,
+    createBackground: model.createBackground,
+    createEnemie: model.createEnemie,
+    createBonus: model.createBonus,
+    player: model.player,
+    background: model.background,
+    enemies: model.enemies,
+    bonuses: model.bonuses,
+    render: display.render,
+    clearRender: display.clear,
+    renderGameOver: display.renderGameOver,
+    hideGameOver: display.hideGameOver
 };
 

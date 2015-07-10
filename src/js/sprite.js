@@ -1,8 +1,17 @@
-/**
- * Created by USER on 10.07.2015.
- */
 var core = require("./core.js");
 
+/**
+ * Sprite of texture
+ * @param {string} url
+ * @param {number[]} pos Position in sprite sheet
+ * @param {number[]} size Size in sprite sheet
+ * @param {number} speed Speed of playing animation
+ * @param {number[]} frames Frames of animation
+ * @param {string} dir Direction on sprite sheet
+ * @param {bool} once Count of playing animation
+ * @constructor
+ * @see createSprite
+ */
 function Sprite(url, pos, size, speed, frames, dir, once) {
     this.pos = pos;
     this.url = url;

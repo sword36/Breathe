@@ -1,5 +1,11 @@
-//Created by USER on 10.07.2015.
-module.exports = function(window, type) {    //type - keyboard, medicine, smartphone
+module.exports = input;
+/**
+ * @param window Global object
+ * @param {string} type Can be:keyboard, medicine, smartphone
+ * @returns Object which content info about pressed buttons
+ * @see getInput
+ */
+    function input(window, type) {    //type - keyboard, medicine, smartphone
     "use strict";
     var pressed = null;
     function handler(event) {

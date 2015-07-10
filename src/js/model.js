@@ -1,13 +1,15 @@
-/**
- * Created by USER on 10.07.2015.
- */
 var core = require("./core.js");
 
 var player;
 var enemies = [];
 var background;
 var bonuses = [];
-
+/**
+ * Should be call once
+ * @param pos
+ * @param sprite
+ * @returns player
+ */
 function createPlayer(pos, sprite) {
     "use strict";
     player.pos = pos || [0, 0];
@@ -15,6 +17,12 @@ function createPlayer(pos, sprite) {
     return player;
 }
 
+/**
+ * Should be call once
+ * @param pos
+ * @param sprites
+ * @returns background
+ */
 function createBackground(pos, sprites) {
     "use strict";
     background.pos = pos || [0, 0];
@@ -23,7 +31,11 @@ function createBackground(pos, sprites) {
     background.spritesLength = sprites.length;
     return background;
 }
-
+/**
+ * Add enemie to enemies
+ * @param pos
+ * @param sprite
+ */
 function createEnemie(pos, sprite) {
     "use strict";
     enemies.push({
@@ -31,7 +43,12 @@ function createEnemie(pos, sprite) {
         sprite: sprite
     });
 }
-
+/**
+ * Add bonus to bonuses
+ * @param pos
+ * @param sprite
+ * @param {string} type Can be: speed, slow, small, big
+ */
 function createBonus(pos, sprite, type) {
     "use strict";
     bonuses.push({

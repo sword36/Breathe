@@ -11,6 +11,7 @@ var core = require("./core.js");
  * @param {bool} once Count of playing animation
  * @constructor
  * @see createSprite
+ * @see createSprite
  */
 function Sprite(url, pos, size, speed, frames, dir, once) {
     this.pos = pos;

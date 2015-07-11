@@ -30,7 +30,7 @@ module.exports = function(grunt) {
             },
             dist: {
                 files: {
-                    'dist/js/main.js': ['src/js/*.js']
+                    'src/js/main.js': ['src/js/*.js', '!src/js/main.js']
                 }
             }
         },

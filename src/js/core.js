@@ -3,10 +3,19 @@ var Sprite = require("./sprite.js");
 var input = require(".input.js");
 var model = require("./model.js");
 var display = new require("./display.js")();
+var config = require("./config");
 
 function createSprite(url, pos, size, speed, frames, dir, once) {
     "use strict";
     return new Sprite(url, pos, size, speed, frames, dir, once);
+}
+
+function getViewport() {
+    "use strict";
+    return {
+        width: config.width,
+        height: config.height
+    };
 }
 
 module.exports = {
@@ -26,6 +35,8 @@ module.exports = {
     render: display.render,
     clearRender: display.clear,
     renderGameOver: display.renderGameOver,
-    hideGameOver: display.hideGameOver
+    hideGameOver: display.hideGameOver,
+    setScore: display.setScore,
+    getViewport: getViewport
 };
 

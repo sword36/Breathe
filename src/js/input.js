@@ -4,7 +4,7 @@
  * @returns Object which content info about pressed buttons
  * @see getInput
  */
-    function input(window, type) {    //type - keyboard, medicine, smartphone
+function input(window, type) {    //type - keyboard, medicine, smartphone
     "use strict";
     var pressed = null;
     function handler(event) {

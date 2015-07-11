@@ -16,6 +16,7 @@ function CanvasDisplay() {
     this.canvas = document.createElement("canvas");
     this.canvas.width = config.width;
     this.canvas.height = config.height;
+    this.scoreEl = document.querySelector("#score");
 
     var parent = document.querySelector("#game");
     parent.appendChild(this.canvas);
@@ -79,6 +80,10 @@ CanvasDisplay.prototype.hideGameOver = function() {
     document.getElementById("game-over-overlay").style.display = "node";
 };
 
+CanvasDisplay.prototype.setScore = function(score) {
+    "use strict";
+    this.scoreEl.innerHTML = score.toString();
+};
 module.exports = function() {
     return new CanvasDisplay();
 };

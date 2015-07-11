@@ -1,8 +1,6 @@
-var core = require("./core.js");
-
-var player;
+var player = {};
 var enemies = [];
-var background;
+var background = {};
 var bonuses = [];
 /**
  * Should be call once
@@ -65,5 +63,6 @@ module.exports = {
     bonuses: bonuses,
     createPlayer: createPlayer,
     createEnemie: createEnemie,
-    createBonus: createBonus
+    createBonus: createBonus,
+    createBackground: createBackground
 };

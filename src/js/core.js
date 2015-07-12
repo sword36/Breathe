@@ -42,7 +42,7 @@ function hideGameOver() {
 
 function setScore(score) {
     "use strict";
-    display.setScore(score)
+    display.setScore(score);
 }
 
 module.exports = {

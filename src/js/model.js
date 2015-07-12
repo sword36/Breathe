@@ -12,6 +12,7 @@ module.exports.createPlayer = function createPlayer(pos, sprite) {
     "use strict";
     module.exports.player.pos = pos || [0, 0];
     module.exports.player.sprite = sprite;
+    module.exports.player.speed = {x: 1, y: 0};
     return module.exports.player;
 };
 

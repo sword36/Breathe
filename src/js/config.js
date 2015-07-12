@@ -5,5 +5,7 @@ module.exports = {
     width: 1024,
     height: 600,
     inputType: "keyboard",
-    backgroundSpeed: 20
+    backgroundSpeed: 150,
+    gravity: 30,
+    breatheSpeed: 10
 };

@@ -25,6 +25,26 @@ function render() {
     display.render();
 }
 
+function clearDisplay() {
+    "use strict";
+    display.clearDisplay();
+}
+
+function renderGameOver() {
+    "use strict";
+    display.renderGameOver();
+}
+
+function hideGameOver() {
+    "use strict";
+    display.hideGameOver();
+}
+
+function setScore(score) {
+    "use strict";
+    display.setScore(score)
+}
+
 module.exports = {
     loadResources: resources.load,
     getResource: resources.get,
@@ -40,10 +60,10 @@ module.exports = {
     enemies: model.enemies,
     bonuses: model.bonuses,
     render: render,
-    clearRender: display.clear,
-    renderGameOver: display.renderGameOver,
-    hideGameOver: display.hideGameOver,
-    setScore: display.setScore,
+    clearRender: clearDisplay,
+    renderGameOver: renderGameOver,
+    hideGameOver: hideGameOver,
+    setScore: setScore,
     getViewport: getViewport
 };
 

@@ -1,19 +1,19 @@
-var player = {};
-var enemies = [];
-var background = {};
-var bonuses = [];
+module.exports.player = {};
+module.exports.enemies = [];
+module.exports.background = {};
+module.exports.bonuses = [];
 /**
  * Should be call once
  * @param pos
  * @param sprite
  * @returns player
  */
-function createPlayer(pos, sprite) {
+module.exports.createPlayer = function createPlayer(pos, sprite) {
     "use strict";
-    player.pos = pos || [0, 0];
-    player.sprite = sprite;
-    return player;
-}
+    module.exports.player.pos = pos || [0, 0];
+    module.exports.player.sprite = sprite;
+    return module.exports.player;
+};
 
 /**
  * Should be call once
@@ -21,48 +21,37 @@ function createPlayer(pos, sprite) {
  * @param sprites
  * @returns background
  */
-function createBackground(pos, sprites) {
+module.exports.createBackground = function createBackground(pos, sprites) {
     "use strict";
-    background.pos = pos || [0, 0];
-    background.sprites = sprites;
-    background.currentSprite = 0;
-    background.spritesLength = sprites.length;
-    return background;
-}
+    module.exports.background.pos = pos || [0, 0];
+    module.exports.background.sprites = sprites;
+    module.exports.background.currentSprite = 0;
+    module.exports.background.spritesLength = sprites.length || 1;
+    return module.exports.background;
+};
 /**
  * Add enemie to enemies
  * @param pos
  * @param sprite
  */
-function createEnemie(pos, sprite) {
+module.exports.createEnemie = function createEnemie(pos, sprite) {
     "use strict";
-    enemies.push({
+    module.exports.enemies.push({
         pos: pos,
         sprite: sprite
     });
-}
+};
 /**
  * Add bonus to bonuses
  * @param pos
  * @param sprite
  * @param {string} type Can be: speed, slow, small, big
  */
-function createBonus(pos, sprite, type) {
+module.exports.createBonus = function createBonus(pos, sprite, type) {
     "use strict";
-    bonuses.push({
+    module.exports.bonuses.push({
         pos: pos,
         sprite: sprite,
         type: type
     });
-}
-
-module.exports = {
-    player: player,
-    enemies: enemies,
-    background: background,
-    bonuses: bonuses,
-    createPlayer: createPlayer,
-    createEnemie: createEnemie,
-    createBonus: createBonus,
-    createBackground: createBackground
 };

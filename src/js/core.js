@@ -5,8 +5,7 @@ var model = require("./model.js");
 var display_ =  require("./display.js");
 var config = require("./config.js");
 
-debugger;
-var display = new display_();
+var display = new display_.CanvasDisplay();
 
 function createSprite(url, pos, size, speed, frames, dir, once) {
     "use strict";

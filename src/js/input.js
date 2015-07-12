@@ -4,7 +4,7 @@
  * @returns Object which content info about pressed buttons
  * @see getInput
  */
-function input(window, type) {    //type - keyboard, medicine, smartphone
+function input(window_, type) {    //type - keyboard, medicine, smartphone
     "use strict";
     var pressed = null;
     function handler(event) {
@@ -30,9 +30,9 @@ function input(window, type) {    //type - keyboard, medicine, smartphone
         switch (type) {
             case "keyboard":
                 codes = codesKeyboard;
-                window.addEventListener("keydown", handler);
-                window.addEventListener("keyup", handler);
-                window.addEventListener("blur", clearAll());
+                window_.addEventListener("keydown", handler);
+                window_.addEventListener("keyup", handler);
+                window_.addEventListener("blur", clearAll());
                 break;
             default :
                 throw new Error("Wrong type of input");

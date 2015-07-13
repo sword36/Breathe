@@ -6,6 +6,7 @@ module.exports = {
     height: 600,
     inputType: "keyboard",
     backgroundSpeed: 150,
-    gravity: 30,
-    breatheSpeed: 10
+    gravity: 150,
+    breatheSpeed: 350,
+    forestLine: 450
 };

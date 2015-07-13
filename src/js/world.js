@@ -4,7 +4,7 @@ var config = require("./config.js");
 var lastTime,
     isGameOver,
     score,
-    input;
+    pressed;
 var viewport = core.getViewport();
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
@@ -22,10 +22,11 @@ function reset() {
     isGameOver = false;
     score = 0;
     core.enemies = [];
+    core.bonuses = [];
 }
 
 core.createPlayer(
-    [100, 100],
+    [viewport.width / 2, 50],
     core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0])
 );
 core.createBackground(
@@ -33,21 +34,86 @@ core.createBackground(
     [core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0)]
 );
 
+function gameOver() {
+    "use strict";
+    isGameOver = true;
+}
+
 function updateBackground(dt) {
     "use strict";
     core.background.pos = [core.background.pos[0] - config.backgroundSpeed * dt, core.background.pos[1]];
 }
 
+function checkColisions(pos) {
+    "use strict";
+    var collision = [],
+        size = core.player.sprite.size,
+        i,
+        enemies = core.enemies,
+        bonuses = core.bonuses;
+
+    if (pos[1] < 0) {
+        collision.push({type: "top"});
+    }
+    else if (pos[1] + size[1] > config.forestLine) {
+        collision.push({type: "forest"});
+    }
+
+    for (i = 0; i < enemies.length; i++) {
+        if (boxCollides(pos, size, enemies[i].pos, enemies[i].sprite.size)) {
+            collision.push({type: "enemy", target: enemies[i]});
+        }
+    }
+
+    for (i = 0; i < bonuses.length; i++) {
+        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.size)) {
+            collision.push({type: "bonus", target: bonuses[i]});
+        }
+    }
+    return collision;
+}
+
+function collidePlayer(pos) {
+    "use strict";
+    var collision = checkColisions(pos),
+        i = 0;
+    if (collision.length == 0)
+        return true;
+    for (i = 0; i < collision.length; i++) {
+        switch (collision[i].type) {
+            case "top":
+                core.player.speed.y = 0;
+                core.player.pos[1] = 0;
+                break;
+            case "forest":
+                gameOver();
+                return true;
+            case "enemy":
+                break;
+            case "bonus":
+                core.player.pos = pos;
+                return true;
+            default: return true;
+        }
+    }
+    return false;
+}
+
 function updatePlayer(dt) {
     "use strict";
     core.player.speed.y += config.gravity * dt;
+    if (pressed['up']) {
+        core.player.speed.y -= config.breatheSpeed * dt;
+    }
     var motion = core.player.speed.y * dt;
-    core.player.pos = [core.player.pos[0], core.player.pos[1] + motion];
+    var newPos = [core.player.pos[0], core.player.pos[1] + motion];
+    if (collidePlayer(newPos)) { //move or not to move
+        core.player.pos = newPos;
+    }
 }
 
 function updateEnities(dt) {
     "use strict";
-
     core.player.sprite.update(dt);
 }
 
@@ -84,7 +150,7 @@ function init() {
     score = 0;
     isGameOver = false;
 
-    input = core.getInput(window, "keyboard");
+    pressed = core.getInput(window, "keyboard");
     document.querySelector("#play-again").addEventListener("click", function() {
         reset();
     });

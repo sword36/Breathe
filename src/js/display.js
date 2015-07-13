@@ -1,5 +1,5 @@
 var config = require("./config.js");
-//var core = require("./core.js");
+//var core = require("./core.js"); //circular link
 var model = require("./model.js");
 
 function flipHorizontally(context, around) {
@@ -17,10 +17,12 @@ function CanvasDisplay() {
     this.canvas = document.createElement("canvas");
     this.canvas.width = config.width;
     this.canvas.height = config.height;
-    this.scoreEl = document.querySelector("#score");
+    this.scoreEl = document.createElement("div");
+    this.scoreEl.classList.add("score");
 
     var parent = document.querySelector("#game");
     parent.appendChild(this.canvas);
+    parent.appendChild(this.scoreEl);
     this.cx = this.canvas.getContext('2d');
 }
 
@@ -81,7 +83,7 @@ CanvasDisplay.prototype.renderGameOver = function() {
 CanvasDisplay.prototype.hideGameOver = function() {
     "use strict";
     document.getElementById("game-over").style.display = "none";
-    document.getElementById("game-over-overlay").style.display = "node";
+    document.getElementById("game-over-overlay").style.display = "none";
 };
 
 CanvasDisplay.prototype.setScore = function(score) {

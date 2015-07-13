@@ -1,7 +1,7 @@
-module.exports.player = {};
-module.exports.enemies = [];
-module.exports.background = {};
-module.exports.bonuses = [];
+var player = {},
+    enemies = [],
+    background = {},
+    bonuses = [];
 /**
  * Should be call once
  * @param pos
@@ -10,10 +10,11 @@ module.exports.bonuses = [];
  */
 module.exports.createPlayer = function createPlayer(pos, sprite) {
     "use strict";
-    module.exports.player.pos = pos || [0, 0];
-    module.exports.player.sprite = sprite;
-    module.exports.player.speed = {x: 1, y: 0};
-    return module.exports.player;
+    player.pos = pos || [0, 0];
+    if (player.sprite == null)
+        player.sprite = sprite;
+    player.speed = {x: 1, y: 0};
+    return player;
 };
 
 /**
@@ -24,11 +25,12 @@ module.exports.createPlayer = function createPlayer(pos, sprite) {
  */
 module.exports.createBackground = function createBackground(pos, sprites) {
     "use strict";
-    module.exports.background.pos = pos || [0, 0];
-    module.exports.background.sprites = sprites;
-    module.exports.background.currentSprite = 0;
-    module.exports.background.spritesLength = sprites.length || 1;
-    return module.exports.background;
+    background.pos = pos || [0, 0];
+    if (background.sprites == null)
+        background.sprites = sprites;
+    background.currentSprite = 0;
+    background.spritesLength = sprites.length || 1;
+    return background;
 };
 /**
  * Add enemie to enemies
@@ -37,7 +39,7 @@ module.exports.createBackground = function createBackground(pos, sprites) {
  */
 module.exports.createEnemie = function createEnemie(pos, sprite) {
     "use strict";
-    module.exports.enemies.push({
+    enemies.push({
         pos: pos,
         sprite: sprite
     });
@@ -50,9 +52,13 @@ module.exports.createEnemie = function createEnemie(pos, sprite) {
  */
 module.exports.createBonus = function createBonus(pos, sprite, type) {
     "use strict";
-    module.exports.bonuses.push({
+    bonuses.push({
         pos: pos,
         sprite: sprite,
         type: type
     });
 };
+module.exports.player = player;
+module.exports.background = background;
+module.exports.enemies = enemies;
+module.exports.bonuses = bonuses;

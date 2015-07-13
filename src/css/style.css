@@ -12,7 +12,7 @@ canvas {
     top: 0;
     bottom: 0;
     right: 0;
-}
+    }
 
 #game-over, #game-over-overlay {
     margin: auto;
@@ -26,7 +26,45 @@ canvas {
     z-index: 1;
     display: none;
 }
+
 #game-over-overlay {
     background-color: #000000;
     opacity: 0.5;
+}
+
+#game-over {
+    height: 200px;
+    text-align: center;
+    color: #ffffff;
+}
+
+#game-over h1 {
+    font-size: 3em;
+    font-family: sans-serif;
+}
+
+#game-over button {
+    font-size: 1.5em;
+}
+
+#game {
+    display: block;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 1024px;
+    height: 600px;
+}
+
+.score {
+    position: absolute;
+    left: 950px;
+    margin: 5px;
+    float: right;
+    color: white;
+    font-size: 2em;
+    z-index: 3;
 }

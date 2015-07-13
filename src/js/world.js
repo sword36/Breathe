@@ -21,18 +21,17 @@ function reset() {
     core.hideGameOver();
     isGameOver = false;
     score = 0;
+    core.createPlayer(
+        [viewport.width / 2, 50],
+        core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0])
+    );
+    core.createBackground(
+        [0, 0],
+        [core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0)]
+    );
     core.enemies = [];
     core.bonuses = [];
 }
-
-core.createPlayer(
-    [viewport.width / 2, 50],
-    core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0])
-);
-core.createBackground(
-    [0, 0],
-    [core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0)]
-);
 
 function gameOver() {
     "use strict";
@@ -77,7 +76,7 @@ function collidePlayer(pos) {
     "use strict";
     var collision = checkColisions(pos),
         i = 0;
-    if (collision.length == 0)
+    if (collision.length === 0)
         return true;
     for (i = 0; i < collision.length; i++) {
         switch (collision[i].type) {
@@ -120,8 +119,10 @@ function updateEnities(dt) {
 function update(dt) {
     "use strict";
     updateEnities(dt);
-    updateBackground(dt);
-    updatePlayer(dt);
+    if (!isGameOver) {
+        updateBackground(dt);
+        updatePlayer(dt);
+    }
 }
 
 function render() {
@@ -147,13 +148,11 @@ function main() {
 
 function init() {
     "use strict";
-    score = 0;
-    isGameOver = false;
-
     pressed = core.getInput(window, "keyboard");
     document.querySelector("#play-again").addEventListener("click", function() {
         reset();
     });
+    reset();
     lastTime = Date.now();
     main();
 }

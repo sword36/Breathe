@@ -8,5 +8,6 @@ module.exports = {
     backgroundSpeed: 150,
     gravity: 150,
     breatheSpeed: 350,
-    forestLine: 450
+    forestLine: 450,
+    imageSmoothingEnabled: true
 };

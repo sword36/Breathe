@@ -160,10 +160,22 @@ function init() {
 
 core.loadImages([
     "img/black.jpg",
-    "img/rect.jpg"
+    "img/rect.jpg",
+    "img/1.png"
 ]);
 
-core.onResourcesReady(core.showElement("main"));
+core.loadAudios([
+    "audio/Lordi.mp3"
+]);
+
+function mainMenu() {
+    "use strict";
+    core.showElement("main");
+    core.hideElement("progress");
+    core.chooseMenu("main");
+
+}
+core.onResourcesReady(mainMenu);
 
 var playEl = document.querySelector(".play");
 var restartEl = document.querySelector(".restart");

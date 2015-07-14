@@ -26,7 +26,10 @@ function CanvasDisplay() {
     this.records = document.querySelector("#records");
     this.game_over = document.querySelector("#game-over");
     this.game_over_overlay = document.querySelector("#game-over-overlay");
+    this.progress_bar = document.querySelector("#progress-bar");
+    this.progress = document.querySelector("#progress")
     this.backButtons = document.querySelectorAll(".back");
+    this.p = document.querySelector("#p");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -105,6 +108,16 @@ CanvasDisplay.prototype.hideGameOver = function() {
 CanvasDisplay.prototype.setScore = function(score) {
     "use strict";
     this.scoreEl.innerHTML = score.toString();
+};
+
+CanvasDisplay.prototype.setProgress = function(value) {
+    "use strict";
+    this.progress_bar.value = value;
+    this.p.innerHTML = value + "%";
+};
+
+CanvasDisplay.prototype.chooseMenu = function(menuCase) {
+    this.menu.classList.add(menuCase);
 };
 
 module.exports = {

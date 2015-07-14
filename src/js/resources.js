@@ -1,7 +1,16 @@
+var makePublisher = require("./publisher.js").makePublisher;
+
 var imagesCache = {};
 var audiosCache = {};
 var readyCallbacks = [];
+var resourcesCount = 0;
 var resourcesLoaded = 0;
+readyCallbacks.done = false;
+
+function changeLoading() {
+    "use strict";
+    module.exports.publish("loadingChange", progressInPercent());
+}
 
 function isReady() {
     var ready = true;
@@ -18,6 +27,11 @@ function isReady() {
     return ready;
 }
 
+function progressInPercent() {
+    "use strict";
+    return Math.round(resourcesLoaded / resourcesCount * 100);
+}
+
 function _loadImg(url) {
     if (imagesCache[url]) {
         return imagesCache[url];
@@ -25,6 +39,8 @@ function _loadImg(url) {
         var img = new Image();
         img.onload = function () {
             imagesCache[url] = img;
+            resourcesLoaded += 1;
+            changeLoading();
             if (isReady()) {
                 readyCallbacks.forEach(function (func) {
                     func();
@@ -41,15 +57,18 @@ function _loadAudio(url) {
         return audiosCache[url];
     } else {
         var audio = new Audio();
-        audio.addEventListener("canplay", function () {
+        audio.addEventListener("canplaythrough", function () {
             if (!audiosCache[url]) {
-                if (isReady()) {
-                    audiosCache[url] = audio;
+                resourcesLoaded += 1;
+                changeLoading();
+            }
+            audiosCache[url] = audio;
+            if (isReady()) {
+                if (!readyCallbacks.done) {
+                    readyCallbacks.done = true;
                     readyCallbacks.forEach(function (func) {
                         func();
                     });
-                } else {
-                    audiosCache[url] = audio;
                 }
             }
         });
@@ -66,24 +85,24 @@ function _loadAudio(url) {
  */
 function loadImages(urlOfArr) {
     if (urlOfArr instanceof Array) {
-        resourcesLoaded += urlOfArr.length;
+        resourcesCount += urlOfArr.length;
         urlOfArr.forEach(function (url) {
             _loadImg(url);
         });
     } else {
-        resourcesLoaded += 1;
+        resourcesCount += 1;
         _loadImg(urlOfArr);
     }
 }
 
 function loadAudios(urlOfArr) {
     if (urlOfArr instanceof Array) {
-        resourcesLoaded += urlOfArr.length;
+        resourcesCount += urlOfArr.length;
         urlOfArr.forEach(function (url) {
             _loadAudio(url);
         });
     } else {
-        resourcesLoaded += 1;
+        resourcesCount += 1;
         _loadAudio(urlOfArr);
     }
 }
@@ -115,5 +134,8 @@ module.exports = {
     getImg: getImg,
     getAudio: getAudio,
     onReady: onReady,
-    isReady: isReady
+    isReady: isReady,
+    progressInPercent: progressInPercent
 };
+makePublisher(module.exports);
+

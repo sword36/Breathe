@@ -55,6 +55,18 @@ function hideElement(el) {
     display.hideElement(el);
 }
 
+function setProgress(value) {
+    "use strict";
+    display.setProgress(value);
+}
+
+function chooseMenu(menuCase) {
+    "use strict";
+    display.chooseMenu(menuCase);
+}
+
+resources.on("loadingChange", setProgress);
+
 module.exports = {
     loadImages: resources.loadImages,
     loadAudios: resources.loadAudios,
@@ -78,6 +90,7 @@ module.exports = {
     setScore: setScore,
     showElement: showElement,
     hideElement: hideElement,
-    getViewport: getViewport
+    getViewport: getViewport,
+    chooseMenu: chooseMenu
 };
 

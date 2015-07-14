@@ -1,23 +1,30 @@
-var resourceCache = {};
+var imagesCache = {};
+var audiosCache = {};
 var readyCallbacks = [];
+var resourcesLoaded = 0;
 
 function isReady() {
     var ready = true;
-    for (var k in resourceCache) {
-        if (resourceCache.hasOwnProperty(k) && !resourceCache[k]) {
+    for (var k in imagesCache) {
+        if (imagesCache.hasOwnProperty(k) && !imagesCache[k]) {
+            ready = false;
+        }
+    }
+    for (var k in audiosCache) {
+        if (audiosCache.hasOwnProperty(k) && !audiosCache[k]) {
             ready = false;
         }
     }
     return ready;
 }
 
-function _load(url) {
-    if (resourceCache[url]) {
-        return resourceCache[url];
+function _loadImg(url) {
+    if (imagesCache[url]) {
+        return imagesCache[url];
     } else {
         var img = new Image();
         img.onload = function () {
-            resourceCache[url] = img;
+            imagesCache[url] = img;
             if (isReady()) {
                 readyCallbacks.forEach(function (func) {
                     func();
@@ -25,7 +32,31 @@ function _load(url) {
             }
         };
         img.src = url;
-        resourceCache[url] = false;
+        imagesCache[url] = false;
+    }
+}
+
+function _loadAudio(url) {
+    if (audiosCache[url]) {
+        return audiosCache[url];
+    } else {
+        var audio = new Audio();
+        audio.addEventListener("canplay", function () {
+            if (!audiosCache[url]) {
+                if (isReady()) {
+                    audiosCache[url] = audio;
+                    readyCallbacks.forEach(function (func) {
+                        func();
+                    });
+                } else {
+                    audiosCache[url] = audio;
+                }
+            }
+        });
+        audio.src = url;
+        audio.preload = "auto";
+        audio.load();
+        audiosCache[url] = false;
     }
 }
 /**
@@ -33,13 +64,27 @@ function _load(url) {
  *@param {(string|string[])} urlOfArr Array of urls
  * @see loadResources
  */
-function load(urlOfArr) {
+function loadImages(urlOfArr) {
     if (urlOfArr instanceof Array) {
+        resourcesLoaded += urlOfArr.length;
         urlOfArr.forEach(function (url) {
-            _load(url);
+            _loadImg(url);
         });
     } else {
-        _load(urlOfArr);
+        resourcesLoaded += 1;
+        _loadImg(urlOfArr);
+    }
+}
+
+function loadAudios(urlOfArr) {
+    if (urlOfArr instanceof Array) {
+        resourcesLoaded += urlOfArr.length;
+        urlOfArr.forEach(function (url) {
+            _loadAudio(url);
+        });
+    } else {
+        resourcesLoaded += 1;
+        _loadAudio(urlOfArr);
     }
 }
 /**
@@ -48,8 +93,12 @@ function load(urlOfArr) {
  * @returns  Image
  * @see getResource
  */
-function get(url) {
-    return resourceCache[url];
+function getImg(url) {
+    return imagesCache[url];
+}
+
+function getAudio(url) {
+    return imagesCache[url];
 }
 /**
  * Add function to functions which will be called then all resources loaded
@@ -61,8 +110,10 @@ function onReady(func) {
 }
 
 module.exports = {
-    load: load,
-    get: get,
+    loadImages: loadImages,
+    loadAudios: loadAudios,
+    getImg: getImg,
+    getAudio: getAudio,
     onReady: onReady,
     isReady: isReady
 };

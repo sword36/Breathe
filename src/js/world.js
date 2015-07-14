@@ -33,9 +33,13 @@ function reset() {
     core.bonuses = [];
 }
 
+var scoreEl = document.querySelector("#score");
+
 function gameOver() {
     "use strict";
     isGameOver = true;
+    core.renderGameOver();
+    scoreEl.innerHTML = score;
 }
 
 function updateBackground(dt) {
@@ -129,9 +133,6 @@ function render() {
     "use strict";
     core.render();
     core.setScore(score);
-    if (isGameOver) {
-        core.renderGameOver();
-    }
 }
 
 function main() {
@@ -149,20 +150,37 @@ function main() {
 function init() {
     "use strict";
     pressed = core.getInput(window, "keyboard");
-    document.querySelector("#play-again").addEventListener("click", function() {
+    /*document.querySelector("#play-again").addEventListener("click", function() {
         reset();
-    });
+    });*/
     reset();
     lastTime = Date.now();
     main();
 }
 
-core.loadResources([
+core.loadImages([
     "img/black.jpg",
     "img/rect.jpg"
 ]);
 
-core.onResourcesReady(init);
+core.onResourcesReady(core.showElement("main"));
+
+var playEl = document.querySelector(".play");
+var restartEl = document.querySelector(".restart");
+
+playEl.addEventListener("click", function() {
+    "use strict";
+    core.hideElement("menu");
+    init();
+});
+
+restartEl.addEventListener("click", function() {
+    "use strict";
+    core.hideGameOver();
+    reset();
+});
 
 module.exports = function() {
+    "use strict";
+
 };

@@ -45,9 +45,21 @@ function setScore(score) {
     display.setScore(score);
 }
 
+function showElement(el) {
+    "use strict";
+    display.showElement(el);
+}
+
+function hideElement(el) {
+    "use strict";
+    display.hideElement(el);
+}
+
 module.exports = {
-    loadResources: resources.load,
-    getResource: resources.get,
+    loadImages: resources.loadImages,
+    loadAudios: resources.loadAudios,
+    getImg: resources.getImg,
+    getAudio: resources.getAudio,
     onResourcesReady: resources.onReady,
     createSprite: createSprite,
     getInput: input,
@@ -64,6 +76,8 @@ module.exports = {
     renderGameOver: renderGameOver,
     hideGameOver: hideGameOver,
     setScore: setScore,
+    showElement: showElement,
+    hideElement: hideElement,
     getViewport: getViewport
 };
 

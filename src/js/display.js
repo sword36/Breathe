@@ -14,16 +14,19 @@ function flipHorizontally(context, around) {
  */
 function CanvasDisplay() {
     "use strict";
-    this.canvas = document.createElement("canvas");
+    this.canvas = document.querySelector("#canvas");
     this.canvas.width = config.width;
     this.canvas.height = config.height;
-    this.scoreEl = document.createElement("div");
-    this.scoreEl.classList.add("score");
-
-    var parent = document.querySelector("#game");
-    parent.appendChild(this.canvas);
-    parent.appendChild(this.scoreEl);
+    this.scoreEl = document.querySelector("#score");
     this.cx = this.canvas.getContext('2d');
+    this.menu = document.querySelector("#menu");
+    this.main = document.querySelector("#main");
+    this.play = document.querySelector(".play");
+    this.credits = document.querySelector("#credits");
+    this.records = document.querySelector("#records");
+    this.game_over = document.querySelector("#game-over");
+    this.game_over_overlay = document.querySelector("#game-over-overlay");
+    this.backButtons = document.querySelectorAll(".back");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -75,15 +78,28 @@ CanvasDisplay.prototype.render = function() {
     this.renderPlayer();
 };
 
+CanvasDisplay.prototype.showElement = function(el) {
+    "use strict";
+    if (el in this)
+        this[el].style.display = 'block';
+};
+
+
+CanvasDisplay.prototype.hideElement = function(el) {
+    "use strict";
+    if (el in this)
+        this[el].style.display = 'none';
+};
+
 CanvasDisplay.prototype.renderGameOver = function() {
-    document.getElementById("game-over").style.display = "block";
-    document.getElementById("game-over-overlay").style.display = "block";
+    this.showElement("game_over");
+    this.showElement("game_over_overlay");
 };
 
 CanvasDisplay.prototype.hideGameOver = function() {
     "use strict";
-    document.getElementById("game-over").style.display = "none";
-    document.getElementById("game-over-overlay").style.display = "none";
+    this.hideElement("game_over");
+    this.hideElement("game_over_overlay");
 };
 
 CanvasDisplay.prototype.setScore = function(score) {

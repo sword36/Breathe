@@ -77,6 +77,65 @@ canvas {
     text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
 }
 
+#records {
+    display: none;
+    line-height: 30px;
+    overflow: auto;
+    position: absolute;
+    margin: auto;
+    height: 80%;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+
+#records li {
+    width: 150px;
+    color: #ffffff;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    margin: 0 auto;
+}
+
+#records h2 {
+    color: #ffffff;
+    text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
+    font-size: 2em;
+}
+
+#credits {
+    display: none;
+    line-height: 30px;
+    overflow: auto;
+    position: absolute;
+    margin: auto;
+    height: 60%;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+
+#credits li {
+    padding: 5px 0;
+}
+
+#credits h2 {
+    color: #ffffff;
+    text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
+    font-size: 2em;
+}
+
+.artwork .music .developer {
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+
+}
+
+.artwork {
+    color: #00cc00;
+}
+
+.music {
+    color: #0099cc;
+}
+
+.developer {
+    color: #cc0000;
+}
 .button {
     display: block;
     width: 150px;
@@ -143,33 +202,4 @@ canvas {
 
 #progress-bar {
     width: 200px;
-}
-
-#credits {
-    display: none;
-    line-height: 30px;
-    position: absolute;
-    margin: auto;
-    left: 0; top: 0; bottom: 0; right: 0;
-}
-
-#credits li {
-    padding: 5px 0;
-}
-
-.artwork .music .developer {
-    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
-
-}
-
-.artwork {
-    color: #00cc00;
-}
-
-.music {
-    color: #0099cc;
-}
-
-.developer {
-    color: #cc0000;
 }

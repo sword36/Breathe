@@ -156,6 +156,10 @@ function init() {
     reset();
     lastTime = Date.now();
     main();
+    var bgSound = core.getAudio("audio/Lordi.mp3");
+    bgSound.currentTime = 0;
+    bgSound.loop = true;
+    bgSound.play();
 }
 
 core.loadImages([
@@ -175,22 +179,53 @@ function mainMenu() {
     core.chooseMenu("main");
 
 }
+
+function recordsMenu() {
+    "use strict";
+    core.hideElement("main");
+    core.showElement("records");
+    core.chooseMenu("records");
+}
+
+function backFromRecords() {
+    "use strict";
+    core.hideElement("records");
+    core.showElement("main");
+    core.unChooseMenu("records");
+}
+
+function creditsMenu() {
+    "use strict";
+    core.hideElement("main");
+    core.showElement("credits");
+    core.chooseMenu("credits");
+}
+
+function backFromCredits() {
+    "use strict";
+    core.hideElement("credits");
+    core.showElement("main");
+    core.unChooseMenu("credits");
+}
+
 core.onResourcesReady(mainMenu);
 
-var playEl = document.querySelector(".play");
-var restartEl = document.querySelector(".restart");
-
-playEl.addEventListener("click", function() {
+core.onButtonClick("play", function() {
     "use strict";
     core.hideElement("menu");
     init();
 });
 
-restartEl.addEventListener("click", function() {
+core.onButtonClick("restart", function() {
     "use strict";
     core.hideGameOver();
     reset();
 });
+
+core.onButtonClick("credits", creditsMenu);
+core.onButtonClick("backFromCredits", backFromCredits);
+core.onButtonClick("records", recordsMenu);
+core.onButtonClick("backFromRecords", backFromRecords);
 
 module.exports = function() {
     "use strict";

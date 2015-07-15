@@ -21,14 +21,19 @@ function CanvasDisplay() {
     this.cx = this.canvas.getContext('2d');
     this.menu = document.querySelector("#menu");
     this.main = document.querySelector("#main");
-    this.play = document.querySelector(".play");
+    this.playButton = document.querySelector(".play");
+    this.recordsButton = document.querySelector(".records");
+    this.creditsButton = document.querySelector(".credits");
+    this.quitButton = document.querySelector(".quit");
+    this.restartButton = document.querySelector(".restart");
+    this.backFromRecordsButton = document.querySelector("#records .back");
+    this.backFromCreditsButton = document.querySelector("#credits .back");
     this.credits = document.querySelector("#credits");
     this.records = document.querySelector("#records");
     this.game_over = document.querySelector("#game-over");
     this.game_over_overlay = document.querySelector("#game-over-overlay");
     this.progress_bar = document.querySelector("#progress-bar");
-    this.progress = document.querySelector("#progress")
-    this.backButtons = document.querySelectorAll(".back");
+    this.progress = document.querySelector("#progress");
     this.p = document.querySelector("#p");
 }
 
@@ -118,6 +123,18 @@ CanvasDisplay.prototype.setProgress = function(value) {
 
 CanvasDisplay.prototype.chooseMenu = function(menuCase) {
     this.menu.classList.add(menuCase);
+};
+
+CanvasDisplay.prototype.unChooseMenu = function(menuCase) {
+    this.menu.classList.remove(menuCase);
+};
+
+CanvasDisplay.prototype.onButtonClick = function(buttonName, handler) {
+    "use strict";
+    buttonName += "Button";
+    if (buttonName in this) {
+        this[buttonName].addEventListener("click", handler);
+    }
 };
 
 module.exports = {

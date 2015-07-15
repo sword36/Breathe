@@ -4,7 +4,7 @@ var imagesCache = {};
 var audiosCache = {};
 var readyCallbacks = [];
 var resourcesCount = 0;
-var resourcesLoaded = 0;
+var resourcesLoaded = 1; // 1 for best view
 readyCallbacks.done = false;
 
 function changeLoading() {

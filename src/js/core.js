@@ -65,6 +65,16 @@ function chooseMenu(menuCase) {
     display.chooseMenu(menuCase);
 }
 
+function unChooseMenu(menuCase) {
+    "use strict";
+    display.unChooseMenu(menuCase);
+}
+
+function onButtonClick(buttonName, handler) {
+    "use strict";
+    display.onButtonClick(buttonName, handler);
+}
+
 resources.on("loadingChange", setProgress);
 
 module.exports = {
@@ -91,6 +101,8 @@ module.exports = {
     showElement: showElement,
     hideElement: hideElement,
     getViewport: getViewport,
-    chooseMenu: chooseMenu
+    chooseMenu: chooseMenu,
+    unChooseMenu: unChooseMenu,
+    onButtonClick: onButtonClick
 };
 

@@ -163,7 +163,6 @@ function init() {
 core.loadImages([
     "img/black.jpg",
     "img/rect.jpg",
-    "img/1.png"
 ]);
 
 core.loadAudios([

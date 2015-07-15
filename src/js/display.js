@@ -25,6 +25,7 @@ function CanvasDisplay() {
     this.recordsButton = document.querySelector(".records");
     this.creditsButton = document.querySelector(".credits");
     this.quitButton = document.querySelector(".quit");
+    this.menuButton = document.querySelector(".menu");
     this.restartButton = document.querySelector(".restart");
     this.backFromRecordsButton = document.querySelector("#records .back");
     this.backFromCreditsButton = document.querySelector("#credits .back");
@@ -35,6 +36,7 @@ function CanvasDisplay() {
     this.progress_bar = document.querySelector("#progress-bar");
     this.progress = document.querySelector("#progress");
     this.p = document.querySelector("#p");
+    this.sound = document.querySelector(".sound");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -129,11 +131,33 @@ CanvasDisplay.prototype.unChooseMenu = function(menuCase) {
     this.menu.classList.remove(menuCase);
 };
 
-CanvasDisplay.prototype.onButtonClick = function(buttonName, handler) {
+CanvasDisplay.prototype.onButtonClick = function(buttonName, handler, notButton) {
     "use strict";
-    buttonName += "Button";
+    if (!notButton)
+        buttonName += "Button";
     if (buttonName in this) {
         this[buttonName].addEventListener("click", handler);
+    }
+};
+
+CanvasDisplay.prototype.addClass = function(el, value) {
+    "use strict";
+    if (el in this) {
+        this[el].classList.add(value);
+    }
+};
+
+CanvasDisplay.prototype.removeClass = function(el, value) {
+    "use strict";
+    if (el in this) {
+        this[el].classList.remove(value);
+    }
+};
+
+CanvasDisplay.prototype.hasClass = function(el, value) {
+    "use strict";
+    if (el in this) {
+        return this[el].classList.contains(value);
     }
 };
 

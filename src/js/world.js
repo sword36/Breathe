@@ -4,7 +4,9 @@ var config = require("./config.js");
 var lastTime,
     isGameOver,
     score,
-    pressed;
+    pressed,
+    playSound,
+    bgSound;
 var viewport = core.getViewport();
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
@@ -156,10 +158,6 @@ function init() {
     reset();
     lastTime = Date.now();
     main();
-    var bgSound = core.getAudio("audio/Lordi.mp3");
-    bgSound.currentTime = 0;
-    bgSound.loop = true;
-    bgSound.play();
 }
 
 core.loadImages([
@@ -172,12 +170,19 @@ core.loadAudios([
     "audio/Lordi.mp3"
 ]);
 
+function bgSoundStart() {
+    "use strict";
+    bgSound.currentTime = 0;
+    bgSound.loop = true;
+    bgSound.play();
+}
 function mainMenu() {
     "use strict";
     core.showElement("main");
     core.hideElement("progress");
     core.chooseMenu("main");
-
+    core.showElement("sound");
+    bgSoundStart();
 }
 
 function recordsMenu() {
@@ -208,7 +213,26 @@ function backFromCredits() {
     core.unChooseMenu("credits");
 }
 
-core.onResourcesReady(mainMenu);
+function backToMenu() {
+    "use strict";
+    core.hideGameOver();
+    core.showElement("menu");
+}
+function initSounds() {
+    "use strict";
+    bgSound = core.getAudio("audio/Lordi.mp3");
+    playSound = localStorage.getItem("playSound") === "true";
+    if (playSound) {
+        core.addClass("sound", "sound-on");
+        core.removeClass("sound", "sound-off");
+    } else {
+        core.addClass("sound", "sound-off");
+        core.removeClass("sound", "sound-on");
+    }
+    core.setSoundMuted(!playSound);
+}
+core.onResourcesReady(initSounds);
+core.onResourcesReady(mainMenu); //order is important
 
 core.onButtonClick("play", function() {
     "use strict";
@@ -222,10 +246,26 @@ core.onButtonClick("restart", function() {
     reset();
 });
 
+core.onButtonClick("sound", function() {
+    "use strict";
+    if (core.hasClass("sound", "sound-on")) {
+        core.removeClass("sound", "sound-on");
+        core.addClass("sound", "sound-off");
+        playSound = false;
+    } else {
+        core.removeClass("sound", "sound-off");
+        core.addClass("sound", "sound-on");
+        playSound = true;
+    }
+    localStorage.setItem("playSound", playSound);
+    core.setSoundMuted(!playSound);
+}, true);
+
 core.onButtonClick("credits", creditsMenu);
 core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);
 core.onButtonClick("backFromRecords", backFromRecords);
+core.onButtonClick("menu", backToMenu);
 
 module.exports = function() {
     "use strict";

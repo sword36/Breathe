@@ -70,9 +70,34 @@ function unChooseMenu(menuCase) {
     display.unChooseMenu(menuCase);
 }
 
-function onButtonClick(buttonName, handler) {
+function onButtonClick(buttonName, handler, notButton) {
     "use strict";
-    display.onButtonClick(buttonName, handler);
+    display.onButtonClick(buttonName, handler, notButton);
+}
+
+function addClass(el, value) {
+    "use strict";
+    display.addClass(el, value);
+}
+
+function removeClass(el, value) {
+    "use strict";
+    display.removeClass(el, value);
+}
+
+function hasClass(el, value) {
+    "use strict";
+    return display.hasClass(el, value);
+}
+
+function setSoundMuted(value) {
+    "use strict";
+    var i;
+    for (i in resources.audios) {
+        if (resources.audios.hasOwnProperty(i)) {
+            resources.audios[i].muted = value;
+        }
+    }
 }
 
 resources.on("loadingChange", setProgress);
@@ -103,6 +128,10 @@ module.exports = {
     getViewport: getViewport,
     chooseMenu: chooseMenu,
     unChooseMenu: unChooseMenu,
-    onButtonClick: onButtonClick
+    onButtonClick: onButtonClick,
+    addClass: addClass,
+    removeClass: removeClass,
+    hasClass: hasClass,
+    setSoundMuted: setSoundMuted
 };
 

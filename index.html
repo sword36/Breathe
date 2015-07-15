@@ -8,6 +8,7 @@
 </head>
 <body>
 <div class="wrapper">
+    <div class="sound sound-off"></div>
     <div id="menu">
         <div id="progress">
             <div id="percent">Загрузка: <span id="p"></span></div>
@@ -46,7 +47,10 @@
     <div id="game-over-overlay"></div>
     <div id="game-over">
         <h2>Вы набрали <span id="score"></span> очков!</h2>
-        <a href="javascript:void(0)" class="button restart">Начать сначала</a>
+        <ul>
+            <li><a href="javascript:void(0)" class="button restart">Начать сначала</a></li>
+            <li><a href="javascript:void(0)" class="button menu">Меню</a></li>
+        </ul>
     </div>
 </div>
 <script src="src/js/main.js"></script>

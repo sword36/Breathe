@@ -203,3 +203,24 @@ canvas {
 #progress-bar {
     width: 200px;
 }
+
+.sound {
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.sound-on {
+    background-image: url("../../img/soundOn.png");
+    background-repeat: no-repeat;
+}
+
+.sound-off {
+    background-image: url("../../img/soundOff.png");
+    background-repeat: no-repeat;
+}

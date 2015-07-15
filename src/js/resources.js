@@ -7,6 +7,11 @@ var resourcesCount = 0;
 var resourcesLoaded = 1; // 1 for best view
 readyCallbacks.done = false;
 
+function progressInPercent() {
+    "use strict";
+    return Math.round(resourcesLoaded / resourcesCount * 100);
+}
+
 function changeLoading() {
     "use strict";
     module.exports.publish("loadingChange", progressInPercent());
@@ -25,11 +30,6 @@ function isReady() {
         }
     }
     return ready;
-}
-
-function progressInPercent() {
-    "use strict";
-    return Math.round(resourcesLoaded / resourcesCount * 100);
 }
 
 function _loadImg(url) {
@@ -117,7 +117,7 @@ function getImg(url) {
 }
 
 function getAudio(url) {
-    return imagesCache[url];
+    return audiosCache[url];
 }
 /**
  * Add function to functions which will be called then all resources loaded
@@ -135,7 +135,9 @@ module.exports = {
     getAudio: getAudio,
     onReady: onReady,
     isReady: isReady,
-    progressInPercent: progressInPercent
+    progressInPercent: progressInPercent,
+    audios: audiosCache,
+    images: imagesCache
 };
 makePublisher(module.exports);
 

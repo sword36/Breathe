@@ -37,6 +37,7 @@ function CanvasDisplay() {
     this.progress = document.querySelector("#progress");
     this.p = document.querySelector("#p");
     this.sound = document.querySelector(".sound");
+    this.pause = document.querySelector(".pause");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -58,12 +59,21 @@ CanvasDisplay.prototype._render = function(enemy) {
     this.cx.restore();
 };
 
-CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
+var bg = model.background;
+function moveBgSprite(index) {
     "use strict";
     this.cx.save();
-    this.cx.translate(model.background.pos[0], model.background.pos[1]);
-    model.background.sprites[model.background.currentSprite].render(this.cx);
+    this.cx.translate(bg.positions[index], 0);
+    bg.sprites[index].render(this.cx);
     this.cx.restore();
+}
+CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
+    "use strict";
+    var move = moveBgSprite.bind(this);
+    move(bg.currentSprite);
+    if (!bg.isOneTexture) {
+        move(bg.nextSprite);
+    }
 };
 
 CanvasDisplay.prototype.renderEnemies = function() {

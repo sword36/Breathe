@@ -1,9 +1,9 @@
-var confing = require("./config.js");
+var config = require("./config.js");
 
 var player = {},
-    enemies = [],
     background = {},
     bonuses = [];
+module.exports.enemies = [];
 /**
  * Should be call once
  * @param pos
@@ -32,12 +32,14 @@ module.exports.createBackground = function createBackground(sprites) { //2 min
         background.sprites = sprites;
     }
     background.currentSprite = 0;
+    background.nextSprite = 1;
     background.spritesLength = sprites.length;
+    background.isOneTexture = true;
     for (var i = 0; i < sprites.length; i++) {
         if (i === 0) {
             background.positions[0] = 0;
         } else {
-            background.positions[i] = confing.width;
+            background.positions[i] = config.width;
         }
     }
     return background;
@@ -47,11 +49,23 @@ module.exports.createBackground = function createBackground(sprites) { //2 min
  * @param pos
  * @param sprite
  */
-module.exports.createEnemie = function createEnemie(pos, sprite) {
+module.exports.createEnemie = function createEnemie(pos, sprite, type) {
     "use strict";
-    enemies.push({
+    var s;
+    switch (type) {
+        case "bottom":
+            s = config.bottomEnemiesSpeed;
+            break;
+        case "top":
+            s = config.topEnemiesSpeed;
+            break;
+        default:
+            throw new Error("Wrong type of enemie");
+    }
+    module.exports.enemies.push({
         pos: pos,
-        sprite: sprite
+        sprite: sprite,
+        speed: s
     });
 };
 /**
@@ -70,5 +84,4 @@ module.exports.createBonus = function createBonus(pos, sprite, type) {
 };
 module.exports.player = player;
 module.exports.background = background;
-module.exports.enemies = enemies;
 module.exports.bonuses = bonuses;

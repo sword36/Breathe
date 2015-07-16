@@ -6,6 +6,8 @@ module.exports = {
     height: 600,
     inputType: "keyboard",
     backgroundSpeed: 150,
+    bottomEnemiesSpeed: 220,
+    topEnemiesSpeed: 270,
     gravity: 150,
     breatheSpeed: 350,
     forestLine: 450,

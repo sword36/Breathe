@@ -204,7 +204,7 @@ canvas {
     width: 200px;
 }
 
-.sound {
+.sound, .pause{
     display: none;
     position: absolute;
     top: 10px;
@@ -215,12 +215,16 @@ canvas {
     z-index: 3;
 }
 
-.sound-on {
+.pause {
+    left: 950px;
+}
+
+.sound-on, .pause-on {
     background-image: url("../../img/soundOn.png");
     background-repeat: no-repeat;
 }
 
-.sound-off {
+.sound-off, .pause-off {
     background-image: url("../../img/soundOff.png");
     background-repeat: no-repeat;
 }

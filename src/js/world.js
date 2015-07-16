@@ -6,6 +6,7 @@ var lastTime,
     score,
     pressed,
     playSound,
+    isPaused,
     bgSound;
 var viewport = core.getViewport();
 
@@ -23,19 +24,32 @@ function reset() {
     core.hideGameOver();
     isGameOver = false;
     score = 0;
+
+    var playerSprite = core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0]);
     core.createPlayer(
         [viewport.width / 2, 50],
-        core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0])
+        playerSprite
     );
 
     var bgSprite1 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
-    //var bgSprite2 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
-
     core.createBackground(
         [bgSprite1, bgSprite1]
     );
+
     core.enemies = [];
     core.bonuses = [];
+    core.createEnemie(
+        [1000, 300],
+        playerSprite,
+        "bottom"
+    );
+    core.createEnemie(
+        [2000, 300],
+        playerSprite,
+        "top"
+    );
+
+
 }
 
 var scoreEl = document.querySelector("#score");
@@ -47,26 +61,34 @@ function gameOver() {
     scoreEl.innerHTML = score;
 }
 
+
 var bg = core.background;
-var firstCycleBg = true;
+
 function updateBackground(dt) {
     "use strict";
+
     var cur = bg.currentSprite,
-            next = (cur + 1) % bg.spritesLength;
+            next = bg.nextSprite;
     var newBgPos = bg.positions[cur] - config.backgroundSpeed * dt,
         newRightCorner = newBgPos + bg.sprites[cur].size[0];
 
-    if (!firstCycleBg && (newRightCorner < config.width)) {
-        firstCycleBg = false;
+    if (newRightCorner < config.width) {
+        if (bg.isOneTexture) {
+            bg.isOneTexture = false;
+        }
         if (newRightCorner > 0) {
             bg.positions[cur] = newBgPos;
             bg.positions[next] = bg.positions[next] - config.backgroundSpeed * dt;
         } else {
             bg.positions[cur] = config.width;
-            cur = next;
+            cur = bg.currentSprite = next;
+            next = bg.nextSprite = (cur + 1) % bg.spritesLength;
             bg.positions[cur] = bg.positions[cur] - config.backgroundSpeed * dt;
-            next = (cur + 1) % bg.spritesLength;
-            bg.positions[next] = bg.positions[next] - config.backgroundSpeed * dt;
+            if (bg.sprites[cur].size[0] <= config.width) {   //if texture's size equal window width
+                bg.positions[next] = bg.positions[next] - config.backgroundSpeed * dt;
+            } else {
+                bg.isOneTexture = true;
+            }
         }
     } else {
         bg.positions[cur] = newBgPos;
@@ -118,6 +140,7 @@ function collidePlayer(pos) {
                 gameOver();
                 return true;
             case "enemy":
+                gameOver();
                 break;
             case "bonus":
                 core.player.pos = pos;
@@ -130,6 +153,7 @@ function collidePlayer(pos) {
 
 function updatePlayer(dt) {
     "use strict";
+    core.player.sprite.update(dt);
     core.player.speed.y += config.gravity * dt;
     if (pressed['up']) {
         core.player.speed.y -= config.breatheSpeed * dt;
@@ -143,13 +167,20 @@ function updatePlayer(dt) {
 
 function updateEnities(dt) {
     "use strict";
-    core.player.sprite.update(dt);
+    var enemies = core.enemies,
+        i,
+        motion;
+    for (i = 0; i < enemies.length; i++) {
+        enemies[i].sprite.update(dt);
+        motion = enemies[i].speed * dt;
+        enemies[i].pos = [enemies[i].pos[0] - motion, enemies[i].pos[1]];
+    }
 }
 
 function update(dt) {
     "use strict";
-    updateEnities(dt);
     if (!isGameOver) {
+        updateEnities(dt);
         updateBackground(dt);
         updatePlayer(dt);
     }
@@ -170,18 +201,26 @@ function main() {
     render();
 
     lastTime = now;
-    requestAnimationFrame(main);
+    if (!isPaused) {
+        requestAnimationFrame(main);
+    }
 }
 
 function init() {
     "use strict";
     pressed = core.getInput(window, "keyboard");
-    /*document.querySelector("#play-again").addEventListener("click", function() {
-        reset();
-    });*/
     reset();
     lastTime = Date.now();
+    core.showElement("pause");
     main();
+
+    /*function hadnler() {
+        "use strict";
+        console.log((new Date).getSeconds());
+        console.log("cur: " + bg.currentSprite + " - pos: " + bg.positions[bg.currentSprite]);
+        console.log("next: " + bg.nextSprite + " - pos: " + bg.positions[bg.nextSprite]);
+    }
+    window.setInterval(hadnler, 1000);*/
 }
 
 core.loadImages([
@@ -192,6 +231,18 @@ core.loadImages([
 core.loadAudios([
     "audio/Lordi.mp3"
 ]);
+
+function pauseGame() {
+    "use strict";
+    isPaused = true;
+}
+
+function unPauseGame() {
+    "use strict";
+    isPaused = false;
+    lastTime = Date.now();
+    main();
+}
 
 function bgSoundStart() {
     "use strict";
@@ -246,6 +297,7 @@ function backFromCredits() {
 function backToMenu() {
     "use strict";
     core.hideGameOver();
+    core.hideElement("pause");
     core.showElement("menu");
 }
 function initSounds() {
@@ -289,6 +341,19 @@ core.onButtonClick("sound", function() {
     }
     localStorage.setItem("playSound", playSound);
     core.setSoundMuted(!playSound);
+}, true);
+
+core.onButtonClick("pause", function() {
+    "use strict";
+    if (core.hasClass("pause", "pause-on")) {
+        core.removeClass("pause", "pause-on");
+        core.addClass("pause", "pause-off");
+        unPauseGame();
+    } else {
+        core.removeClass("pause", "pause-off");
+        core.addClass("pause", "pause-on");
+        pauseGame();
+    }
 }, true);
 
 core.onButtonClick("credits", creditsMenu);

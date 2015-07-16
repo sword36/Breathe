@@ -1,3 +1,5 @@
+var confing = require("./config.js");
+
 var player = {},
     enemies = [],
     background = {},
@@ -23,13 +25,21 @@ module.exports.createPlayer = function createPlayer(pos, sprite) {
  * @param sprites
  * @returns background
  */
-module.exports.createBackground = function createBackground(pos, sprites) {
+module.exports.createBackground = function createBackground(sprites) { //2 min
     "use strict";
-    background.pos = pos || [0, 0];
-    if (background.sprites == null)
+    background.positions = [];
+    if (background.sprites == null) {
         background.sprites = sprites;
+    }
     background.currentSprite = 0;
-    background.spritesLength = sprites.length || 1;
+    background.spritesLength = sprites.length;
+    for (var i = 0; i < sprites.length; i++) {
+        if (i === 0) {
+            background.positions[0] = 0;
+        } else {
+            background.positions[i] = confing.width;
+        }
+    }
     return background;
 };
 /**

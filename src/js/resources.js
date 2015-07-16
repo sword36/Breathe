@@ -74,7 +74,7 @@ function _loadAudio(url) {
         });
         audio.src = url;
         audio.preload = "auto";
-        audio.load();
+        //audio.load();
         audiosCache[url] = false;
     }
 }

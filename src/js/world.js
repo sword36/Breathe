@@ -27,9 +27,12 @@ function reset() {
         [viewport.width / 2, 50],
         core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0])
     );
+
+    var bgSprite1 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
+    //var bgSprite2 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
+
     core.createBackground(
-        [0, 0],
-        [core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0)]
+        [bgSprite1, bgSprite1]
     );
     core.enemies = [];
     core.bonuses = [];
@@ -44,9 +47,30 @@ function gameOver() {
     scoreEl.innerHTML = score;
 }
 
+var bg = core.background;
+var firstCycleBg = true;
 function updateBackground(dt) {
     "use strict";
-    core.background.pos = [core.background.pos[0] - config.backgroundSpeed * dt, core.background.pos[1]];
+    var cur = bg.currentSprite,
+            next = (cur + 1) % bg.spritesLength;
+    var newBgPos = bg.positions[cur] - config.backgroundSpeed * dt,
+        newRightCorner = newBgPos + bg.sprites[cur].size[0];
+
+    if (!firstCycleBg && (newRightCorner < config.width)) {
+        firstCycleBg = false;
+        if (newRightCorner > 0) {
+            bg.positions[cur] = newBgPos;
+            bg.positions[next] = bg.positions[next] - config.backgroundSpeed * dt;
+        } else {
+            bg.positions[cur] = config.width;
+            cur = next;
+            bg.positions[cur] = bg.positions[cur] - config.backgroundSpeed * dt;
+            next = (cur + 1) % bg.spritesLength;
+            bg.positions[next] = bg.positions[next] - config.backgroundSpeed * dt;
+        }
+    } else {
+        bg.positions[cur] = newBgPos;
+    }
 }
 
 function checkColisions(pos) {
@@ -162,7 +186,7 @@ function init() {
 
 core.loadImages([
     "img/black.jpg",
-    "img/rect.jpg",
+    "img/rect.jpg"
 ]);
 
 core.loadAudios([
@@ -172,8 +196,15 @@ core.loadAudios([
 function bgSoundStart() {
     "use strict";
     bgSound.currentTime = 0;
-    bgSound.loop = true;
     bgSound.play();
+    if ("loop" in bgSound) {
+        bgSound.loop = true;
+    } else {
+        bgSound.addEventListener("ended", function () {
+            bgSound.currentTime = 0;
+            bgSound.play();
+        });
+    }
 }
 function mainMenu() {
     "use strict";

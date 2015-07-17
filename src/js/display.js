@@ -1,6 +1,7 @@
 var config = require("./config.js");
 //var core = require("./core.js"); //circular link
-var model = require("./model.js");
+var model_ = require("./model.js");
+var model = new model_();
 
 function flipHorizontally(context, around) {
     context.translate(around, 0);

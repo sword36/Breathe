@@ -36,20 +36,18 @@ function reset() {
         [bgSprite1, bgSprite1]
     );
 
-    core.enemies = [];
+    core.clearEnemies();
     core.bonuses = [];
-    core.createEnemie(
-        [1000, 300],
+    core.createEnemy(
+        [1000, 450],
         playerSprite,
         "bottom"
     );
-    core.createEnemie(
-        [2000, 300],
+    core.createEnemy(
+        [1000, 100],
         playerSprite,
         "top"
     );
-
-
 }
 
 var scoreEl = document.querySelector("#score");
@@ -100,7 +98,7 @@ function checkColisions(pos) {
     var collision = [],
         size = core.player.sprite.size,
         i,
-        enemies = core.enemies,
+        enemies = core.getEnemies(),
         bonuses = core.bonuses;
 
     if (pos[1] < 0) {
@@ -165,9 +163,9 @@ function updatePlayer(dt) {
     }
 }
 
-function updateEnities(dt) {
+function updateEnemies(dt) {
     "use strict";
-    var enemies = core.enemies,
+    var enemies = core.getEnemies(),
         i,
         motion;
     for (i = 0; i < enemies.length; i++) {
@@ -180,7 +178,7 @@ function updateEnities(dt) {
 function update(dt) {
     "use strict";
     if (!isGameOver) {
-        updateEnities(dt);
+        updateEnemies(dt);
         updateBackground(dt);
         updatePlayer(dt);
     }

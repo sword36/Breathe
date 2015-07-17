@@ -1,11 +1,12 @@
 var resources = require("./resources.js");
 var Sprite = require("./sprite.js");
 var input = require("./input.js");
-var model = require("./model.js");
+var model_ = require("./model.js");
 var display_ =  require("./display.js");
 var config = require("./config.js");
 
 var display = new display_.CanvasDisplay();
+var model = new model_();
 
 function createSprite(url, pos, size, speed, frames, dir, once) {
     "use strict";
@@ -100,6 +101,36 @@ function setSoundMuted(value) {
     }
 }
 
+function createPlayer(pos, sprite) {
+    "use strict";
+    model.createPlayer(pos, sprite);
+}
+
+function createBackground(sprites) {
+    "use strict";
+    model.createBackground(sprites);
+}
+
+function createEnemy(pos, sprite, type) {
+    "use strict";
+    model.createEnemy(pos, sprite, type);
+}
+
+function createBonus(pos, sprite, type) {
+    "use strict";
+    model.createBonus(pos, sprite, type);
+}
+
+function getEnemies() {
+    "use strict";
+    return model.enemies;
+}
+
+function clearEnemies() {
+    "use strict";
+    model.enemies = [];
+}
+
 resources.on("loadingChange", setProgress);
 
 module.exports = {
@@ -110,13 +141,14 @@ module.exports = {
     onResourcesReady: resources.onReady,
     createSprite: createSprite,
     getInput: input,
-    createPlayer: model.createPlayer,
-    createBackground: model.createBackground,
-    createEnemie: model.createEnemie,
-    createBonus: model.createBonus,
+    createPlayer: createPlayer,
+    createBackground: createBackground,
+    createEnemy: createEnemy,
+    getEnemies: getEnemies,
+    clearEnemies: clearEnemies,
+    createBonus: createBonus,
     player: model.player,
     background: model.background,
-    enemies: model.enemies,
     bonuses: model.bonuses,
     render: render,
     clearRender: clearDisplay,

@@ -5,6 +5,12 @@ function Player() {
     this.pos = [0, 0];
     this.sprite = null;
     this.speed = {x: 1, y: 0};
+    this.activeBonusesTime = {
+        fast: 0
+    };
+    this.activeBonuses = {
+        fast: null
+    };
 }
 
 function Enemy(pos, sprite, speed) {
@@ -23,8 +29,16 @@ function Enemy(pos, sprite, speed) {
         this.speed = speed;
 }
 
+function Active(enable, disable) {
+    "use strict";
+    this.enable = enable;
+    this.disable = disable;
+}
+
 function Bonus(pos, sprite, type) {
     "use strict";
+    this.speed = config.backgroundSpeed;
+
     if (pos === undefined)
         this.pos = 0;
     else
@@ -37,6 +51,25 @@ function Bonus(pos, sprite, type) {
         this.type = null;
     else
         this.type = type;
+
+    this.oldValue = null;
+    this.time = 0;
+
+    function fastBonusEnable(player) {
+        player.activeBonusesTime.fast += this.time;
+    }
+    function fastBonusDisable(player) {
+        player.activeBonusesTime.fast = 0;
+    }
+
+    switch (this.type) {
+        case "fast":
+            this.time = config.fastBonusTime;
+            this.active = new Active(
+                fastBonusEnable.bind(this),
+                fastBonusDisable.bind(this)
+            );
+    }
 }
 
 function Background() {
@@ -75,6 +108,12 @@ Model.prototype.createPlayer = function createPlayer(pos, sprite) {
     if (this.player.sprite == null)
         this.player.sprite = sprite;
     this.player.speed = {x: 1, y: 0};
+    this.activeBonusesTime = {
+        fast: 0
+    };
+    this.activeBonuses = {
+        fast: null
+    };
 };
 
 /**

@@ -11,5 +11,8 @@ module.exports = {
     gravity: 150,
     breatheSpeed: 350,
     forestLine: 450,
-    imageSmoothingEnabled: true
+    imageSmoothingEnabled: true,
+    fastBonusSpeed: 2,
+    playerSpeedX: 1,
+    fastBonusTime: 5
 };

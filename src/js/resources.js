@@ -73,7 +73,9 @@ function _loadAudio(url) {
             }
         });
         audio.src = url;
-        audio.preload = "auto";
+        audio.preload = "auto";function fastBonusEnable(player) {
+
+        }
         //audio.load();
         audiosCache[url] = false;
     }

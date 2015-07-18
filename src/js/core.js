@@ -126,9 +126,24 @@ function getEnemies() {
     return model.enemies;
 }
 
+function getBonuses() {
+    "use strict";
+    return model.bonuses;
+}
+
 function clearEnemies() {
     "use strict";
     model.enemies = [];
+}
+
+function clearBonuses() {
+    "use strict";
+    model.bonuses = [];
+}
+
+function getPlayer() {
+    "use strict";
+    return model.player;
 }
 
 resources.on("loadingChange", setProgress);
@@ -147,7 +162,9 @@ module.exports = {
     getEnemies: getEnemies,
     clearEnemies: clearEnemies,
     createBonus: createBonus,
-    player: model.player,
+    getBonuses: getBonuses,
+    clearBonuses: clearBonuses,
+    getPlayer: getPlayer,
     background: model.background,
     bonuses: model.bonuses,
     render: render,

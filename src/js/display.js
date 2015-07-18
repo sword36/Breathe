@@ -80,7 +80,18 @@ CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
 CanvasDisplay.prototype.renderEnemies = function() {
     "use strict";
     for (var i = 0; i < model.enemies.length; i++) {
-        this._render(model.enemies[i]);
+        if (model.enemies[i].pos[0] <= config.width) {
+            this._render(model.enemies[i]);
+        }
+    }
+};
+
+CanvasDisplay.prototype.renderBonuses = function() {
+    "use strict";
+    for (var i = 0; i < model.bonuses.length; i++) {
+        if (model.bonuses[i].pos[0] <= config.width) {
+            this._render(model.bonuses[i]);
+        }
     }
 };
 
@@ -96,6 +107,7 @@ CanvasDisplay.prototype.render = function() {
     this.clearDisplay();
     this.renderBackground();
     this.renderEnemies();
+    this.renderBonuses();
     this.renderPlayer();
 };
 

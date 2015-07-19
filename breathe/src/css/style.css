@@ -1,0 +1,230 @@
+*, *:before, *:after {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    font-size: 20px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: default;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding: 10px 0;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+}
+
+canvas {
+    display: block;
+    margin: auto;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 1;
+}
+
+.wrapper {
+    width: 1024px;
+    height: 600px;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+}
+
+#menu {
+    width: 1024px;
+    height: 600px;
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    margin: auto;
+    z-index: 2;
+    text-align: center;
+}
+
+#menu.main {
+    background-image: url("../../img/menu.jpg");
+}
+
+#main {
+    position: absolute;
+    display: none;
+    overflow: auto;
+    margin: auto;
+    left:0; top:0; bottom: 0; right:0;
+    height: 60%;
+}
+
+#main h1 {
+    font-size: 3em;
+    color: #ffffff;
+    text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
+}
+
+#records {
+    display: none;
+    line-height: 30px;
+    overflow: auto;
+    position: absolute;
+    margin: auto;
+    height: 80%;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+
+#records li {
+    width: 150px;
+    color: #ffffff;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    margin: 0 auto;
+}
+
+#records h2 {
+    color: #ffffff;
+    text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
+    font-size: 2em;
+}
+
+#credits {
+    display: none;
+    line-height: 30px;
+    overflow: auto;
+    position: absolute;
+    margin: auto;
+    height: 60%;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+
+#credits li {
+    padding: 5px 0;
+}
+
+#credits h2 {
+    color: #ffffff;
+    text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
+    font-size: 2em;
+}
+
+.artwork .music .developer {
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+
+}
+
+.artwork {
+    color: #00cc00;
+}
+
+.music {
+    color: #0099cc;
+}
+
+.developer {
+    color: #cc0000;
+}
+.button {
+    display: block;
+    width: 150px;
+    margin: 0 auto;
+    height: 30px;
+    line-height: 30px;
+    border: 1px solid #AA2666;
+    color: #ffffff;
+    font-weight: bold;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    background-color: #FB1886;
+    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
+    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border-radius: 5px;
+}
+
+.restart {
+    width: 200px;
+}
+
+.button:hover {
+    background-color: #B30D5D;
+    background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
+    background-image:         linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+}
+
+#game-over, #game-over-overlay {
+    display: none;
+    margin: auto;
+    overflow: auto;
+    width: 1024px;
+    height: 600px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+
+#game-over-overlay {
+    background-color: #000000;
+    opacity: 0.5;
+}
+
+#game-over {
+    text-align: center;
+    height: 200px;
+    color: #ffffff;
+}
+
+#progress {
+    height: 12%;
+    position: absolute;
+    margin: auto;
+    left: 0; top: 0; bottom: 0; right: 0;
+}
+
+#percent {
+    color: white;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    font-weight: bold;
+}
+
+#progress-bar {
+    width: 200px;
+}
+
+.sound, .pause{
+    display: none;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 30px;
+    height: 25px;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.pause {
+    left: 950px;
+}
+
+.sound-on, .pause-on {
+    background-image: url("../../img/soundOn.png");
+    background-repeat: no-repeat;
+}
+
+.sound-off, .pause-off {
+    background-image: url("../../img/soundOff.png");
+    background-repeat: no-repeat;
+}

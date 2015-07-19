@@ -35,15 +35,6 @@ module.exports = function(grunt) {
             }
         },
 
-        jsdoc: {
-            dist: {
-                src: ['src/js/*.js'],
-                options: {
-                    destination: 'doc'
-                }
-
-            }
-        },
 
         watch: {
             options: {
@@ -65,6 +56,4 @@ module.exports = function(grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-watch');
     grunt.loadNpmTasks('grunt-browserify');
-    grunt.loadNpmTasks('grunt-jsdoc');
-
 };

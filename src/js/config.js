@@ -13,6 +13,7 @@ module.exports = {
     forestLine: 450,
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
+    slowBonusSpeed: 0.6,
     playerSpeedX: 1,
-    fastBonusTime: 5
+    bonusTime: 5
 };

@@ -53,6 +53,11 @@ function reset() {
         [1500, 300],
         playerSprite,
         "fast"
+    );
+    core.createBonus(
+        [1800, 300],
+        playerSprite,
+        "slow"
     )
 }
 
@@ -130,20 +135,23 @@ function checkColisions(pos) {
 
 function fastAll() {
     "use strict";
-    var xSpeed = config.fastBonusSpeed;
-    var i;
-    var enemies = core.getEnemies();
-    var bonuses = core.getBonuses();
-    core.background.speed *= xSpeed;
-    for (i = 0; i < enemies.length; i++) {
-        enemies[i].speed *= xSpeed;
-    }
-    for (i = 0; i < bonuses.length; i++) {
-        bonuses[i].speed *= xSpeed;
+    var player = core.getPlayer();
+    if (player.activeBonusesTime.fast <= 0) {
+        var xSpeed = config.fastBonusSpeed;
+        var i;
+        var enemies = core.getEnemies();
+        var bonuses = core.getBonuses();
+        core.background.speed *= xSpeed;
+        for (i = 0; i < enemies.length; i++) {
+            enemies[i].speed *= xSpeed;
+        }
+        for (i = 0; i < bonuses.length; i++) {
+            bonuses[i].speed *= xSpeed;
+        }
     }
 }
 
-function slowAll() {
+function unFastAll() {
     "use strict";
     var xSpeed = config.fastBonusSpeed;
     var i;
@@ -158,19 +166,61 @@ function slowAll() {
     }
 }
 
-function initBonus(bonus) {
+
+function slowAll() {
     "use strict";
-    switch (bonus.type) {
-        case "fast":
-            fastAll();
+    var player = core.getPlayer();
+    if (player.activeBonusesTime.slow <= 0) {
+        var xSpeed = config.slowBonusSpeed;
+        var i;
+        var enemies = core.getEnemies();
+        var bonuses = core.getBonuses();
+        core.background.speed *= xSpeed;
+        for (i = 0; i < enemies.length; i++) {
+            enemies[i].speed *= xSpeed;
+        }
+        for (i = 0; i < bonuses.length; i++) {
+            bonuses[i].speed *= xSpeed;
+        }
     }
 }
 
-function undoBonus(bonus) {
+function unSlowAll() {
     "use strict";
-    switch (bonus.type) {
+    var xSpeed = config.slowBonusSpeed;
+    var i;
+    var enemies = core.getEnemies();
+    var bonuses = core.getBonuses();
+    core.background.speed /= xSpeed;
+    for (i = 0; i < enemies.length; i++) {
+        enemies[i].speed /= xSpeed;
+    }
+    for (i = 0; i < bonuses.length; i++) {
+        bonuses[i].speed /= xSpeed;
+    }
+}
+
+function initBonus(type) {
+    "use strict";
+    switch (type) {
         case "fast":
+            fastAll();
+            break;
+        case "slow":
             slowAll();
+            break;
+    }
+}
+
+function undoBonus(type) {
+    "use strict";
+    switch (type) {
+        case "fast":
+            unFastAll();
+            break;
+        case "slow":
+            unSlowAll();
+            break;
     }
 }
 
@@ -205,11 +255,11 @@ function collidePlayer(pos) {
                 gameOver();
                 break;
             case "bonus":
+                initBonus(collision[i].target.type);  //order is important
                 collision[i].target.active.enable(player);
                 if (collision[i].target.type in player.activeBonuses) {
                     player.activeBonuses[collision[i].target.type] = collision[i].target;
                 }
-                initBonus(collision[i].target);
                 deleteBonus(collision[i].target);
                 return true;
             default: return true;
@@ -239,7 +289,7 @@ function updatePlayer(dt) {
             activeBonusesTime[i] -= dt;
             if (activeBonusesTime[i] < 0) {
                 player.activeBonuses[i].active.disable(player);
-                undoBonus(player.activeBonuses[i]);
+                undoBonus(player.activeBonuses[i].type);
                 player.activeBonuses[i] = null;
             }
         }

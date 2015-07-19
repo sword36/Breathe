@@ -6,10 +6,12 @@ function Player() {
     this.sprite = null;
     this.speed = {x: 1, y: 0};
     this.activeBonusesTime = {
-        fast: 0
+        fast: 0,
+        slow: 0
     };
     this.activeBonuses = {
-        fast: null
+        fast: null,
+        slow: null
     };
 }
 
@@ -35,6 +37,20 @@ function Active(enable, disable) {
     this.disable = disable;
 }
 
+function bonusEnable(type, player) {
+    "use strict";
+    if (type in player.activeBonusesTime) {
+        player.activeBonusesTime[type] += config.bonusTime;
+    }
+}
+
+function bonusDisable(type, player) {
+    "use strict";
+    if (type in player.activeBonusesTime) {
+        player.activeBonusesTime[type] = 0;
+    }
+}
+
 function Bonus(pos, sprite, type) {
     "use strict";
     this.speed = config.backgroundSpeed;
@@ -52,24 +68,11 @@ function Bonus(pos, sprite, type) {
     else
         this.type = type;
 
-    this.oldValue = null;
-    this.time = 0;
 
-    function fastBonusEnable(player) {
-        player.activeBonusesTime.fast += this.time;
-    }
-    function fastBonusDisable(player) {
-        player.activeBonusesTime.fast = 0;
-    }
-
-    switch (this.type) {
-        case "fast":
-            this.time = config.fastBonusTime;
-            this.active = new Active(
-                fastBonusEnable.bind(this),
-                fastBonusDisable.bind(this)
-            );
-    }
+    this.active = new Active(
+        bonusEnable.bind(null, this.type),
+        bonusDisable.bind(null, this.type)
+    );
 }
 
 function Background() {
@@ -108,11 +111,13 @@ Model.prototype.createPlayer = function createPlayer(pos, sprite) {
     if (this.player.sprite == null)
         this.player.sprite = sprite;
     this.player.speed = {x: 1, y: 0};
-    this.activeBonusesTime = {
-        fast: 0
+    this.player.activeBonusesTime = {
+        fast: 0,
+        slow: 0
     };
-    this.activeBonuses = {
-        fast: null
+    this.player.activeBonuses = {
+        fast: null,
+        slow: null
     };
 };
 
@@ -125,6 +130,7 @@ Model.prototype.createBackground = function createBackground(sprites) { //2 min
     "use strict";
     this.background.positions = [];
     this.background.sprites = sprites;
+    this.background.speed = config.backgroundSpeed;
     this.background.currentSprite = 0;
     this.background.nextSprite = 1;
     this.background.spritesLength = sprites.length;

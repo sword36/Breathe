@@ -372,9 +372,9 @@ core.loadImages([
     "img/rect.jpg"
 ]);
 
-/*core.loadAudios([
-    "audio/50.wav"
-]);*/
+core.loadAudios([
+    "audio/abc.ogg"
+]);
 
 function pauseGame() {
     "use strict";
@@ -446,7 +446,7 @@ function backToMenu() {
 }
 function initSounds() {
     "use strict";
-    bgSound = core.getAudio("audio/50.wav");
+    bgSound = core.getAudio("audio/abc.ogg");
     playSound = localStorage.getItem("playSound") === "true";
     if (playSound) {
         core.addClass("sound", "sound-on");
@@ -457,7 +457,7 @@ function initSounds() {
     }
     core.setSoundMuted(!playSound);
 }
-//core.onResourcesReady(initSounds);
+core.onResourcesReady(initSounds);
 core.onResourcesReady(mainMenu); //order is important
 
 core.onButtonClick("play", function() {

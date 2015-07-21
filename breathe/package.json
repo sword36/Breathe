@@ -20,10 +20,13 @@
     "title": "Breathe and Play",
     "width": 1024,
     "height": 600,
-    "toolbar": false,
+    "toolbar": true,
     "position": "center",
-    "resizable": false
+    "resizable": false,
+    "fullscreen": false,
+    "frame": true
   },
   "dependencies": {
+    "serialport": "^1.7.4"
   }
 }

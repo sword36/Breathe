@@ -9,3 +9,9 @@ var SerialPort = require("serialport").SerialPort;
 var serialPort = new SerialPort("COM5", {
 
 });
+serialPort.on("open", function () {
+    console.log('open');
+    serialPort.on('data', function(data) {
+        console.log('data received: ' + data);
+    });
+});

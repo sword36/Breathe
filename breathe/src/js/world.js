@@ -38,7 +38,7 @@ function reset() {
 
     core.clearEnemies();
     core.clearBonuses();
-    core.createEnemy(
+    /*(core.createEnemy(
         [1000, 450],
         playerSprite,
         "bottom"
@@ -47,7 +47,7 @@ function reset() {
         [2000, 100],
         playerSprite,
         "top"
-    );
+    );*/
 
     core.createBonus(
         [1500, 300],
@@ -275,10 +275,20 @@ function updatePlayer(dt) {
         activeBonusesTime = player.activeBonusesTime,
         activeBonuses = player.activeBonuses;
     player.sprite.update(dt);
-    player.speed.y += config.gravity * dt;
-    if (pressed['up']) {
-        player.speed.y -= config.breatheSpeed * dt;
+    if (player.speed.y < config.maxSpeed) {
+        player.speed.y += config.gravity * dt;
     }
+    if ("breathe" in pressed) {
+        if (pressed.breathe > config.lowerLimitOfBreathe && player.speed.y > -config.maxSpeed) {
+            console.log("breathe!!!!!");
+            player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+        }
+    } else {
+        if (pressed['up']) {
+            player.speed.y -= config.breatheSpeed * dt;
+        }
+    }
+    //console.log(pressed.breathe);
     var motion = player.speed.y * dt;
     var newPos = [player.pos[0], player.pos[1] + motion];
     if (collidePlayer(newPos)) { //move or not to move
@@ -352,7 +362,6 @@ function main() {
 
 function init() {
     "use strict";
-    pressed = core.getInput(window, "keyboard");
     reset();
     lastTime = Date.now();
     core.showElement("pause");
@@ -408,6 +417,7 @@ function mainMenu() {
     core.chooseMenu("main");
     core.showElement("sound");
     bgSoundStart();
+    pressed = core.getInput("serialport");
 }
 
 function recordsMenu() {
@@ -457,6 +467,7 @@ function initSounds() {
     }
     core.setSoundMuted(!playSound);
 }
+
 core.onResourcesReady(initSounds);
 core.onResourcesReady(mainMenu); //order is important
 

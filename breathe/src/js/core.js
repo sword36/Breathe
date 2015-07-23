@@ -1,6 +1,6 @@
-var resources = require("./resources.js");
 var Sprite = require("./sprite.js");
 var input = require("./input.js");
+var resources = require("./resources.js");
 var model_ = require("./model.js");
 var display_ =  require("./display.js");
 var config = require("./config.js");

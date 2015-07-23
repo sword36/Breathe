@@ -8,12 +8,16 @@ module.exports = {
     backgroundSpeed: 150,
     bottomEnemiesSpeed: 220,
     topEnemiesSpeed: 270,
-    gravity: 150,
+    gravity: 250,
     breatheSpeed: 350,
+    breatheFactor: 50,
+    maxSpeed: 200,
+    lowerLimitOfBreathe: 40,
     forestLine: 450,
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
     slowBonusSpeed: 0.6,
     playerSpeedX: 1,
-    bonusTime: 5
+    bonusTime: 5,
+    timeoutToPortConnection: 500
 };

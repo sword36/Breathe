@@ -1,5 +1,5 @@
 var makePublisher = require("./publisher.js").makePublisher;
-var SerialPortStorage = require("./serialPortStorage.js");
+var config = require("./config.js");
 
 var imagesCache = {};
 var audiosCache = {};
@@ -7,24 +7,26 @@ var readyCallbacks = [];
 var resourcesCount = 0;
 var resourcesLoaded = 0; // 1 for best view
 readyCallbacks.done = false;
-resourcesCount += 1; //for port
 debugger;
 
-var serialPortStorage = SerialPortStorage();
+if (config.inputType === "serialport") {
+    var SerialPortStorage = require("./serialPortStorage.js");
+    var serialPortStorage = SerialPortStorage();
+    resourcesCount += 1; //for port
+    SerialPortStorage.onConnect(function() {
+        debugger;
 
+        "use strict";
+        resourcesLoaded += 1;
+        changeLoading();
+        if (isReady()) {
+            readyCallbacks.forEach(function (func) {
+                func();
+            });
+        }
+    });
+}
 
-SerialPortStorage.onConnect(function() {
-    debugger;
-
-    "use strict";
-    resourcesLoaded += 1;
-    changeLoading();
-    if (isReady()) {
-        readyCallbacks.forEach(function (func) {
-            func();
-        });
-    }
-});
 
 function progressInPercent() {
     "use strict";
@@ -50,10 +52,13 @@ function isReady() {
             return ready;
         }
     }
-    if (!SerialPortStorage.isConnect) {
-        ready = false;
-        debugger;
+    if (config.inputType == "serialport") {
+        if (!SerialPortStorage.isConnect) {
+            ready = false;
+            debugger;
+        }
     }
+
     return ready;
 }
 

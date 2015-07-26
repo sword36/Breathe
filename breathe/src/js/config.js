@@ -4,7 +4,7 @@
 module.exports = {
     width: 1024,
     height: 600,
-    inputType: "keyboard",
+    inputType: "serialport", //"keyboard", "serialport"
     backgroundSpeed: 150,
     bottomEnemiesSpeed: 220,
     topEnemiesSpeed: 270,

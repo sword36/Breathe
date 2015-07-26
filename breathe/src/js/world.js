@@ -278,7 +278,7 @@ function updatePlayer(dt) {
     if (player.speed.y < config.maxSpeed) {
         player.speed.y += config.gravity * dt;
     }
-    if ("breathe" in pressed) {
+    if (config.inputType == "serialport") {
         if (pressed.breathe > config.lowerLimitOfBreathe && player.speed.y > -config.maxSpeed) {
             console.log("breathe!!!!!");
             player.speed.y -= config.breatheFactor * pressed.breathe * dt;
@@ -288,7 +288,6 @@ function updatePlayer(dt) {
             player.speed.y -= config.breatheSpeed * dt;
         }
     }
-    //console.log(pressed.breathe);
     var motion = player.speed.y * dt;
     var newPos = [player.pos[0], player.pos[1] + motion];
     if (collidePlayer(newPos)) { //move or not to move
@@ -417,7 +416,7 @@ function mainMenu() {
     core.chooseMenu("main");
     core.showElement("sound");
     bgSoundStart();
-    pressed = core.getInput("serialport");
+    pressed = core.getInput();
 }
 
 function recordsMenu() {

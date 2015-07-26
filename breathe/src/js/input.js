@@ -6,11 +6,11 @@ var config = require("./config.js");
  * @returns Object which content info about pressed buttons
  * @see getInput
  */
-function input(type, comPort) {    //type - keyboard, medicine, smartphone
+function input() {    //type - keyboard, medicine, smartphone
     "use strict";
     var pressed = null;
 
-    if (type === "serialport") {
+    if (config.inputType === "serialport") {
         debugger;
 
         var SerialPortStorage = require("./serialPortStorage.js");

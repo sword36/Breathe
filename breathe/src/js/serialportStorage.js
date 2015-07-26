@@ -25,7 +25,7 @@ function SerialPortStorage() {
     function setPortIfCorrect(portName, error, port) {
         if (!error && port != null) {
             debugger;
-
+            console.log("open");
             this.port = port;
             this.isReady = true;
             serialPortStorageSingleton.isConnect = true;
@@ -84,16 +84,18 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
             debugger;
             callback(error);
         } else {
+            tempPort.createTime = Date.now();
+
             var timer = setTimeout(handlePort, config.timeoutToPortConnection);
             tempPort.on("data", function(data) {
                 debugger;
                 if (!isCorrect) {
                     isCorrect = true;
+                    console.log(Date.now() - tempPort.createTime);
                     handlePort();
                 }
                 clearTimeout(timer);
-                tempPort.removeAllListeners();
-                //tempPort._events.data = null;
+                tempPort.removeAllListeners(); //for break event "on data"
             });
         }
     });

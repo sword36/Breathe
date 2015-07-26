@@ -55,6 +55,8 @@ CanvasDisplay.prototype.clearDisplay = function() {
 CanvasDisplay.prototype._render = function(enemy) {
     "use strict";
     this.cx.save();
+    //var posX = enemy.pos[0] - enemy.sprite.size[0] / 2;
+    //var posY = enemy.pos[1] - enemy.sprite.size[1] / 2;
     this.cx.translate(enemy.pos[0], enemy.pos[1]);
     enemy.sprite.render(this.cx);
     this.cx.restore();

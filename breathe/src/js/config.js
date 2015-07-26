@@ -4,7 +4,7 @@
 module.exports = {
     width: 1024,
     height: 600,
-    inputType: "serialport", //"keyboard", "serialport"
+    inputType: "keyboard", //"keyboard", "serialport"
     backgroundSpeed: 150,
     bottomEnemiesSpeed: 220,
     topEnemiesSpeed: 270,
@@ -13,7 +13,7 @@ module.exports = {
     breatheFactor: 50,
     maxSpeed: 200,
     lowerLimitOfBreathe: 40,
-    forestLine: 450,
+    forestLine: 500,
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
     slowBonusSpeed: 0.6,

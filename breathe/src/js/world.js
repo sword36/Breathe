@@ -25,15 +25,17 @@ function reset() {
     isGameOver = false;
     score = 0;
 
-    var playerSprite = core.createSprite("img/rect.jpg", [0, 0], [100, 100], 0, [0]);
+    var playerSprite = core.createSprite("img/rect.jpg");
     core.createPlayer(
         [viewport.width / 2, 50],
         playerSprite
     );
 
-    var bgSprite1 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
+    //var bgSprite1 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
+    var bgSprite1 = core.createSprite("img/fon1.jpg");
+    var bgSprite2 = core.createSprite("img/fon2.jpg");
     core.createBackground(
-        [bgSprite1, bgSprite1]
+        [bgSprite1, bgSprite2]
     );
 
     core.clearEnemies();
@@ -376,7 +378,8 @@ function init() {
 }
 
 core.loadImages([
-    "img/black.jpg",
+    "img/fon1.jpg",
+    "img/fon2.jpg",
     "img/rect.jpg"
 ]);
 

@@ -14,13 +14,25 @@ var resources = require("./resources.js");
  * @see createSprite
  */
 function Sprite(url, pos, size, speed, frames, dir, once) {
-    this.pos = pos;
     this.url = url;
-    this.size = size;
+    this.image = resources.getImg(this.url);
+
+    if (typeof pos != "undefined")
+        this.pos = pos;
+    else
+        this.pos = [0, 0];
+    if (typeof size != "undefined")
+        this.size = size;
+    else
+        this.size = [this.image.width, this.image.height];
     this.speed = typeof speed === "number" ? speed : 0;
     this.frames = frames;
     this.dir = dir || "horizontal";
-    this.once = once;
+    if (typeof  once != "undefined")
+        this.once = once;
+    else
+        this.once = false;
+
     this._index = 0;
 }
 
@@ -50,7 +62,7 @@ Sprite.prototype.render = function (ctx) {
         x += frame * this.size[0];
     }
 
-    ctx.drawImage(resources.getImg(this.url), x, y, this.size[0], this.size[1], 0, 0, this.size[0], this.size[1]);
+    ctx.drawImage(this.image, x, y, this.size[0], this.size[1], 0, 0, this.size[0], this.size[1]);
 };
 
 module.exports = Sprite;

@@ -7,15 +7,12 @@ var readyCallbacks = [];
 var resourcesCount = 0;
 var resourcesLoaded = 0; // 1 for best view
 readyCallbacks.done = false;
-debugger;
 
 if (config.inputType === "serialport") {
     var SerialPortStorage = require("./serialPortStorage.js");
     var serialPortStorage = SerialPortStorage();
     resourcesCount += 1; //for port
     SerialPortStorage.onConnect(function() {
-        debugger;
-
         "use strict";
         resourcesLoaded += 1;
         changeLoading();
@@ -55,7 +52,6 @@ function isReady() {
     if (config.inputType == "serialport") {
         if (!SerialPortStorage.isConnect) {
             ready = false;
-            debugger;
         }
     }
 

@@ -11,8 +11,6 @@ function input() {    //type - keyboard, medicine, smartphone
     var pressed = null;
 
     if (config.inputType === "serialport") {
-        debugger;
-
         var SerialPortStorage = require("./serialPortStorage.js");
         var serialPortStorage = SerialPortStorage();
 

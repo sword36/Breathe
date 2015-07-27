@@ -13,7 +13,45 @@ function Player() {
         fast: null,
         slow: null
     };
+
+    this.state = null; //up, down, float, fly
+    this.statesFrames = {};
+    this.statesFrames.float = [0];
+    this.statesFrames.up = [1, 2, 3];
+    this.statesFrames.fly = [4, 5, 6, 7, 8];
+    this.statesFrames.down = [9, 10, 11, 12];
+    this.currentFrames = [];
 }
+function nextState(next) {
+    "use strict";
+    debugger;
+    if (next in this.statesFrames) {
+        this.state = next;
+        this.currentFrames = this.statesFrames[this.state];
+        this.sprite.setFrames(this.currentFrames, false);
+    } else
+        throw new Error("Wrong player next state");
+}
+Player.prototype.setState = function(state) {
+    "use strict";
+    if (state in this.statesFrames) {
+        if (state != this.state) {
+            if (this.state == "fly" && state == "up" || this.state == "float" && state == "down")
+                return;
+            this.state = state;
+            this.currentFrames = this.statesFrames[this.state];
+            if (state == "up") {
+                this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "fly"));
+            } else if (state == "down") {
+                this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "float"));
+            } else {
+                this.sprite.setFrames(this.currentFrames, false);
+            }
+        }
+    }
+    else
+        throw new Error("Wrong player state");
+};
 
 function Enemy(pos, sprite, speed) {
     "use strict";

@@ -16,7 +16,6 @@ function SerialPortStorage() {
         ports.forEach(function(port) {
             this.portsName.push(port.comName.toString());
         }, self);
-        debugger;
         self.portsName.forEach(function(portName) {
             this.checkPort(portName, setPortIfCorrect.bind(self, portName));
         }, self);
@@ -24,7 +23,6 @@ function SerialPortStorage() {
 
     function setPortIfCorrect(portName, error, port) {
         if (!error && port != null) {
-            debugger;
             console.log("open");
             this.port = port;
             this.isReady = true;
@@ -65,11 +63,9 @@ serialPortStorageSingleton.onConnect = function(callback) {
 
 SerialPortStorage.prototype.checkPort = function(portName, callback) {
     "use strict";
-    debugger;
     var tempPort = new SerialPort(portName);
     var isCorrect = false;
     function handlePort() {
-        debugger;
         if (isCorrect) {
             callback(null, tempPort);
         } else {
@@ -81,14 +77,12 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
     }
     tempPort.on("open", function(error) {
         if (error) {
-            debugger;
             callback(error);
         } else {
             tempPort.createTime = Date.now();
 
             var timer = setTimeout(handlePort, config.timeoutToPortConnection);
             tempPort.on("data", function(data) {
-                debugger;
                 if (!isCorrect) {
                     isCorrect = true;
                     console.log(Date.now() - tempPort.createTime);

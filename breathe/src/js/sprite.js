@@ -34,6 +34,7 @@ function Sprite(url, pos, size, speed, frames, dir, once) {
         this.once = false;
 
     this._index = 0;
+    this.afterEndOfOnce = null;
 }
 
 Sprite.prototype.update = function (dt) {
@@ -48,7 +49,13 @@ Sprite.prototype.render = function (ctx) {
 
         if (this.once && idx >= max) {
             this.done = true;
-            return;
+            if (typeof this.afterEndOfOnce != "undefined") {
+                this.afterEndOfOnce();
+                max = this.frames.length;
+                idx = Math.floor(this._index);
+                frame = this.frames[idx % max];
+            } else
+                return;
         }
     } else {
         frame = 0;
@@ -63,6 +70,18 @@ Sprite.prototype.render = function (ctx) {
     }
 
     ctx.drawImage(this.image, x, y, this.size[0], this.size[1], 0, 0, this.size[0], this.size[1]);
+};
+
+Sprite.prototype.setFrames = function(frames, once, afterEnd) {
+    "use strict";
+    this.frames = frames;
+    this._index = 0;
+    if (typeof afterEnd != "undefined")
+        this.afterEndOfOnce = afterEnd;
+    if (once === true)
+        this.once = true;
+    else
+        this.once = false;
 };
 
 module.exports = Sprite;

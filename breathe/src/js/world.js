@@ -25,13 +25,14 @@ function reset() {
     isGameOver = false;
     score = 0;
 
-    var playerSprite = core.createSprite("img/rect.jpg");
+    var enemySpyte = core.createSprite("img/rect.jpg");
+    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [92, 150], 16);
     core.createPlayer(
         [viewport.width / 2, 50],
         playerSprite
     );
+    core.getPlayer().setState("float");
 
-    //var bgSprite1 = core.createSprite("img/black.jpg", [0, 0], [viewport.width * 3, viewport.height], 0);
     var bgSprite1 = core.createSprite("img/fon1.jpg");
     var bgSprite2 = core.createSprite("img/fon2.jpg");
     core.createBackground(
@@ -53,12 +54,12 @@ function reset() {
 
     core.createBonus(
         [1500, 300],
-        playerSprite,
+        enemySpyte,
         "fast"
     );
     core.createBonus(
         [1800, 300],
-        playerSprite,
+        enemySpyte,
         "slow"
     )
 }
@@ -281,13 +282,23 @@ function updatePlayer(dt) {
         player.speed.y += config.gravity * dt;
     }
     if (config.inputType == "serialport") {
-        if (pressed.breathe > config.lowerLimitOfBreathe && player.speed.y > -config.maxSpeed) {
-            console.log("breathe!!!!!");
-            player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+        if (pressed.breathe > config.lowerLimitOfBreathe) {
+            if (player.speed.y > -config.maxSpeed) {
+                player.setState("up");
+                player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+            } else { //limit speed, but player breathe
+                player.setState("up");
+            }
+        } else {
+            player.setState("down");
         }
     } else {
         if (pressed['up']) {
             player.speed.y -= config.breatheSpeed * dt;
+            debugger;
+            player.setState("up");
+        } else {
+            player.setState("down");
         }
     }
     var motion = player.speed.y * dt;
@@ -380,7 +391,8 @@ function init() {
 core.loadImages([
     "img/fon1.jpg",
     "img/fon2.jpg",
-    "img/rect.jpg"
+    "img/rect.jpg",
+    "img/sphereSpriteSheet.png"
 ]);
 
 core.loadAudios([

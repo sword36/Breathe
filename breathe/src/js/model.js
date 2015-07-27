@@ -7,11 +7,15 @@ function Player() {
     this.speed = {x: 1, y: 0};
     this.activeBonusesTime = {
         fast: 0,
-        slow: 0
+        slow: 0,
+        big: 0,
+        small: 0
     };
     this.activeBonuses = {
         fast: null,
-        slow: null
+        slow: null,
+        big: null,
+        small: null
     };
 
     this.state = null; //up, down, float, fly
@@ -24,7 +28,6 @@ function Player() {
 }
 function nextState(next) {
     "use strict";
-    debugger;
     if (next in this.statesFrames) {
         this.state = next;
         this.currentFrames = this.statesFrames[this.state];
@@ -146,16 +149,19 @@ function Model() { //pattern singleton
 Model.prototype.createPlayer = function createPlayer(pos, sprite) {
     "use strict";
     this.player.pos = pos || [0, 0];
-    if (this.player.sprite == null)
-        this.player.sprite = sprite;
+    this.player.sprite = sprite;
     this.player.speed = {x: 1, y: 0};
     this.player.activeBonusesTime = {
         fast: 0,
-        slow: 0
+        slow: 0,
+        big: 0,
+        small: 0
     };
     this.player.activeBonuses = {
         fast: null,
-        slow: null
+        slow: null,
+        big: null,
+        small: null
     };
 };
 

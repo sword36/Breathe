@@ -17,7 +17,9 @@ module.exports = {
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
     slowBonusSpeed: 0.6,
+    increaseBonusSize: 1.5,
+    decreaseBonusSize: 0.5,
     playerSpeedX: 1,
     bonusTime: 5,
-    timeoutToPortConnection: 500
+    timeoutToPortConnection: 500,
 };

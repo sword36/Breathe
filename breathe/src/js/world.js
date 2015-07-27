@@ -26,7 +26,7 @@ function reset() {
     score = 0;
 
     var enemySpyte = core.createSprite("img/rect.jpg");
-    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [92, 150], 16);
+    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [92, 150], 16, [92, 150]);
     core.createPlayer(
         [viewport.width / 2, 50],
         playerSprite
@@ -53,14 +53,14 @@ function reset() {
     );*/
 
     core.createBonus(
-        [1500, 300],
+        [1500, 100],
         enemySpyte,
-        "fast"
+        "big"
     );
     core.createBonus(
         [1800, 300],
         enemySpyte,
-        "slow"
+        "small"
     )
 }
 
@@ -110,7 +110,7 @@ function updateBackground(dt) {
 function checkColisions(pos) {
     "use strict";
     var collision = [],
-        size = core.getPlayer().sprite.size,
+        size = core.getPlayer().sprite.sizeToDraw,
         i,
         enemies = core.getEnemies(),
         bonuses = core.getBonuses();
@@ -123,13 +123,13 @@ function checkColisions(pos) {
     }
 
     for (i = 0; i < enemies.length; i++) {
-        if (boxCollides(pos, size, enemies[i].pos, enemies[i].sprite.size)) {
+        if (boxCollides(pos, size, enemies[i].pos, enemies[i].sprite.sizeToDraw)) {
             collision.push({type: "enemy", target: enemies[i]});
         }
     }
 
     for (i = 0; i < bonuses.length; i++) {
-        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.size)) {
+        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.sizeToDraw)) {
             collision.push({type: "bonus", target: bonuses[i]});
         }
     }
@@ -203,6 +203,50 @@ function unSlowAll() {
     }
 }
 
+function increasePlayerSize() {
+    "use strict";
+    var player = core.getPlayer();
+    if (player.activeBonusesTime.big <= 0) {
+        var oldSize = player.sprite.sizeToDraw;
+        player.sprite.sizeToDraw = [oldSize[0] * config.increaseBonusSize, oldSize[1] * config.increaseBonusSize];
+        var newSize = player.sprite.sizeToDraw;
+        player.pos[0] = player.pos[0] - (newSize[0] / 2 - oldSize[0] / 2);
+        player.pos[1] = player.pos[1] - (newSize[1] / 2 - oldSize[1] / 2);
+    }
+}
+
+function unIncreasePlayerSize() {
+    "use strict";
+    var player = core.getPlayer();
+    var oldSize = player.sprite.sizeToDraw;
+    player.sprite.sizeToDraw = [oldSize[0] / config.increaseBonusSize, oldSize[1] / config.increaseBonusSize];
+    var newSize = player.sprite.sizeToDraw;
+    player.pos[0] = player.pos[0] - (newSize[0] / 2 - oldSize[0] / 2);
+    player.pos[1] = player.pos[1] - (newSize[1] / 2 - oldSize[1] / 2);
+}
+
+function decreasePlayerSize() {
+    "use strict";
+    var player = core.getPlayer();
+    if (player.activeBonusesTime.small <= 0) {
+        var oldSize = player.sprite.sizeToDraw;
+        player.sprite.sizeToDraw = [oldSize[0] * config.decreaseBonusSize, oldSize[1] * config.decreaseBonusSize];
+        var newSize = player.sprite.sizeToDraw;
+        player.pos[0] = player.pos[0] - (newSize[0] / 2 - oldSize[0] / 2);
+        player.pos[1] = player.pos[1] - (newSize[1] / 2 - oldSize[1] / 2);
+    }
+}
+
+function unDecreasePlayerSize() {
+    "use strict";
+    var player = core.getPlayer();
+    var oldSize = player.sprite.sizeToDraw;
+    player.sprite.sizeToDraw = [oldSize[0] / config.decreaseBonusSize, oldSize[1] / config.decreaseBonusSize];
+    var newSize = player.sprite.sizeToDraw;
+    player.pos[0] = player.pos[0] - (newSize[0] / 2 - oldSize[0] / 2);
+    player.pos[1] = player.pos[1] - (newSize[1] / 2 - oldSize[1] / 2);
+}
+
 function initBonus(type) {
     "use strict";
     switch (type) {
@@ -211,6 +255,12 @@ function initBonus(type) {
             break;
         case "slow":
             slowAll();
+            break;
+        case "big":
+            increasePlayerSize();
+            break;
+        case "small":
+            decreasePlayerSize();
             break;
     }
 }
@@ -223,6 +273,12 @@ function undoBonus(type) {
             break;
         case "slow":
             unSlowAll();
+            break;
+        case "big":
+            unIncreasePlayerSize();
+            break;
+        case "small":
+            unDecreasePlayerSize();
             break;
     }
 }
@@ -295,7 +351,6 @@ function updatePlayer(dt) {
     } else {
         if (pressed['up']) {
             player.speed.y -= config.breatheSpeed * dt;
-            debugger;
             player.setState("up");
         } else {
             player.setState("down");
@@ -304,6 +359,7 @@ function updatePlayer(dt) {
     var motion = player.speed.y * dt;
     var newPos = [player.pos[0], player.pos[1] + motion];
     if (collidePlayer(newPos)) { //move or not to move
+        newPos = [player.pos[0], player.pos[1] + motion]; // for case of bonus "big"
         player.pos = newPos;
     }
     for (i in activeBonuses) {

@@ -8,9 +8,9 @@ var config = require("./config.js");
 var display = new display_.CanvasDisplay();
 var model = new model_();
 
-function createSprite(url, pos, size, speed, frames, dir, once) {
+function createSprite(url, pos, size, speed, sizeToDraw, frames, dir, once) {
     "use strict";
-    return new Sprite(url, pos, size, speed, frames, dir, once);
+    return new Sprite(url, pos, size, speed, sizeToDraw, frames, dir, once);
 }
 
 function getViewport() {

@@ -26,9 +26,9 @@ function reset() {
     score = 0;
 
     var enemySpyte = core.createSprite("img/rect.jpg");
-    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [92, 150], 16, [92, 150]);
+    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
     core.createPlayer(
-        [viewport.width / 2, 50],
+        [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
         playerSprite
     );
     core.getPlayer().setState("float");
@@ -64,13 +64,11 @@ function reset() {
     )
 }
 
-var scoreEl = document.querySelector("#score");
-
 function gameOver() {
     "use strict";
     isGameOver = true;
+    core.setScore(score, true);
     core.renderGameOver();
-    scoreEl.innerHTML = score;
 }
 
 
@@ -405,6 +403,7 @@ function update(dt) {
         updateBackground(dt);
         updatePlayer(dt);
         updateBonuses(dt);
+        score += bg.speed * dt * config.scoreRate;
     }
 }
 
@@ -433,6 +432,7 @@ function init() {
     reset();
     lastTime = Date.now();
     core.showElement("pause");
+    core.showElement("scoreEl");
     main();
 
     /*function hadnler() {
@@ -522,6 +522,7 @@ function backToMenu() {
     "use strict";
     core.hideGameOver();
     core.hideElement("pause");
+    core.hideElement("scoreEl");
     core.showElement("menu");
 }
 function initSounds() {

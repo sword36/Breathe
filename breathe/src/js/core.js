@@ -41,9 +41,9 @@ function hideGameOver() {
     display.hideGameOver();
 }
 
-function setScore(score) {
+function setScore(score, finish) {
     "use strict";
-    display.setScore(score);
+    display.setScore(score, finish);
 }
 
 function showElement(el) {

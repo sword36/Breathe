@@ -22,4 +22,5 @@ module.exports = {
     playerSpeedX: 1,
     bonusTime: 5,
     timeoutToPortConnection: 500,
+    scoreRate: 0.1
 };

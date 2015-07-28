@@ -18,7 +18,8 @@ function CanvasDisplay() {
     this.canvas = document.querySelector("#canvas");
     this.canvas.width = config.width;
     this.canvas.height = config.height;
-    this.scoreEl = document.querySelector("#score");
+    this.scoreEl = document.querySelector(".score");
+    this.scoreEndEl = document.querySelector("#score");
     this.cx = this.canvas.getContext('2d');
     this.menu = document.querySelector("#menu");
     this.main = document.querySelector("#main");
@@ -129,17 +130,24 @@ CanvasDisplay.prototype.hideElement = function(el) {
 CanvasDisplay.prototype.renderGameOver = function() {
     this.showElement("game_over");
     this.showElement("game_over_overlay");
+    this.hideElement("scoreEl");
+    this.hideElement("pause")
 };
 
 CanvasDisplay.prototype.hideGameOver = function() {
     "use strict";
     this.hideElement("game_over");
     this.hideElement("game_over_overlay");
+    this.showElement("scoreEl");
+    this.showElement("pause");
 };
 
-CanvasDisplay.prototype.setScore = function(score) {
+CanvasDisplay.prototype.setScore = function(score, finish) {
     "use strict";
+    score = Math.floor(score);
     this.scoreEl.innerHTML = score.toString();
+    if (finish)
+        this.scoreEndEl.innerHTML = score.toString();
 };
 
 CanvasDisplay.prototype.setProgress = function(value) {

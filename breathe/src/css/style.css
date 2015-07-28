@@ -204,19 +204,36 @@ canvas {
     width: 200px;
 }
 
+.score {
+    display: none;
+    position: absolute;
+    top: 10px;
+    margin:0 auto;
+    z-index: 3;
+    text-align: center;
+    left: 0;
+    right: 0;
+    color: white;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    font-weight: bold;
+}
+
 .sound, .pause{
     display: none;
     position: absolute;
     top: 10px;
-    left: 10px;
     width: 30px;
     height: 25px;
     cursor: pointer;
-    z-index: 3;
+    z-index: 4;
+}
+
+.sound {
+    left: 10px;
 }
 
 .pause {
-    left: 950px;
+    right: 40px;
 }
 
 .sound-on, .pause-on {

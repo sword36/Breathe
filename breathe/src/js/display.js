@@ -33,6 +33,7 @@ function CanvasDisplay() {
     this.backFromCreditsButton = document.querySelector("#credits .back");
     this.credits = document.querySelector("#credits");
     this.records = document.querySelector("#records");
+    this.wrapperTable = document.querySelector("#wrapperTable");
     this.game_over = document.querySelector("#game-over");
     this.game_over_overlay = document.querySelector("#game-over-overlay");
     this.progress_bar = document.querySelector("#progress-bar");
@@ -40,6 +41,9 @@ function CanvasDisplay() {
     this.p = document.querySelector("#p");
     this.sound = document.querySelector(".sound");
     this.pause = document.querySelector(".pause");
+    this.storageButtons = document.querySelector("#storageButtons");
+    this.storageRadio = document.getElementsByName("storage");
+    this.inputName = document.querySelector("#game-over input");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -164,12 +168,16 @@ CanvasDisplay.prototype.unChooseMenu = function(menuCase) {
     this.menu.classList.remove(menuCase);
 };
 
-CanvasDisplay.prototype.onButtonClick = function(buttonName, handler, notButton) {
+CanvasDisplay.prototype.onButtonClick = function(buttonName, handler, notButton, specialEvent) {
     "use strict";
     if (!notButton)
         buttonName += "Button";
     if (buttonName in this) {
-        this[buttonName].addEventListener("click", handler);
+        if (typeof specialEvent == "undefined")
+            this[buttonName].addEventListener("click", handler);
+        else {
+            this[buttonName].addEventListener(specialEvent, handler);
+        }
     }
 };
 
@@ -191,6 +199,69 @@ CanvasDisplay.prototype.hasClass = function(el, value) {
     "use strict";
     if (el in this) {
         return this[el].classList.contains(value);
+    }
+};
+
+CanvasDisplay.prototype.checkRadioButton = function(nameRadio) {
+    "use strict";
+    nameRadio += "Radio";
+    if (nameRadio in this) {
+        for (var i = 0; i < this[nameRadio].length; i++) {
+            if (this[nameRadio][i].type == "radio" && this[nameRadio][i].checked) {
+                return this[nameRadio][i].value;
+            }
+        }
+    }
+};
+
+CanvasDisplay.prototype.drawRecords = function(records) {
+    "use strict";
+    this.wrapperTable.innerHTML = "";
+    if (records) {
+        var table = document.createElement("table");
+        for (var i = 0; i < records.length; i++) {
+            var record = records[i];
+            var row = document.createElement("tr");
+
+            var placeTd = document.createElement("td");
+            var placeText = document.createTextNode(record.place);
+            placeTd.appendChild(placeText);
+
+            var nameTd = document.createElement("td");
+            var nameText= document.createTextNode(record.name);
+            nameTd.appendChild(nameText);
+
+            var scoreTd = document.createElement("td");
+            var scoreText = document.createTextNode(record.scores);
+            scoreTd.appendChild(scoreText);
+
+            row.appendChild(placeTd);
+            row.appendChild(nameTd);
+            row.appendChild(scoreTd);
+            table.appendChild(row);
+        }
+        this.wrapperTable.appendChild(table);
+    }
+};
+
+CanvasDisplay.prototype.getName = function() {
+    "use strict";
+    if (this.inputName.value != null) {
+        return this.inputName.value;
+    } else {
+        return null;
+    }
+};
+
+CanvasDisplay.prototype.setName = function(name) {
+    "use strict";
+    this.inputName.value = name;
+};
+
+CanvasDisplay.prototype.focusEl = function(el) {
+    "use strict";
+    if (el in this) {
+        this[el].focus();
     }
 };
 

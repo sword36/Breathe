@@ -69,6 +69,11 @@ function gameOver() {
     isGameOver = true;
     core.setScore(score, true);
     core.renderGameOver();
+    var curName = core.tableOfRecords.getCurrentName();
+    if (curName) {
+        core.setName(curName);
+    }
+    core.focusEl("inputName");
 }
 
 
@@ -467,6 +472,15 @@ function unPauseGame() {
     main();
 }
 
+function addNameToRecords() {
+    "use strict";
+    var name = core.getName();
+    if (name) {
+        core.tableOfRecords.setCurrentName(name);
+        core.tableOfRecords.setRecord(name, score);
+    }
+}
+
 function bgSoundStart() {
     "use strict";
     bgSound.currentTime = 0;
@@ -492,9 +506,13 @@ function mainMenu() {
 
 function recordsMenu() {
     "use strict";
+    var tableOfRecords = core.tableOfRecords;
     core.hideElement("main");
     core.showElement("records");
     core.chooseMenu("records");
+
+    var records = tableOfRecords.getRecords(typeStorage);
+    core.drawRecords(records);
 }
 
 function backFromRecords() {
@@ -520,6 +538,7 @@ function backFromCredits() {
 
 function backToMenu() {
     "use strict";
+    addNameToRecords();
     core.hideGameOver();
     core.hideElement("pause");
     core.hideElement("scoreEl");
@@ -550,9 +569,30 @@ core.onButtonClick("play", function() {
 
 core.onButtonClick("restart", function() {
     "use strict";
+    addNameToRecords();
     core.hideGameOver();
     reset();
 });
+
+var typeStorage = "local";
+core.onButtonClick("storageButtons", function() {
+    var newType = core.checkRadioButton("storage");
+    if (typeStorage != newType) {
+        var records;
+        typeStorage = newType;
+        var tableOfRecords = core.tableOfRecords;
+        switch (typeStorage) {
+            case "local":
+                records = tableOfRecords.getRecords(typeStorage);
+                core.drawRecords(records);
+                break;
+            case "online":
+                records = [];
+                core.drawRecords(records); //mocha
+                break;
+        }
+    }
+}, true, "change");
 
 core.onButtonClick("sound", function() {
     "use strict";

@@ -3,10 +3,12 @@ var input = require("./input.js");
 var resources = require("./resources.js");
 var model_ = require("./model.js");
 var display_ =  require("./display.js");
+var TableOfRecords = require("./tableOfRecords.js");
 var config = require("./config.js");
 
 var display = new display_.CanvasDisplay();
 var model = new model_();
+var tableOfRecords = new TableOfRecords();
 
 function createSprite(url, pos, size, speed, sizeToDraw, frames, dir, once) {
     "use strict";
@@ -91,6 +93,31 @@ function hasClass(el, value) {
     return display.hasClass(el, value);
 }
 
+function checkRadioButton(nameRadio) {
+    "use strict";
+    return display.checkRadioButton(nameRadio);
+}
+
+function drawRecords(records) {
+    "use strict";
+    display.drawRecords(records);
+}
+
+function getName() {
+    "use strict";
+    return display.getName();
+}
+
+function setName(name) {
+    "use strict";
+    display.setName(name);
+}
+
+function focusEl(el) {
+    "use strict";
+    display.focusEl(el);
+}
+
 function setSoundMuted(value) {
     "use strict";
     var i;
@@ -168,6 +195,7 @@ module.exports = {
     background: model.background,
     bonuses: model.bonuses,
     render: render,
+    tableOfRecords: tableOfRecords,
     clearRender: clearDisplay,
     renderGameOver: renderGameOver,
     hideGameOver: hideGameOver,
@@ -181,6 +209,11 @@ module.exports = {
     addClass: addClass,
     removeClass: removeClass,
     hasClass: hasClass,
-    setSoundMuted: setSoundMuted
+    setSoundMuted: setSoundMuted,
+    checkRadioButton: checkRadioButton,
+    drawRecords: drawRecords,
+    getName: getName,
+    setName: setName,
+    focusEl: focusEl
 };
 

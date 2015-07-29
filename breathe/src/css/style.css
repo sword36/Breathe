@@ -83,7 +83,7 @@ canvas {
     overflow: auto;
     position: absolute;
     margin: auto;
-    height: 80%;
+    height: 90%;
     left: 0; top: 0; bottom: 0; right: 0;
 }
 
@@ -98,6 +98,42 @@ canvas {
     color: #ffffff;
     text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
     font-size: 2em;
+}
+
+#storageButtons {
+    position: absolute;
+    right: 100px;
+    width: 250px;
+    top: 0;
+    color: #c8c8c8;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    border: 1px solid #AA2666;
+    background-color: #FB1886;
+    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
+    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border-radius: 5px;
+    padding: 10px;
+}
+
+
+#records input[type="radio"] {
+    display: none;
+}
+
+#records input[type="radio"] + label {
+    cursor: pointer;
+    display: block;
+}
+
+#records input[type="radio"]:checked + label {
+    text-decoration: underline;
+    font-weight: bold;
+    color: #ffffff;
+
+}
+
+#records input[type="radio"] + label:hover {
+    font-weight: bold;
 }
 
 #credits {
@@ -183,8 +219,24 @@ canvas {
 
 #game-over {
     text-align: center;
-    height: 200px;
+    height: 300px;
     color: #ffffff;
+}
+
+#game-over input {
+    font-size: 19px;
+    color: #ffffff;
+    text-align: center;
+    border: 5px solid #AA2666;
+    box-shadow: inset 0 0 8px  rgba(0,0,0,0.1),
+        0 0 16px rgba(0,0,0,0.25);
+    padding: 16px;
+    background: rgba(255,255,255,0.1);
+    margin-bottom: 10px;
+}
+
+#game-over ::-webkit-input-placeholder {
+    font-size: 17px;
 }
 
 #progress {

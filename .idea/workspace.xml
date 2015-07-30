@@ -27,8 +27,8 @@
       <file leaf-file-name="world.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/src/js/world.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.538462" vertical-offset="1001" max-vertical-offset="10863">
-              <caret line="75" column="30" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+            <state vertical-scroll-proportion="-5.4615383" vertical-offset="8613" max-vertical-offset="10880">
+              <caret line="515" column="0" selection-start-line="515" selection-start-column="0" selection-end-line="515" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -37,8 +37,8 @@
       <file leaf-file-name="tableOfRecords.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/src/js/tableOfRecords.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-4.8076925" vertical-offset="317" max-vertical-offset="2652">
-              <caret line="47" column="45" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="45" />
+            <state vertical-scroll-proportion="-2.7674417" vertical-offset="2193" max-vertical-offset="2652">
+              <caret line="157" column="39" selection-start-line="157" selection-start-column="25" selection-end-line="157" selection-end-column="39" />
               <folding>
                 <element signature="e#73#716#0" expanded="false" />
               </folding>
@@ -49,8 +49,8 @@
       <file leaf-file-name="index.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-13.153846" vertical-offset="270" max-vertical-offset="1173">
-              <caret line="36" column="41" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
+            <state vertical-scroll-proportion="-13.153846" vertical-offset="304" max-vertical-offset="1173">
+              <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
               <folding />
             </state>
           </provider>
@@ -59,8 +59,18 @@
       <file leaf-file-name="style.css" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/src/css/style.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-3.3461537" vertical-offset="3738" max-vertical-offset="5168">
-              <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="16" />
+            <state vertical-scroll-proportion="-8.730769" vertical-offset="2748" max-vertical-offset="5916">
+              <caret line="175" column="1" selection-start-line="175" selection-start-column="1" selection-end-line="175" selection-end-column="1" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.gitignore">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.08457711" vertical-offset="0" max-vertical-offset="402">
+              <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
               <folding />
             </state>
           </provider>
@@ -89,19 +99,21 @@
       <file leaf-file-name="core.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/src/js/core.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-9.230769" vertical-offset="3432" max-vertical-offset="3825">
-              <caret line="216" column="20" selection-start-line="216" selection-start-column="20" selection-end-line="216" selection-end-column="20" />
+            <state vertical-scroll-proportion="-6.1153846" vertical-offset="1575" max-vertical-offset="3825">
+              <caret line="102" column="40" selection-start-line="102" selection-start-column="40" selection-end-line="102" selection-end-column="40" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="display.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="display.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/breathe/src/js/display.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.3324468" vertical-offset="640" max-vertical-offset="4675">
-              <caret line="45" column="13" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="13" />
-              <folding />
+            <state vertical-scroll-proportion="-7.923077" vertical-offset="3908" max-vertical-offset="5134">
+              <caret line="263" column="30" selection-start-line="263" selection-start-column="30" selection-end-line="263" selection-end-column="30" />
+              <folding>
+                <element signature="e#73#716#0" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -133,7 +145,6 @@
         <option value="$PROJECT_DIR$/src/js/model.js" />
         <option value="$PROJECT_DIR$/src/js/config.js" />
         <option value="$PROJECT_DIR$/src/js/world.js" />
-        <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/node_modules/nw/package.json" />
         <option value="$USER_HOME$/AppData/Roaming/npm/node_modules/nw-gyp/lib/configure.js" />
         <option value="$PROJECT_DIR$/breathe/node_modules/serialport/serialport.js" />
@@ -156,12 +167,13 @@
         <option value="$PROJECT_DIR$/breathe/src/js/config.js" />
         <option value="$PROJECT_DIR$/breathe/package.json" />
         <option value="$PROJECT_DIR$/breathe/index.html" />
-        <option value="$PROJECT_DIR$/breathe/src/css/style.css" />
         <option value="C:\Users\USER\WebstormProjects\Breathe_and_play\breathe\src\js\world.js" />
-        <option value="$PROJECT_DIR$/breathe/src/js/tableOfRecords.js" />
-        <option value="$PROJECT_DIR$/breathe/src/js/display.js" />
         <option value="$PROJECT_DIR$/breathe/src/js/core.js" />
+        <option value="$PROJECT_DIR$/breathe/src/js/tableOfRecords.js" />
         <option value="$PROJECT_DIR$/breathe/src/js/world.js" />
+        <option value="$PROJECT_DIR$/breathe/src/js/display.js" />
+        <option value="$PROJECT_DIR$/breathe/src/css/style.css" />
+        <option value="$PROJECT_DIR$/.gitignore" />
       </list>
     </option>
   </component>
@@ -521,7 +533,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="835" max-vertical-offset="3332">
           <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#73#716#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -590,7 +604,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="17" max-vertical-offset="3298">
           <caret line="17" column="22" selection-start-line="17" selection-start-column="22" selection-end-line="17" selection-end-column="22" />
-          <folding />
+          <folding>
+            <element signature="e#73#716#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -661,13 +677,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="611">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/.gitignore">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.027823241" vertical-offset="0" max-vertical-offset="611">
-          <caret line="1" column="12" selection-start-line="1" selection-start-column="12" selection-end-line="1" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -840,14 +849,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/breathe/src/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-3.3461537" vertical-offset="3738" max-vertical-offset="5168">
-          <caret line="225" column="0" selection-start-line="225" selection-start-column="0" selection-end-line="225" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/breathe/src/js/game.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="221">
@@ -856,44 +857,62 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/breathe/index.html">
+    <entry file="file://$PROJECT_DIR$/breathe/src/js/core.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-13.153846" vertical-offset="270" max-vertical-offset="1173">
-          <caret line="36" column="41" selection-start-line="36" selection-start-column="41" selection-end-line="36" selection-end-column="41" />
+        <state vertical-scroll-proportion="-6.1153846" vertical-offset="1575" max-vertical-offset="3825">
+          <caret line="102" column="40" selection-start-line="102" selection-start-column="40" selection-end-line="102" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/breathe/src/js/tableOfRecords.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-4.8076925" vertical-offset="317" max-vertical-offset="2652">
-          <caret line="47" column="45" selection-start-line="47" selection-start-column="44" selection-end-line="47" selection-end-column="45" />
+        <state vertical-scroll-proportion="-2.7674417" vertical-offset="2193" max-vertical-offset="2652">
+          <caret line="157" column="39" selection-start-line="157" selection-start-column="25" selection-end-line="157" selection-end-column="39" />
           <folding>
             <element signature="e#73#716#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/breathe/src/js/core.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-9.230769" vertical-offset="3432" max-vertical-offset="3825">
-          <caret line="216" column="20" selection-start-line="216" selection-start-column="20" selection-end-line="216" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/breathe/src/js/world.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.538462" vertical-offset="1001" max-vertical-offset="10863">
-          <caret line="75" column="30" selection-start-line="75" selection-start-column="30" selection-end-line="75" selection-end-column="30" />
+        <state vertical-scroll-proportion="-5.4615383" vertical-offset="8613" max-vertical-offset="10880">
+          <caret line="515" column="0" selection-start-line="515" selection-start-column="0" selection-end-line="515" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/breathe/src/js/display.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.3324468" vertical-offset="640" max-vertical-offset="4675">
-          <caret line="45" column="13" selection-start-line="45" selection-start-column="9" selection-end-line="45" selection-end-column="13" />
+        <state vertical-scroll-proportion="-7.923077" vertical-offset="3908" max-vertical-offset="5134">
+          <caret line="263" column="30" selection-start-line="263" selection-start-column="30" selection-end-line="263" selection-end-column="30" />
+          <folding>
+            <element signature="e#73#716#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/breathe/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-13.153846" vertical-offset="304" max-vertical-offset="1173">
+          <caret line="38" column="26" selection-start-line="38" selection-start-column="26" selection-end-line="38" selection-end-column="26" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/breathe/src/css/style.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-8.730769" vertical-offset="2748" max-vertical-offset="5916">
+          <caret line="175" column="1" selection-start-line="175" selection-start-column="1" selection-end-line="175" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.08457711" vertical-offset="0" max-vertical-offset="402">
+          <caret line="2" column="5" selection-start-line="2" selection-start-column="5" selection-end-line="2" selection-end-column="5" />
           <folding />
         </state>
       </provider>

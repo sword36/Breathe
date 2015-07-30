@@ -98,9 +98,9 @@ function checkRadioButton(nameRadio) {
     return display.checkRadioButton(nameRadio);
 }
 
-function drawRecords(records) {
+function drawRecords(records, curName) {
     "use strict";
-    display.drawRecords(records);
+    display.drawRecords(records, curName);
 }
 
 function getName() {

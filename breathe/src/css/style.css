@@ -136,6 +136,50 @@ canvas {
     font-weight: bold;
 }
 
+#wrapperTable {
+    height: 70%;
+}
+
+#wrapperTable table {
+    color: #c8c8c8;
+    width: 50%;
+    margin: 0 auto;
+    overflow: auto;
+    border-collapse: collapse;
+    text-align: center;
+}
+
+#wrapperTable table tr:first-child {
+    border-bottom: 2px solid #ffffff;
+    font-size: 22px;
+}
+
+#wrapperTable table tr:nth-child(odd) {
+    background-color: #FB1886;
+}
+
+#wrapperTable table tr:nth-child(even) {
+    background-color: #B30D5D;
+}
+
+#wrapperTable table td:first-child {
+    width: 20%;
+}
+
+#wrapperTable table td:nth-child(2) {
+    text-align: left;
+    width: 60%;
+}
+
+#wrapperTable table td:last-child {
+    width: 20%;
+}
+
+.currentPlayer {
+    font-weight: bold;
+    border: 1px solid #ffffff;
+}
+
 #credits {
     display: none;
     line-height: 30px;

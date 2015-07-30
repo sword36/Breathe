@@ -1,3 +1,27 @@
+//polyfill for Array.prototype.findIndex
+if (!Array.prototype.findIndex) {
+    Array.prototype.findIndex = function(predicate) {
+        if (this == null) {
+            throw new TypeError('Array.prototype.findIndex called on null or undefined');
+        }
+        if (typeof predicate !== 'function') {
+            throw new TypeError('predicate must be a function');
+        }
+        var list = Object(this);
+        var length = list.length >>> 0;
+        var thisArg = arguments[1];
+        var value;
+
+        for (var i = 0; i < length; i++) {
+            value = list[i];
+            if (predicate.call(thisArg, value, i, list)) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
+
 var config = require("./config.js");
 //var core = require("./core.js"); //circular link
 var model_ = require("./model.js");
@@ -214,14 +238,38 @@ CanvasDisplay.prototype.checkRadioButton = function(nameRadio) {
     }
 };
 
-CanvasDisplay.prototype.drawRecords = function(records) {
+CanvasDisplay.prototype.drawRecords = function(records, curName) {
     "use strict";
     this.wrapperTable.innerHTML = "";
     if (records) {
         var table = document.createElement("table");
+
+        //header
+        var tr = document.createElement("tr");
+        var td1 = document.createElement("td");
+        var tdText1 = document.createTextNode("Место");
+        td1.appendChild(tdText1);
+        var td2 = document.createElement("td");
+        var tdText2 = document.createTextNode("Имя");
+        td2.appendChild(tdText2);
+        var td3 = document.createElement("td");
+        var tdText3 = document.createTextNode("Очки");
+        td3.appendChild(tdText3);
+        tr.appendChild(td1);
+        tr.appendChild(td2);
+        tr.appendChild(td3);
+        table.appendChild(tr);
+
+        var curIndex = records.findIndex(function(rec) {
+            return rec.name == curName;
+        });
+
         for (var i = 0; i < records.length; i++) {
             var record = records[i];
             var row = document.createElement("tr");
+            if (i == curIndex) {
+                row.classList.add("currentPlayer");
+            }
 
             var placeTd = document.createElement("td");
             var placeText = document.createTextNode(record.place);

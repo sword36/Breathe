@@ -512,7 +512,8 @@ function recordsMenu() {
     core.chooseMenu("records");
 
     var records = tableOfRecords.getRecords(typeStorage);
-    core.drawRecords(records);
+    var curName = tableOfRecords.getCurrentName();
+    core.drawRecords(records, curName);
 }
 
 function backFromRecords() {

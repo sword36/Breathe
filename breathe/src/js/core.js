@@ -118,6 +118,11 @@ function focusEl(el) {
     display.focusEl(el);
 }
 
+function closeWindow() {
+    "use strict";
+    display.close();
+}
+
 function setSoundMuted(value) {
     "use strict";
     var i;
@@ -214,6 +219,7 @@ module.exports = {
     drawRecords: drawRecords,
     getName: getName,
     setName: setName,
-    focusEl: focusEl
+    focusEl: focusEl,
+    closeWindow: closeWindow
 };
 

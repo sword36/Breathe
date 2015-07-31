@@ -26,6 +26,7 @@ var config = require("./config.js");
 //var core = require("./core.js"); //circular link
 var model_ = require("./model.js");
 var model = new model_();
+var win = gui.Window.get();
 
 function flipHorizontally(context, around) {
     context.translate(around, 0);
@@ -50,7 +51,7 @@ function CanvasDisplay() {
     this.playButton = document.querySelector(".play");
     this.recordsButton = document.querySelector(".records");
     this.creditsButton = document.querySelector(".credits");
-    this.quitButton = document.querySelector(".quit");
+    this.exitButton = document.querySelector(".exit");
     this.menuButton = document.querySelector(".menu");
     this.restartButton = document.querySelector(".restart");
     this.backFromRecordsButton = document.querySelector("#records .back");
@@ -311,6 +312,11 @@ CanvasDisplay.prototype.focusEl = function(el) {
     if (el in this) {
         this[el].focus();
     }
+};
+
+CanvasDisplay.prototype.close = function() {
+    "use strict";
+    win.close();
 };
 
 module.exports = {

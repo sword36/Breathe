@@ -2,7 +2,7 @@ var core = require("./core.js");
 var config = require("./config.js");
 
 var lastTime,
-    isGameOver,
+    isGameOver = true,
     score,
     pressed,
     playSound,
@@ -18,6 +18,22 @@ function boxCollides(pos, size, pos2, size2) {
     return collides(pos[0], pos[1], pos[0] + size[0], pos[1] + size[1],
         pos2[0], pos2[1], pos2[0] + size2[0], pos2[1] + size2[1]);
 }
+
+var win = gui.Window.get();
+
+win.on("blur", function() {
+    "use strict";
+    if (!isGameOver) {
+        checkPauseOn();
+    }
+});
+
+win.on("focus", function() {
+    "use strict";
+    if (!isGameOver) {
+        checkPauseOff();
+    }
+});
 
 function reset() {
     "use strict";
@@ -575,6 +591,11 @@ core.onButtonClick("restart", function() {
     reset();
 });
 
+core.onButtonClick("exit", function() {
+    "use strict";
+    core.closeWindow();
+});
+
 var typeStorage = "local";
 core.onButtonClick("storageButtons", function() {
     var newType = core.checkRadioButton("storage");
@@ -610,19 +631,36 @@ core.onButtonClick("sound", function() {
     core.setSoundMuted(!playSound);
 }, true);
 
-core.onButtonClick("pause", function() {
+function checkPauseOff() {
     "use strict";
     if (core.hasClass("pause", "pause-on")) {
         core.removeClass("pause", "pause-on");
         core.addClass("pause", "pause-off");
         unPauseGame();
-    } else {
+        return true;
+    }
+    return false;
+}
+
+function checkPauseOn() {
+    "use strict";
+    if (core.hasClass("pause", "pause-off")) {
         core.removeClass("pause", "pause-off");
         core.addClass("pause", "pause-on");
         pauseGame();
+        return true;
     }
-}, true);
+    return false;
+}
 
+function checkPause() {
+    "use strict";
+    if (!checkPauseOff()) {
+        checkPauseOn();
+    }
+}
+
+core.onButtonClick("pause", checkPause, true);
 core.onButtonClick("credits", creditsMenu);
 core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);

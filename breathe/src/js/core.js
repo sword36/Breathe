@@ -4,6 +4,7 @@ var resources = require("./resources.js");
 var model_ = require("./model.js");
 var display_ =  require("./display.js");
 var TableOfRecords = require("./tableOfRecords.js");
+var levelEditor = require("./levelEditor.js");
 var config = require("./config.js");
 
 var display = new display_.CanvasDisplay();
@@ -220,6 +221,7 @@ module.exports = {
     getName: getName,
     setName: setName,
     focusEl: focusEl,
-    closeWindow: closeWindow
+    closeWindow: closeWindow,
+    getMapObjects: levelEditor.getMapObjects
 };
 

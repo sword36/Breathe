@@ -199,11 +199,11 @@ Model.prototype.createEnemy = function createEnemy(pos, sprite, type) {
         case "bottom":
             s = config.bottomEnemiesSpeed;
             break;
-        case "top":
+        case "bird":
             s = config.topEnemiesSpeed;
             break;
         default:
-            throw new Error("Wrong type of enemie");
+            throw new Error("Wrong type of enemy");
     }
 
     this.enemies.push(new Enemy(pos, sprite, s));

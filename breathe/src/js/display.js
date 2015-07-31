@@ -112,7 +112,7 @@ CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
 CanvasDisplay.prototype.renderEnemies = function() {
     "use strict";
     for (var i = 0; i < model.enemies.length; i++) {
-        if (model.enemies[i].pos[0] <= config.width) {
+        if (model.enemies[i].pos[0] <= config.width + 100) {
             this._render(model.enemies[i]);
         }
     }

@@ -35,14 +35,37 @@ win.on("focus", function() {
     }
 });
 
+function createMapObject(enemySprite, bonusSprite) {
+    "use strict";
+    var mapObjects;
+    if (createMapObject.cache == null) {
+        mapObjects = core.getMapObjects();
+        createMapObject.cache = mapObjects;
+    } else {
+        mapObjects = createMapObject.cache;
+    }
+
+    for (var i = 0; i < mapObjects.length; i++) {
+        var mapObject = mapObjects[i];
+        if (mapObject.class == "enemy") {
+            core.createEnemy(mapObject.pos, enemySprite, mapObject.type);
+        } else if (mapObject.class == "bonus") {
+            core.createBonus(mapObject.pos, bonusSprite, mapObject.type);
+        }
+    }
+}
+createMapObject.cache = null;
+
 function reset() {
     "use strict";
     core.hideGameOver();
     isGameOver = false;
     score = 0;
 
-    var enemySpyte = core.createSprite("img/rect.jpg");
+    var enemySprite = core.createSprite("img/rect.jpg");
+    var bonusSprite = core.createSprite("img/rect.jpg");
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
+
     core.createPlayer(
         [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
         playerSprite
@@ -57,27 +80,8 @@ function reset() {
 
     core.clearEnemies();
     core.clearBonuses();
-    /*(core.createEnemy(
-        [1000, 450],
-        playerSprite,
-        "bottom"
-    );
-    core.createEnemy(
-        [2000, 100],
-        playerSprite,
-        "top"
-    );*/
 
-    core.createBonus(
-        [1500, 100],
-        enemySpyte,
-        "big"
-    );
-    core.createBonus(
-        [1800, 300],
-        enemySpyte,
-        "small"
-    )
+    createMapObject(enemySprite, bonusSprite);
 }
 
 function gameOver() {

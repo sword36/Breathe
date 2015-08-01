@@ -3,6 +3,7 @@ var config = require("./config.js");
 
 var lastTime,
     isGameOver = true,
+    isPausedByButton = false,
     score,
     pressed,
     playSound,
@@ -30,7 +31,8 @@ win.on("blur", function() {
 
 win.on("focus", function() {
     "use strict";
-    if (!isGameOver) {
+    if (!isGameOver && !isPausedByButton) {
+        debugger;
         checkPauseOff();
     }
 });
@@ -641,6 +643,7 @@ function checkPauseOff() {
         core.removeClass("pause", "pause-on");
         core.addClass("pause", "pause-off");
         unPauseGame();
+        isPausedByButton = false;
         return true;
     }
     return false;
@@ -659,6 +662,7 @@ function checkPauseOn() {
 
 function checkPause() {
     "use strict";
+    isPausedByButton = true;
     if (!checkPauseOff()) {
         checkPauseOn();
     }

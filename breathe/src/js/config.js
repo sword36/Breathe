@@ -23,5 +23,6 @@ module.exports = {
     bonusTime: 5,
     timeoutToPortConnection: 500,
     scoreRate: 0.1,
-    cellSize: 100
+    cellWidth: 100,
+    cellHeight: 100
 };

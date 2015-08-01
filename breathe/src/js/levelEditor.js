@@ -28,7 +28,7 @@ function getMapObjects() {
         for (var x = 0; x < width; x++) {
             if (levelPlan[y][x] !== " " && levelPlan[y][x] in legend) {
                 var mapObject = legend[levelPlan[y][x]];
-                mapObject.pos = [x * config.cellSize, y * config.cellSize];
+                mapObject.pos = [x * config.cellWidth, y * config.cellHeight];
                 mapObjects.push(mapObject);
             }
         }

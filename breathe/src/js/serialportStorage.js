@@ -2,6 +2,7 @@ var config = require("./config.js");
 var serialPort = require("serialport");
 var SerialPort = serialPort.SerialPort;
 serialPortStorageSingleton.onConnectCallbacks = [];
+serialPortStorageSingleton.onErrorCallbacks = [];
 serialPortStorageSingleton.isConnect = false;
 
 function SerialPortStorage() {
@@ -61,6 +62,11 @@ serialPortStorageSingleton.onConnect = function(callback) {
     serialPortStorageSingleton.onConnectCallbacks.push(callback);
 };
 
+serialPortStorageSingleton.onError = function(callback) {
+    "use strict";
+    serialPortStorageSingleton.onErrorCallbacks.push(callback);
+};
+
 SerialPortStorage.prototype.checkPort = function(portName, callback) {
     "use strict";
     var tempPort = new SerialPort(portName);
@@ -75,6 +81,15 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
             callback(true, null);
         }
     }
+
+    tempPort.on("error", function(error) {
+        debugger;
+        console.log(error + " - was catched");
+        serialPortStorageSingleton.onErrorCallbacks.forEach(function(func) {
+            func();
+        })
+    });
+
     tempPort.on("open", function(error) {
         if (error) {
             callback(error);

@@ -56,6 +56,7 @@ canvas {
     margin: auto;
     z-index: 2;
     text-align: center;
+    line-height: 30px;
 }
 
 #menu.main {
@@ -68,7 +69,7 @@ canvas {
     overflow: auto;
     margin: auto;
     left:0; top:0; bottom: 0; right:0;
-    height: 60%;
+    height: 80%;
 }
 
 #main h1 {
@@ -77,9 +78,12 @@ canvas {
     text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
 }
 
+#main ul {
+    margin-top: 100px;
+}
+
 #records {
     display: none;
-    line-height: 30px;
     overflow: auto;
     position: absolute;
     margin: auto;
@@ -113,26 +117,47 @@ canvas {
     background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
     border-radius: 5px;
     padding: 10px;
+    box-shadow: 0 0 16px rgba(0,0,0,0.25);
 }
 
+#inputButtons {
+    position: absolute;
+    right: 50px;
+    width: 200px;
+    bottom: 0;
+    color: #c8c8c8;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    border: 1px solid #AA2666;
+    background-color: #FB1886;
+    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
+    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 0 16px rgba(0,0,0,0.25);
+    font-size: 18px;
+}
+#inputButtons span {
+    font-size: 20px;
+    color: #ffffff;
+}
 
-#records input[type="radio"] {
+input[type="radio"] {
     display: none;
 }
 
-#records input[type="radio"] + label {
+input[type="radio"] + label {
     cursor: pointer;
     display: block;
 }
 
-#records input[type="radio"]:checked + label {
+input[type="radio"]:checked + label {
     text-decoration: underline;
     font-weight: bold;
     color: #ffffff;
 
 }
 
-#records input[type="radio"] + label:hover {
+input[type="radio"] + label:hover {
     font-weight: bold;
 }
 
@@ -230,6 +255,7 @@ canvas {
     background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
     background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
     border-radius: 5px;
+    box-shadow: 0 0 16px rgba(0,0,0,0.25);
 }
 
 .restart {

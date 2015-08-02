@@ -74,9 +74,9 @@ function unChooseMenu(menuCase) {
     display.unChooseMenu(menuCase);
 }
 
-function onButtonClick(buttonName, handler, notButton) {
+function onButtonClick(buttonName, handler, notButton, specialEvent) {
     "use strict";
-    display.onButtonClick(buttonName, handler, notButton);
+    display.onButtonClick(buttonName, handler, notButton, specialEvent);
 }
 
 function addClass(el, value) {
@@ -122,6 +122,11 @@ function focusEl(el) {
 function closeWindow() {
     "use strict";
     display.close();
+}
+
+function setCheckedRadioButton(nameRadio, value) {
+    "use strict";
+    display.setCheckedRadioButton(nameRadio, value);
 }
 
 function setSoundMuted(value) {
@@ -187,6 +192,7 @@ module.exports = {
     getImg: resources.getImg,
     getAudio: resources.getAudio,
     onResourcesReady: resources.onReady,
+    onResourceLoadingError: resources.onErrorLoading,
     createSprite: createSprite,
     getInput: input,
     createPlayer: createPlayer,
@@ -222,6 +228,7 @@ module.exports = {
     setName: setName,
     focusEl: focusEl,
     closeWindow: closeWindow,
+    setCheckedRadioButton: setCheckedRadioButton,
     getMapObjects: levelEditor.getMapObjects
 };
 

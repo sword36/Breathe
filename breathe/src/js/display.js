@@ -67,7 +67,9 @@ function CanvasDisplay() {
     this.sound = document.querySelector(".sound");
     this.pause = document.querySelector(".pause");
     this.storageButtons = document.querySelector("#storageButtons");
+    this.inputButtons = document.querySelector("#inputButtons");
     this.storageRadio = document.getElementsByName("storage");
+    this.inputRadio = document.getElementsByName("input");
     this.inputName = document.querySelector("#game-over input");
 }
 
@@ -234,6 +236,19 @@ CanvasDisplay.prototype.checkRadioButton = function(nameRadio) {
         for (var i = 0; i < this[nameRadio].length; i++) {
             if (this[nameRadio][i].type == "radio" && this[nameRadio][i].checked) {
                 return this[nameRadio][i].value;
+            }
+        }
+    }
+};
+
+CanvasDisplay.prototype.setCheckedRadioButton = function(nameRadio, value) {
+    "use strict";
+    nameRadio += "Radio";
+    if (nameRadio in this) {
+        for (var i = 0; i < this[nameRadio].length; i++) {
+            if (this[nameRadio][i].type == "radio" && this[nameRadio][i].value == value) {
+                this[nameRadio][i].checked = true;
+                return;
             }
         }
     }

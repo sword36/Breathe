@@ -1,5 +1,9 @@
-var core = require("./core.js");
 var config = require("./config.js");
+if (localStorage.getItem("inputType") != null) {
+    config.inputType = localStorage.getItem("inputType");
+    debugger;
+}
+var core = require("./core.js");
 
 var lastTime,
     isGameOver = true,
@@ -32,7 +36,6 @@ win.on("blur", function() {
 win.on("focus", function() {
     "use strict";
     if (!isGameOver && !isPausedByButton) {
-        debugger;
         checkPauseOff();
     }
 });
@@ -581,8 +584,18 @@ function initSounds() {
     core.setSoundMuted(!playSound);
 }
 
+function resetInput(type) {
+    "use strict";
+    debugger;
+    localStorage.setItem("inputType", type);
+    win.reloadDev();
+    debugger;
+}
+
 core.onResourcesReady(initSounds);
 core.onResourcesReady(mainMenu); //order is important
+debugger;
+core.onResourceLoadingError(resetInput.bind(null, "keyboard"));
 
 core.onButtonClick("play", function() {
     "use strict";
@@ -604,10 +617,10 @@ core.onButtonClick("exit", function() {
 
 var typeStorage = "local";
 core.onButtonClick("storageButtons", function() {
-    var newType = core.checkRadioButton("storage");
-    if (typeStorage != newType) {
+    var newStorageType = core.checkRadioButton("storage");
+    if (typeStorage != newStorageType) {
         var records;
-        typeStorage = newType;
+        typeStorage = newStorageType;
         var tableOfRecords = core.tableOfRecords;
         switch (typeStorage) {
             case "local":
@@ -619,6 +632,14 @@ core.onButtonClick("storageButtons", function() {
                 core.drawRecords(records); //mocha
                 break;
         }
+    }
+}, true, "change");
+
+core.onButtonClick("inputButtons", function() {
+    debugger;
+    var newInputType = core.checkRadioButton("input");
+    if (config.inputType != newInputType) {
+        resetInput(newInputType);
     }
 }, true, "change");
 
@@ -674,6 +695,8 @@ core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);
 core.onButtonClick("backFromRecords", backFromRecords);
 core.onButtonClick("menu", backToMenu);
+
+core.setCheckedRadioButton("input", config.inputType);
 
 module.exports = function() {
     "use strict";

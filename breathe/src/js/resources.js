@@ -35,6 +35,14 @@ function changeLoading() {
     module.exports.publish("loadingChange", progressInPercent());
 }
 
+function onErrorLoading(func) {
+    "use strict";
+    debugger;
+    if (config.inputType === "serialport") {
+        SerialPortStorage.onError(func);
+    }
+}
+
 function isReady() {
     var ready = true;
     for (var k in imagesCache) {
@@ -165,7 +173,8 @@ module.exports = {
     isReady: isReady,
     progressInPercent: progressInPercent,
     audios: audiosCache,
-    images: imagesCache
+    images: imagesCache,
+    onErrorLoading: onErrorLoading
 };
 makePublisher(module.exports);
 

@@ -1,59 +1,13 @@
 module.exports = function(grunt) {
-    require('time-grunt')(grunt);
+    grunt.loadNpmTasks('grunt-nw-builder');
+
     grunt.initConfig({
-        pkg: grunt.file.readJSON("package.json"),
-
-        jshint: {
-            files: ['gruntfile.js', 'src/js/*.js', '!src/js/main.js'],
+        nwjs: {
             options: {
-                jshintrc: '.jshintrc'
-            }
-        },
-
-        uglify: {
-            options: {},
-            build: {
-                files: [{
-                    expand: true,
-                    src: ['*.js'],
-                    dest: 'build',
-                    ext: '.min.js'
-                }]
-            }
-        },
-
-        browserify: {
-            options: {
-                browserifyOptions: {
-                    debug: true
-                }
+                platforms: ['win'],
+                buildDir: './webkitbuilds' // Where the build version of my NW.js app is saved
             },
-            dist: {
-                files: {
-                    'src/js/main.js': ['src/js/*.js', '!src/js/main.js']
-                }
-            }
-        },
-
-
-        watch: {
-            options: {
-                spawn: false,
-                livereload: 63342
-            },
-            scripts: {
-                files: ['grunt.js', 'src/js/*.js'],
-                tasks: ['browserify']
-            }
+            src: ['./breathe/**/*']
         }
     });
-
-    grunt.registerTask('check', ['jshint']);
-    grunt.registerTask('default', ['check', 'browserify']);
-
-    grunt.loadNpmTasks('grunt-contrib-jshint');
-    grunt.loadNpmTasks('grunt-contrib-uglify');
-
-    grunt.loadNpmTasks('grunt-contrib-watch');
-    grunt.loadNpmTasks('grunt-browserify');
 };

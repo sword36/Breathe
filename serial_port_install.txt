@@ -1,0 +1,19 @@
+My way to get it running on windows 7 64bit with node 0.12.2 and node-webkit 0.12.0
+
+Install MS Visual Studio Express 2013 for Desktop
+Install Python 2.7.6
+Add Python to the path
+Reboot
+Open the 'Visual Studio Command Prompt' (Developer Eingabeaufforderung fur VS2013)
+Install nw-gyp with this command: npm install nw-gyp -g
+Install node-pre-gyp with this command: npm install node-pre-gyp -g
+Change to my working directory (project directory)
+Install serialport with this command: npm install serialport
+Switch to the serialport modul directory: cd node_modules\serialport
+Make a clean: node-pre-gyp clean
+Configure the build process: node-pre-gyp configure --runtime=node-webkit --target=0.12.0
+Build the module for node-webkit: node-pre-gyp build --runtime=node-webkit --target=0.12.0
+After all I have to change the directoryname from /node_modules/serialport/build/serialport/v1.6.3/Release/node-webkit-v0.12.0-win32-x64\ to /node_modules/serialport/build/serialport/v1.6.3/Release/node-webkit-v43-win32-x64\
+That's it and it worked perfectly for me.
+
+name of exe must be nw.exe!!!

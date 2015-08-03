@@ -1,11 +1,8 @@
 node_modules
-<<<<<<< HEAD
 build
 webkitbuilds
 cache
-=======
 webkitbuilds
 cache
 build
 .idea
->>>>>>> nw.js

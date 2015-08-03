@@ -15,3 +15,5 @@ Configure the build process: node-pre-gyp configure --runtime=node-webkit --targ
 Build the module for node-webkit: node-pre-gyp build --runtime=node-webkit --target=0.12.0
 After all I have to change the directoryname from /node_modules/serialport/build/serialport/v1.6.3/Release/node-webkit-v0.12.0-win32-x64\ to /node_modules/serialport/build/serialport/v1.6.3/Release/node-webkit-v43-win32-x64\
 That's it and it worked perfectly for me.
+
+name of exe must be nw.exe!!!

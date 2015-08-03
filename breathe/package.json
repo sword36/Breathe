@@ -25,7 +25,7 @@
     "resizable": false,
     "fullscreen": false,
     "frame": true,
-    "show": false
+    "show": true
   },
   "dependencies": {
     "serialport": "^1.7.4"

@@ -4,7 +4,7 @@
 module.exports = {
     width: 1024,
     height: 600,
-    inputType: "keyboard", //"keyboard", "serialport"
+    inputType: "serialport", //"keyboard", "serialport"
     backgroundSpeed: 150,
     bottomEnemiesSpeed: 220,
     topEnemiesSpeed: 270,
@@ -21,7 +21,7 @@ module.exports = {
     decreaseBonusSize: 0.5,
     playerSpeedX: 1,
     bonusTime: 5,
-    timeoutToPortConnection: 500,
+    timeoutToPortConnection: 5000,
     scoreRate: 0.1,
     cellWidth: 100,
     cellHeight: 100

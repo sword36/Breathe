@@ -11,10 +11,13 @@ function SerialPortStorage() {
     this.port = null;
     this.portsName = [];
     this.isReady = false;
+    this.portsCount = 0;
+    this.portsChecked = 0;
 
     var self = this;
     serialPort.list(function (err, ports) {
         ports.forEach(function(port) {
+            self.portsCount++;
             this.portsName.push(port.comName.toString());
         }, self);
         self.portsName.forEach(function(portName) {
@@ -23,6 +26,7 @@ function SerialPortStorage() {
     });
 
     function setPortIfCorrect(portName, error, port) {
+        this.portsChecked++;
         if (!error && port != null) {
             console.log("open");
             this.port = port;
@@ -31,7 +35,14 @@ function SerialPortStorage() {
             serialPortStorageSingleton.onConnectCallbacks.forEach(function(func) {
                 func();
             });
-        }
+        } else
+            if (this.portsChecked >= this.portsCount && !this.isReady) {
+                console.log("No devices");
+                localStorage.setItem("errorMessage", "Ошибка: невозможно найти устройство для дыхания. Попробуйте переподключить его.");
+                serialPortStorageSingleton.onErrorCallbacks.forEach(function(func) {
+                    func();
+                })
+            }
     }
 }
 
@@ -70,6 +81,7 @@ serialPortStorageSingleton.onError = function(callback) {
 SerialPortStorage.prototype.checkPort = function(portName, callback) {
     "use strict";
     var tempPort = new SerialPort(portName);
+    tempPort.createTime = Date.now();
     var isCorrect = false;
     function handlePort() {
         if (isCorrect) {
@@ -90,13 +102,11 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
         })
     });
 
+    var timer = setTimeout(handlePort, config.timeoutToPortConnection);
     tempPort.on("open", function(error) {
         if (error) {
             callback(error);
         } else {
-            tempPort.createTime = Date.now();
-
-            var timer = setTimeout(handlePort, config.timeoutToPortConnection);
             tempPort.on("data", function(data) {
                 if (!isCorrect) {
                     isCorrect = true;

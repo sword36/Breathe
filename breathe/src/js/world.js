@@ -623,7 +623,6 @@ core.onButtonClick("exit", function() {
 
 core.onButtonClick("closeError", function() {
     "use strict";
-    debugger;
     core.hideError();
 });
 

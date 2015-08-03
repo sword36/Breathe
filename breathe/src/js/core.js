@@ -129,6 +129,16 @@ function setCheckedRadioButton(nameRadio, value) {
     display.setCheckedRadioButton(nameRadio, value);
 }
 
+function showError(msg) {
+    "use strict";
+    display.showError(msg);
+}
+
+function hideError() {
+    "use strict";
+    display.hideError();
+}
+
 function setSoundMuted(value) {
     "use strict";
     var i;
@@ -221,6 +231,8 @@ module.exports = {
     addClass: addClass,
     removeClass: removeClass,
     hasClass: hasClass,
+    showError: showError,
+    hideError: hideError,
     setSoundMuted: setSoundMuted,
     checkRadioButton: checkRadioButton,
     drawRecords: drawRecords,

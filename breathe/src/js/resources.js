@@ -37,7 +37,6 @@ function changeLoading() {
 
 function onErrorLoading(func) {
     "use strict";
-    debugger;
     if (config.inputType === "serialport") {
         SerialPortStorage.onError(func);
     }

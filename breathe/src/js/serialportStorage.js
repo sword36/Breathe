@@ -83,8 +83,8 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
     }
 
     tempPort.on("error", function(error) {
-        debugger;
         console.log(error + " - was catched");
+        localStorage.setItem("errorMessage", "Ошибка: невозможно подключить устройство для дыхания. Попробуйте переподключить его.");
         serialPortStorageSingleton.onErrorCallbacks.forEach(function(func) {
             func();
         })

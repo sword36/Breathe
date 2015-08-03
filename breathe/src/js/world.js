@@ -1,7 +1,6 @@
 var config = require("./config.js");
 if (localStorage.getItem("inputType") != null) {
     config.inputType = localStorage.getItem("inputType");
-    debugger;
 }
 var core = require("./core.js");
 
@@ -25,6 +24,10 @@ function boxCollides(pos, size, pos2, size2) {
 }
 
 var win = gui.Window.get();
+win.on("loaded", function() {
+    "use strict";
+    win.show();
+});
 
 win.on("blur", function() {
     "use strict";
@@ -586,16 +589,19 @@ function initSounds() {
 
 function resetInput(type) {
     "use strict";
-    debugger;
     localStorage.setItem("inputType", type);
     win.reloadDev();
-    debugger;
 }
 
 core.onResourcesReady(initSounds);
 core.onResourcesReady(mainMenu); //order is important
-debugger;
 core.onResourceLoadingError(resetInput.bind(null, "keyboard"));
+
+var errorOnLoading = localStorage.getItem("errorMessage");
+if (errorOnLoading != null) {
+    localStorage.removeItem("errorMessage");
+    core.showError(errorOnLoading);
+}
 
 core.onButtonClick("play", function() {
     "use strict";
@@ -613,6 +619,12 @@ core.onButtonClick("restart", function() {
 core.onButtonClick("exit", function() {
     "use strict";
     core.closeWindow();
+});
+
+core.onButtonClick("closeError", function() {
+    "use strict";
+    debugger;
+    core.hideError();
 });
 
 var typeStorage = "local";
@@ -636,7 +648,6 @@ core.onButtonClick("storageButtons", function() {
 }, true, "change");
 
 core.onButtonClick("inputButtons", function() {
-    debugger;
     var newInputType = core.checkRadioButton("input");
     if (config.inputType != newInputType) {
         resetInput(newInputType);

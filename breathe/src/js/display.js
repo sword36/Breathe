@@ -71,6 +71,8 @@ function CanvasDisplay() {
     this.storageRadio = document.getElementsByName("storage");
     this.inputRadio = document.getElementsByName("input");
     this.inputName = document.querySelector("#game-over input");
+    this.errorMessage = document.querySelector("#errorMessage");
+    this.closeErrorButton = document.querySelector("#errorMessage .close");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -332,6 +334,21 @@ CanvasDisplay.prototype.focusEl = function(el) {
 CanvasDisplay.prototype.close = function() {
     "use strict";
     win.close();
+};
+
+CanvasDisplay.prototype.showError = function(errorText) {
+    "use strict";
+    this.errorMessage.appendChild(document.createTextNode(errorText));
+    this.showElement("errorMessage");
+    this.showElement("game_over_overlay");
+};
+
+CanvasDisplay.prototype.hideError = function() {
+    "use strict";
+    var errMes = this.errorMessage;
+    errMes.removeChild(errMes.childNodes[errMes.childNodes.length - 1]);
+    this.hideElement("errorMessage");
+    this.hideElement("game_over_overlay");
 };
 
 module.exports = {

@@ -11,6 +11,9 @@
     <div class="sound sound-off"></div>
     <div class="pause pause-off"></div>
     <div class="score"></div>
+    <canvas id="canvas" width="1024" height="600">
+        Your browser dont support this game.
+    </canvas>
     <div id="menu">
         <div id="progress">
             <div id="percent">Загрузка: <span id="p"></span></div>
@@ -53,9 +56,9 @@
             <a href="javascript:void(0)" class="button back">Назад</a>
         </div>
     </div>
-    <canvas id="canvas" width="1024" height="600">
-        Your browser dont support this game.
-    </canvas>
+    <div id="errorMessage">
+        <a href="javascript:void(0)" class="close" title="Закрыть"></a>
+    </div>
     <div id="game-over-overlay"></div>
     <div id="game-over">
         <h2>Вы набрали <span id="score"></span> очков!</h2>

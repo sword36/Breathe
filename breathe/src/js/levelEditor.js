@@ -4,7 +4,7 @@
 var config = require("./config.js");
 var levelPlan = [
     "                                 ",
-    "          e       F              ",
+    "                e F              ",
     "                                 ",
     "                                 ",
     "              b                  ",

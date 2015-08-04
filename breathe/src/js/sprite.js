@@ -1,4 +1,5 @@
 var resources = require("./resources.js");
+var config = require("./config.js");
 
 /**
  * Sprite of texture
@@ -77,6 +78,10 @@ Sprite.prototype.render = function (ctx) {
     }
 
     ctx.drawImage(this.image, x, y, this.size[0], this.size[1], 0, 0, this.sizeToDraw[0], this.sizeToDraw[1]);
+    if (config.debugSprite) {
+        ctx.strokeStyle = "#FF0000";
+        ctx.strokeRect(0, 0, this.sizeToDraw[0], this.sizeToDraw[1]);
+    }
 };
 
 Sprite.prototype.setFrames = function(frames, once, afterEnd) {

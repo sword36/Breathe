@@ -56,7 +56,7 @@ Player.prototype.setState = function(state) {
         throw new Error("Wrong player state");
 };
 
-function Enemy(pos, sprite, speed) {
+function Enemy(pos, sprite, speed, type) {
     "use strict";
     if (pos === undefined)
         this.pos = 0;
@@ -70,6 +70,10 @@ function Enemy(pos, sprite, speed) {
         this.speed = 0;
     else
         this.speed = speed;
+    if (type === undefined)
+        this.type = "enemy";
+    else
+        this.type = type;
 }
 
 function Active(enable, disable) {
@@ -206,7 +210,7 @@ Model.prototype.createEnemy = function createEnemy(pos, sprite, type) {
             throw new Error("Wrong type of enemy");
     }
 
-    this.enemies.push(new Enemy(pos, sprite, s));
+    this.enemies.push(new Enemy(pos, sprite, s, type));
 };
 /**
  * Add bonus to bonuses

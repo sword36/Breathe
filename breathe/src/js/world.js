@@ -43,7 +43,7 @@ win.on("focus", function() {
     }
 });
 
-function createMapObject(enemySprite, bonusSprite) {
+function createMapObject(birdSprite, bonusSprite) {
     "use strict";
     var mapObjects;
     if (createMapObject.cache == null) {
@@ -56,7 +56,7 @@ function createMapObject(enemySprite, bonusSprite) {
     for (var i = 0; i < mapObjects.length; i++) {
         var mapObject = mapObjects[i];
         if (mapObject.class == "enemy") {
-            core.createEnemy(mapObject.pos, enemySprite, mapObject.type);
+            core.createEnemy(mapObject.pos, birdSprite, mapObject.type);
         } else if (mapObject.class == "bonus") {
             core.createBonus(mapObject.pos, bonusSprite, mapObject.type);
         }
@@ -70,7 +70,13 @@ function reset() {
     isGameOver = false;
     score = 0;
 
-    var enemySprite = core.createSprite("img/rect.jpg");
+
+    var frame22 = [];
+    for (var i = 0; i < 22; i++) {
+        frame22.push(i);
+    }
+
+    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 15, [100, 80], frame22);
     var bonusSprite = core.createSprite("img/rect.jpg");
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
 
@@ -89,7 +95,7 @@ function reset() {
     core.clearEnemies();
     core.clearBonuses();
 
-    createMapObject(enemySprite, bonusSprite);
+    createMapObject(birdSprite, bonusSprite);
 }
 
 function gameOver() {
@@ -154,7 +160,16 @@ function checkColisions(pos) {
     }
 
     for (i = 0; i < enemies.length; i++) {
-        if (boxCollides(pos, size, enemies[i].pos, enemies[i].sprite.sizeToDraw)) {
+        var sizeEnemy = [0, 0];
+        switch (enemies[i].type) {
+            case "bird":
+                sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] * 3/4];
+                break;
+            default :
+                sizeEnemy = enemies[i].sprite.sizeToDraw;
+        }
+
+        if (boxCollides(pos, size, enemies[i].pos, sizeEnemy)) {
             collision.push({type: "enemy", target: enemies[i]});
         }
     }
@@ -481,7 +496,8 @@ core.loadImages([
     "img/fon1.jpg",
     "img/fon2.jpg",
     "img/rect.jpg",
-    "img/sphereSpriteSheet.png"
+    "img/sphereSpriteSheet.png",
+    "img/bird.png"
 ]);
 
 core.loadAudios([

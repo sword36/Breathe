@@ -24,5 +24,6 @@ module.exports = {
     timeoutToPortConnection: 5000,
     scoreRate: 0.1,
     cellWidth: 100,
-    cellHeight: 100
+    cellHeight: 100,
+    debugSprite: true
 };

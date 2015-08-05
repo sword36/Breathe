@@ -73,6 +73,7 @@ function CanvasDisplay() {
     this.inputName = document.querySelector("#game-over input");
     this.errorMessage = document.querySelector("#errorMessage");
     this.closeErrorButton = document.querySelector("#errorMessage .close");
+    this.creditsList = document.querySelector("#credits ul");
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -207,6 +208,35 @@ CanvasDisplay.prototype.onButtonClick = function(buttonName, handler, notButton,
         else {
             this[buttonName].addEventListener(specialEvent, handler);
         }
+    }
+};
+
+var stack = [];
+var foundedNode = [];
+function findInChildren(parent, childType) {
+    if (parent.tagName == childType) {
+        foundedNode.push(parent);
+    }
+    if (parent.children.length != 0) {
+        for (var i = 0; i < parent.children.length; i++) {
+            stack.push(parent.children[i]);
+        }
+        while (stack.length != 0) {
+            findInChildren(stack.pop(), childType);
+        }
+    }
+}
+
+CanvasDisplay.prototype.addEventToChildren = function(parent, childType, handler, specialEvent) {
+    if (parent in this) {
+        if (typeof  specialEvent == "undefined")
+            specialEvent = "click";
+        stack = [];
+        foundedNode = [];
+        findInChildren(this[parent], childType);
+        foundedNode.forEach(function(node) {
+            node.addEventListener(specialEvent, handler);
+        })
     }
 };
 

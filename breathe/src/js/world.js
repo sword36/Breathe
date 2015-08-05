@@ -746,12 +746,17 @@ function checkPause() {
     }
 }
 
+function openLink(e) {
+    gui.Shell.openExternal(e.target.title);
+}
+
 core.onButtonClick("pause", checkPause, true);
 core.onButtonClick("credits", creditsMenu);
 core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);
 core.onButtonClick("backFromRecords", backFromRecords);
 core.onButtonClick("menu", backToMenu);
+core.addEventToChildren("creditsList", "SPAN", openLink);
 
 core.setCheckedRadioButton("input", config.inputType);
 

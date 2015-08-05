@@ -79,6 +79,10 @@ function onButtonClick(buttonName, handler, notButton, specialEvent) {
     display.onButtonClick(buttonName, handler, notButton, specialEvent);
 }
 
+function addEventToChildren(parent, childType, handler, specialEvent) {
+    display.addEventToChildren(parent, childType, handler, specialEvent);
+}
+
 function addClass(el, value) {
     "use strict";
     display.addClass(el, value);
@@ -241,6 +245,7 @@ module.exports = {
     focusEl: focusEl,
     closeWindow: closeWindow,
     setCheckedRadioButton: setCheckedRadioButton,
-    getMapObjects: levelEditor.getMapObjects
+    getMapObjects: levelEditor.getMapObjects,
+    addEventToChildren: addEventToChildren
 };
 

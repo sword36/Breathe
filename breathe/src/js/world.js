@@ -43,7 +43,7 @@ win.on("focus", function() {
     }
 });
 
-function createMapObject(birdSprite, bonusSprite) {
+function createMapObject(sprites) {
     "use strict";
     var mapObjects;
     if (createMapObject.cache == null) {
@@ -56,9 +56,28 @@ function createMapObject(birdSprite, bonusSprite) {
     for (var i = 0; i < mapObjects.length; i++) {
         var mapObject = mapObjects[i];
         if (mapObject.class == "enemy") {
-            core.createEnemy(mapObject.pos, birdSprite, mapObject.type);
+            switch (mapObject.type) {
+                case "bird":
+                    core.createEnemy(mapObject.pos, sprites.bird, mapObject.type);
+                    break;
+                default : throw new Error("Wrong map object type");
+            }
         } else if (mapObject.class == "bonus") {
-            core.createBonus(mapObject.pos, bonusSprite, mapObject.type);
+            switch (mapObject.type) {
+                case "big":
+                    core.createBonus(mapObject.pos, sprites.big, mapObject.type);
+                    break;
+                case "small":
+                    core.createBonus(mapObject.pos, sprites.small, mapObject.type);
+                    break;
+                case "fast":
+                    core.createBonus(mapObject.pos, sprites.fast, mapObject.type);
+                    break;
+                case "slow":
+                    core.createBonus(mapObject.pos, sprites.slow, mapObject.type);
+                    break;
+                default : throw new Error("Wrong map object type");
+            }
         }
     }
 }
@@ -76,9 +95,12 @@ function reset() {
         frame22.push(i);
     }
 
-    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 15, [100, 80], frame22);
-    var bonusSprite = core.createSprite("img/rect.jpg");
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
+    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 15, [100, 80], frame22);
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [0]);
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [1]);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [3]);
 
     core.createPlayer(
         [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
@@ -95,7 +117,13 @@ function reset() {
     core.clearEnemies();
     core.clearBonuses();
 
-    createMapObject(birdSprite, bonusSprite);
+    createMapObject({
+        bird: birdSprite,
+        big: bonusBigSprite,
+        small: bonusSmallSprite,
+        fast: bonusFastSprite,
+        slow: bonusSlowSprite
+    });
 }
 
 function gameOver() {
@@ -385,14 +413,14 @@ function updatePlayer(dt) {
     }
     if (config.inputType == "serialport") {
         if (pressed.breathe > config.lowerLimitOfBreathe) {
+            console.log("UP");
+            player.setState("up");
             if (player.speed.y > -config.maxSpeed) {
-                player.setState("up");
                 player.speed.y -= config.breatheFactor * pressed.breathe * dt;
-            } else { //limit speed, but player breathe
-                player.setState("up");
             }
         } else {
             player.setState("down");
+            console.log("Down");
         }
     } else {
         if (pressed['up']) {
@@ -436,11 +464,14 @@ function updateBonuses(dt) {
     "use strict";
     var bonuses = core.getBonuses(),
         i,
-        motion;
+        motionX,
+        motionY;
     for (i = 0; i < bonuses.length; i++) {
         bonuses[i].sprite.update(dt);
-        motion = bonuses[i].speed * dt;
-        bonuses[i].pos = [bonuses[i].pos[0] - motion, bonuses[i].pos[1]];
+        motionX = bonuses[i].speed * dt;
+        bonuses[i].wave += config.bonusWaveSpeed * dt;
+        motionY = Math.sin(bonuses[i].wave) * config.bonusWaveSize;
+        bonuses[i].pos = [bonuses[i].pos[0] - motionX, bonuses[i].pos[1] + motionY];
     }
 }
 
@@ -495,9 +526,9 @@ function init() {
 core.loadImages([
     "img/fon1.jpg",
     "img/fon2.jpg",
-    "img/rect.jpg",
     "img/sphereSpriteSheet.png",
-    "img/bird.png"
+    "img/bird.png",
+    "img/bonuses.png"
 ]);
 
 core.loadAudios([

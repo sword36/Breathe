@@ -113,6 +113,7 @@ function Bonus(pos, sprite, type) {
     else
         this.type = type;
 
+    this.wave = Math.random() * Math.PI * 2;
 
     this.active = new Active(
         bonusEnable.bind(null, this.type),

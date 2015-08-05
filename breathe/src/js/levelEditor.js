@@ -3,13 +3,13 @@
  */
 var config = require("./config.js");
 var levelPlan = [
-    "                                 ",
-    "                e F              ",
-    "                                 ",
-    "                                 ",
-    "              b                  ",
-    "                                 ",
-    "0         1024      2048      3  "
+    "                                             ",
+    "                e                F           ",
+    "              b                              ",
+    "              b          s              S    ",
+    "              b                              ",
+    "                                             ",
+    "0         1024      2048      3         4     "
 ];
 
 var legend = {
@@ -20,16 +20,24 @@ var legend = {
     "e": {class: "enemy", type: "bird"}
 };
 
+function MapObject(legend, x, y) {
+    this.class = legend.class;
+    this.type = legend.type;
+    this.pos = [x * config.cellWidth, y * config.cellHeight];
+}
+
 function getMapObjects() {
     "use strict";
     var mapObjects = [];
     var width = levelPlan[0].length;
+    var mapObject;
     for (var y = 0; y < 6; y++) {
         for (var x = 0; x < width; x++) {
             if (levelPlan[y][x] !== " " && levelPlan[y][x] in legend) {
-                var mapObject = legend[levelPlan[y][x]];
-                mapObject.pos = [x * config.cellWidth, y * config.cellHeight];
+                debugger;
+                mapObject = new MapObject(legend[levelPlan[y][x]], x, y);
                 mapObjects.push(mapObject);
+                mapObject = null;
             }
         }
     }

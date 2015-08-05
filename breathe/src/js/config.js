@@ -25,5 +25,7 @@ module.exports = {
     scoreRate: 0.1,
     cellWidth: 100,
     cellHeight: 100,
-    debugSprite: true
+    debugSprite: true,
+    bonusWaveSpeed: 5,
+    bonusWaveSize: 0.5
 };

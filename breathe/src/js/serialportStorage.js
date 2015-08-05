@@ -5,10 +5,20 @@ serialPortStorageSingleton.onConnectCallbacks = [];
 serialPortStorageSingleton.onErrorCallbacks = [];
 serialPortStorageSingleton.isConnect = false;
 
+function checkPortsForArduino(ports) {
+    for (var i = 0; i < ports.length; i++) {
+        if (ports[i].manufacturer.indexOf("arduino") != -1) {
+            return ports[i];
+        }
+    }
+    return null;
+}
+
 function SerialPortStorage() {
     "use strict";
     this.portName = null;
     this.port = null;
+    this.ports = null;
     this.portsName = [];
     this.isReady = false;
     this.portsCount = 0;
@@ -16,14 +26,39 @@ function SerialPortStorage() {
 
     var self = this;
     serialPort.list(function (err, ports) {
-        ports.forEach(function(port) {
-            self.portsCount++;
-            this.portsName.push(port.comName.toString());
-        }, self);
-        self.portsName.forEach(function(portName) {
-            this.checkPort(portName, setPortIfCorrect.bind(self, portName));
-        }, self);
+        self.ports = ports;
+        var arduinoPort = checkPortsForArduino(ports);
+        if (arduinoPort) {
+            self.checkPort(arduinoPort.comName.toString(), setPortIfCorrect.bind(self, arduinoPort.comName.toString()));
+        } else {
+            checkAnotherPorts.call(self, ports);
+        }
     });
+
+    function checkAnotherPorts(ports) {
+        ports.forEach(function(port) {
+            this.portsCount++;
+            this.portsName.push(port.comName.toString());
+        }, this);
+        this.portsName.forEach(function(portName) {
+            this.checkPort(portName, setPortIfCorrect.bind(this, portName));
+        }, this);
+    }
+
+    function setPortIfCorrectArduino(portName, error, port) {
+        if (!error && port != null) {
+            console.log("open");
+            this.ports = null;
+            this.port = port;
+            this.isReady = true;
+            serialPortStorageSingleton.isConnect = true;
+            serialPortStorageSingleton.onConnectCallbacks.forEach(function(func) {
+                func();
+            });
+        } else {
+            checkAnotherPorts.call(this, this.ports);
+        }
+    }
 
     function setPortIfCorrect(portName, error, port) {
         this.portsChecked++;
@@ -46,22 +81,6 @@ function SerialPortStorage() {
     }
 }
 
-SerialPortStorage.prototype.setPort = function(portName) { //deprecated
-    "use strict";
-    if (typeof portName !== "undefined") {
-        this.portName = portName;
-    }
-    else {
-        if (this.portsName.length > 0)
-            this.portName = this.portsName[0];
-        else
-            this.portName = null;
-    }
-    if (this.port) {
-        this.port.close();
-    }
-    this.port = new SerialPort(this.portName);
-};
 
 SerialPortStorage.prototype.getPorts = function() {
     "use strict";

@@ -17,7 +17,18 @@ function input() {    //type - keyboard, medicine, smartphone
         var port = serialPortStorage.port;
         port.on('data', function(data) {
             data = data.toString();
-            pressed.breathe = data;
+            var splitDataAll = data.split("\r\n");
+            var splitDataCur = splitDataAll[1];
+            var pairOfCurData = splitDataCur.split("/");
+            if (Array.isArray(pairOfCurData) && pairOfCurData.length > 1) {
+                if (config.breatheChanel == "temperature") {
+                    data = pairOfCurData[0]
+                } else if (config.breatheChanel == "turbine") {
+                    data = pairOfCurData[1];
+                }
+                console.log(data);
+                pressed.breathe = data;
+            }
         });
     }
 

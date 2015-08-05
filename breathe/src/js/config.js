@@ -9,10 +9,11 @@ module.exports = {
     bottomEnemiesSpeed: 220,
     topEnemiesSpeed: 270,
     gravity: 250,
-    breatheSpeed: 350,
-    breatheFactor: 50,
     maxSpeed: 200,
-    lowerLimitOfBreathe: 40,
+    breatheChanel: "turbine", //"temperature", "turbine"
+    breatheSpeed: 350,
+    breatheFactor: 10, //50 for turbine, 10 for temperature
+    lowerLimitOfBreathe: 30,//40 for turbine, 364 for temperature
     forestLine: 500,
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
@@ -25,7 +26,7 @@ module.exports = {
     scoreRate: 0.1,
     cellWidth: 100,
     cellHeight: 100,
-    debugSprite: true,
+    debugSprite: false,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5
 };

@@ -4,9 +4,9 @@
 var config = require("./config.js");
 var levelPlan = [
     "                                             ",
-    "                e                F           ",
-    "              b                              ",
-    "              b          s              S    ",
+    "                                 F           ",
+    "                                             ",
+    "                         s              S    ",
     "              b                              ",
     "                                             ",
     "0         1024      2048      3         4     "
@@ -34,7 +34,6 @@ function getMapObjects() {
     for (var y = 0; y < 6; y++) {
         for (var x = 0; x < width; x++) {
             if (levelPlan[y][x] !== " " && levelPlan[y][x] in legend) {
-                debugger;
                 mapObject = new MapObject(legend[levelPlan[y][x]], x, y);
                 mapObjects.push(mapObject);
                 mapObject = null;

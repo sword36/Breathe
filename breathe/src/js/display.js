@@ -126,7 +126,7 @@ CanvasDisplay.prototype.renderEnemies = function() {
 CanvasDisplay.prototype.renderBonuses = function() {
     "use strict";
     for (var i = 0; i < model.bonuses.length; i++) {
-        if (model.bonuses[i].pos[0] <= config.width) {
+        if (model.bonuses[i].pos[0] <= config.width + 100) {
             this._render(model.bonuses[i]);
         }
     }

@@ -96,7 +96,7 @@ function reset() {
     }
 
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
-    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 15, [100, 80], frame22);
+    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, [100, 80], frame22);
     var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [0]);
     var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [1]);
     var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
@@ -189,15 +189,18 @@ function checkColisions(pos) {
 
     for (i = 0; i < enemies.length; i++) {
         var sizeEnemy = [0, 0];
+        var posEnemy = [0, 0];
         switch (enemies[i].type) {
             case "bird":
-                sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] * 3/4];
+                sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] / 2];
+                posEnemy = [enemies[i].pos[0], enemies[i].pos[1] +  sizeEnemy[1] / 2];
                 break;
             default :
                 sizeEnemy = enemies[i].sprite.sizeToDraw;
+                posEnemy = enemies[i].pos;
         }
 
-        if (boxCollides(pos, size, enemies[i].pos, sizeEnemy)) {
+        if (boxCollides(pos, size, posEnemy, sizeEnemy)) {
             collision.push({type: "enemy", target: enemies[i]});
         }
     }

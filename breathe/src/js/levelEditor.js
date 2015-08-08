@@ -3,13 +3,13 @@
  */
 var config = require("./config.js");
 var levelPlan = [
-    "                                             ",
-    "                                 F           ",
-    "                                             ",
-    "                         s              S    ",
-    "              b                              ",
-    "                                             ",
-    "0         1024      2048      3         4     "
+    "                         e                               e ",
+    "                                 F   e           b         ",
+    "            e                                              ",
+    "                         s              S   e              ",
+    "         S                     e                   e     s ",
+    "                                                           ",
+    "0         1024      2048      3         4         5        "
 ];
 
 var legend = {

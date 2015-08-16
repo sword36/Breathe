@@ -636,15 +636,6 @@ function backFromCredits() {
     core.unChooseMenu("credits");
 }
 
-var changeListeners = function(e) {
-    console.log(e.animationName);
-    if (e.animationName == "nodeChange") {
-        debugger;
-    }
-};
-debugger;
-window.addEventListener("webkitAnimationStart", changeListeners, false);
-
 function backToMenu() {
     "use strict";
     isPaused = true;

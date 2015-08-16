@@ -5,7 +5,7 @@ var NwBuilder = require('node-webkit-builder');
 var nw = new NwBuilder({
     files: './breathe/**/**', // use the glob format
     platforms: ['win64'],
-    gypModules: ['gyp', 'zmq', './breathe/node_modules/serialport/build/serialport/v1.7.4/Release/node-v14-win32-x64/serialport']
+    gypModules: ['gyp', 'zmq', './breathe/node_modules/serialport/build/serialport/v1.7.4/Release/node-webkit-v0.12.3-win32-x64/serialport']
 });
 
 //Log stuff you want

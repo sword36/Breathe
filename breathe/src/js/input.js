@@ -15,6 +15,9 @@ function input() {    //type - keyboard, medicine, smartphone
         var serialPortStorage = SerialPortStorage();
 
         var port = serialPortStorage.port;
+        port.removeAllListeners();
+        console.log(port.isOpen());
+        debugger;
         port.on('data', function(data) {
             data = data.toString();
             var splitDataAll = data.split("\r\n");

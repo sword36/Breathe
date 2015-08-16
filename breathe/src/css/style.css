@@ -1,14 +1,18 @@
 *, *:before, *:after {
     box-sizing: border-box;
 }
+
+@font-face {
+    font-family: "Paddis Handwritten";
+    src: url("../fonts/Paddis_Handwritten.ttf")
+}
+
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    font-size: 20px;
+    font-family: "Paddis Handwritten", Arial, sans-serif;
+    font-size: 30px;
     -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
     user-select: none;
     cursor: default;
 }
@@ -78,8 +82,24 @@ canvas {
     text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
 }
 
+#circle {
+    position: absolute;
+    left: 0;
+    top: 50px;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 300px;
+    height: 300px;
+    border-radius: 150px;
+    background-color: #56C189;
+    box-shadow: inset 0 0 16px  rgba(0,0,0,0.3),
+    0 0 16px rgba(0,0,0,0.4);
+}
+
 #main ul {
-    margin-top: 100px;
+    margin-top: 75px;
+    position: relative;
 }
 
 #records {
@@ -111,13 +131,13 @@ canvas {
     top: 0;
     color: #c8c8c8;
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
-    border: 1px solid #AA2666;
-    background-color: #FB1886;
-    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
-    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border: 1px solid #3A7D78;
+    background-color: #45BDA1;
+    background-image: -webkit-linear-gradient(bottom, #45BDA1 0%, #46CBAF 100%);
+    background-image:         linear-gradient(to bottom, #45BDA1 0%, #46CBAF 100%);
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 0 0 16px rgba(0,0,0,0.25);
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
 }
 
 #inputButtons {
@@ -127,17 +147,15 @@ canvas {
     bottom: 0;
     color: #c8c8c8;
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
-    border: 1px solid #AA2666;
-    background-color: #FB1886;
-    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
-    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    border: 1px solid #3A7D78;
+    background-color: #45BDA1;
+    background-image: -webkit-linear-gradient(bottom, #45BDA1 0%, #46CBAF 100%);
+    background-image:         linear-gradient(to bottom, #45BDA1 0%, #46CBAF 100%);
     border-radius: 5px;
     padding: 10px;
-    box-shadow: 0 0 16px rgba(0,0,0,0.25);
-    font-size: 18px;
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
 }
 #inputButtons span {
-    font-size: 20px;
     color: #ffffff;
 }
 
@@ -166,7 +184,7 @@ input[type="radio"] + label:hover {
 }
 
 #wrapperTable table {
-    color: #c8c8c8;
+    color: #e4e4e4;
     width: 50%;
     margin: 0 auto;
     overflow: auto;
@@ -176,15 +194,15 @@ input[type="radio"] + label:hover {
 
 #wrapperTable table tr:first-child {
     border-bottom: 2px solid #ffffff;
-    font-size: 22px;
+    font-size: 36px;
 }
 
 #wrapperTable table tr:nth-child(odd) {
-    background-color: #FB1886;
+    background-color: #45BDA1;
 }
 
 #wrapperTable table tr:nth-child(even) {
-    background-color: #B30D5D;
+    background-color: #46CBAF;
 }
 
 #wrapperTable table td:first-child {
@@ -226,7 +244,7 @@ input[type="radio"] + label:hover {
 }
 
 #credits ul {
-    font-size: 22px;
+    font-size: 32px;
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
 
 }
@@ -260,15 +278,15 @@ input[type="radio"] + label:hover {
     margin: 0 auto;
     height: 30px;
     line-height: 30px;
-    border: 1px solid #AA2666;
+    border: 1px solid #3A7D78;
     color: #ffffff;
     font-weight: bold;
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
-    background-color: #FB1886;
-    background-image: -webkit-linear-gradient(bottom, #FB1886 0%, #B30D5D 100%);
-    background-image:         linear-gradient(to bottom, #FB1886 0%, #B30D5D 100%);
+    background-color: #45BDA1;
+    background-image: -webkit-linear-gradient(bottom, #46CBAF 0%, #45BDA1 100%);
+    background-image:         linear-gradient(bottom, #46CBAF 0%, #66aeb4 100%);
     border-radius: 5px;
-    box-shadow: 0 0 16px rgba(0,0,0,0.25);
+    box-shadow: 0 0 8px rgba(0,0,0,0.5);
 }
 
 .restart {
@@ -276,9 +294,9 @@ input[type="radio"] + label:hover {
 }
 
 .button:hover {
-    background-color: #B30D5D;
-    background-image: -webkit-linear-gradient(bottom, #B30D5D 0%, #FB1886 100%);
-    background-image:         linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+    background-color: #46CBAF;
+    background-image: -webkit-linear-gradient(bottom, #46CBAF 0%, #45BDA1 100%);
+    background-image:         linear-gradient(to bottom, #46CBAF 0%, #45BDA1 100%);
 }
 
 #game-over, #game-over-overlay {
@@ -302,25 +320,36 @@ input[type="radio"] + label:hover {
 
 #game-over {
     text-align: center;
-    height: 300px;
+    height: 400px;
     color: #ffffff;
     z-index: 4;
 }
 
 #game-over input {
-    font-size: 19px;
     color: #ffffff;
     text-align: center;
-    border: 5px solid #AA2666;
+    font-family: "Paddis Handwritten";
+    font-size: 34px;
+    border: 5px solid #3A7D78;
     box-shadow: inset 0 0 8px  rgba(0,0,0,0.1),
-        0 0 16px rgba(0,0,0,0.25);
+        0 0 8px rgba(0,0,0,0.5);
     padding: 16px;
     background: rgba(255,255,255,0.1);
     margin-bottom: 10px;
 }
 
 #game-over ::-webkit-input-placeholder {
-    font-size: 17px;
+    font-size: 27px;
+}
+
+@-webkit-keyframes nodeChange {
+    from {opacity: 0;}
+    to {opacity: 1}
+}
+
+#game-over {
+    -webkit-animation-duration: 0.5s;
+    -webkit-animation-name: nodeChange;
 }
 
 #progress {
@@ -392,14 +421,14 @@ input[type="radio"] + label:hover {
     bottom: 0;
     z-index: 4;
     width: 300px;
-    height: 150px;
-    border: 2px solid #AA2666;
+    height: 170px;
+    border: 2px solid #3A7D78;
     border-radius: 10px;
     padding: 15px;
     color: #ffffff;
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
     text-align: center;
-    background-image:         linear-gradient(to bottom, #B30D5D 0%, #FB1886 100%);
+    background-image:         linear-gradient(to bottom, #46CBAF 0%, #45BDA1 100%);
     box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
 }
 

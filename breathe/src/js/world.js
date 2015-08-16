@@ -11,7 +11,9 @@ var lastTime,
     pressed,
     playSound,
     isPaused,
-    bgSound;
+    bgSounds,
+    bgSoundsCount,
+    bgSoundsCurrent;
 var viewport = core.getViewport();
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
@@ -87,6 +89,7 @@ function reset() {
     "use strict";
     core.hideGameOver();
     isGameOver = false;
+    isPaused = false;
     score = 0;
 
 
@@ -206,7 +209,7 @@ function checkColisions(pos) {
     }
 
     for (i = 0; i < bonuses.length; i++) {
-        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.sizeToDraw)) {
+        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.sizeToDraw) && !isGameOver) {
             collision.push({type: "bonus", target: bonuses[i]});
         }
     }
@@ -389,7 +392,7 @@ function collidePlayer(pos) {
                 return true;
             case "enemy":
                 gameOver();
-                break;
+                return true;
             case "bonus":
                 initBonus(collision[i].target.type);  //order is important
                 collision[i].target.active.enable(player);
@@ -410,37 +413,46 @@ function updatePlayer(dt) {
         player = core.getPlayer(),
         activeBonusesTime = player.activeBonusesTime,
         activeBonuses = player.activeBonuses;
+
     player.sprite.update(dt);
+
     if (player.speed.y < config.maxSpeed) {
         player.speed.y += config.gravity * dt;
     }
-    if (config.inputType == "serialport") {
-        if (pressed.breathe > config.lowerLimitOfBreathe) {
-            console.log("UP");
-            player.setState("up");
-            if (player.speed.y > -config.maxSpeed) {
-                player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+
+    if (!isGameOver) {
+        if (config.inputType == "serialport") {
+            if (pressed.breathe > config.lowerLimitOfBreathe) {
+                console.log("UP");
+                player.setState("up");
+                if (player.speed.y > -config.maxSpeed) {
+                    player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+                }
+            } else {
+                player.setState("down");
+                console.log("Down");
             }
         } else {
-            player.setState("down");
-            console.log("Down");
+            if (pressed['up']) {
+                player.speed.y -= config.breatheSpeed * dt;
+                player.setState("up");
+            } else {
+                player.setState("down");
+            }
         }
-    } else {
-        if (pressed['up']) {
-            player.speed.y -= config.breatheSpeed * dt;
-            player.setState("up");
-        } else {
-            player.setState("down");
-        }
+    } else {//gameOver
+        player.setState("down");
     }
+
     var motion = player.speed.y * dt;
     var newPos = [player.pos[0], player.pos[1] + motion];
     if (collidePlayer(newPos)) { //move or not to move
         newPos = [player.pos[0], player.pos[1] + motion]; // for case of bonus "big"
         player.pos = newPos;
     }
+
     for (i in activeBonuses) {
-        if (activeBonuses.hasOwnProperty(i) && activeBonuses[i] !== null) {
+        if (activeBonuses.hasOwnProperty(i) && activeBonuses[i] !== null && !isGameOver) { //!isGameOver for not transform sprite after gameover
             activeBonusesTime[i] -= dt;
             if (activeBonusesTime[i] < 0) {
                 player.activeBonuses[i].active.disable(player);
@@ -483,10 +495,10 @@ function update(dt) {
     if (!isGameOver) {
         updateEnemies(dt);
         updateBackground(dt);
-        updatePlayer(dt);
         updateBonuses(dt);
         score += bg.speed * dt * config.scoreRate;
     }
+    updatePlayer(dt);
 }
 
 function render() {
@@ -497,14 +509,12 @@ function render() {
 
 function main() {
     "use strict";
-    var now = Date.now();
-    var dt = (now - lastTime) / 1000;
-
-    update(dt);
-    render();
-
-    lastTime = now;
     if (!isPaused) {
+        var now = Date.now();
+        var dt = (now - lastTime) / 1000;
+        render();
+        update(dt);
+        lastTime = now;
         requestAnimationFrame(main);
     }
 }
@@ -535,7 +545,9 @@ core.loadImages([
 ]);
 
 core.loadAudios([
-    "audio/abc.ogg"
+    "audio/Picnic-Breeze.ogg",
+    "audio/Secret-Sea-Cave.ogg",
+    "audio/Special-Day.ogg"
 ]);
 
 function pauseGame() {
@@ -559,18 +571,27 @@ function addNameToRecords() {
     }
 }
 
+var bgSoundsCurrent = 0;
 function bgSoundStart() {
     "use strict";
-    bgSound.currentTime = 0;
-    bgSound.play();
-    if ("loop" in bgSound) {
-        bgSound.loop = true;
+    bgSounds.forEach(function(el, num) {
+        el.addEventListener("ended", function() {
+            bgSoundsCurrent = (bgSoundsCurrent + 1) % bgSoundsCount;
+            bgSounds[bgSoundsCurrent].play();
+        })
+    });
+    bgSounds[bgSoundsCurrent].play();
+    /*
+    bgSounds.currentTime = 0;
+    bgSounds.play();
+    if ("loop" in bgSounds) {
+        bgSounds.loop = true;
     } else {
-        bgSound.addEventListener("ended", function () {
-            bgSound.currentTime = 0;
-            bgSound.play();
+        bgSounds.addEventListener("ended", function () {
+            bgSounds.currentTime = 0;
+            bgSounds.play();
         });
-    }
+    }*/
 }
 function mainMenu() {
     "use strict";
@@ -615,8 +636,18 @@ function backFromCredits() {
     core.unChooseMenu("credits");
 }
 
+var changeListeners = function(e) {
+    console.log(e.animationName);
+    if (e.animationName == "nodeChange") {
+        debugger;
+    }
+};
+debugger;
+window.addEventListener("webkitAnimationStart", changeListeners, false);
+
 function backToMenu() {
     "use strict";
+    isPaused = true;
     addNameToRecords();
     core.hideGameOver();
     core.hideElement("pause");
@@ -625,8 +656,10 @@ function backToMenu() {
 }
 function initSounds() {
     "use strict";
-    bgSound = core.getAudio("audio/abc.ogg");
-    playSound = localStorage.getItem("playSound") === "true";
+    bgSounds = core.getAllAudio();
+    bgSoundsCount = bgSounds.length;
+    bgSoundsCurrent = 0;
+    playSound = localStorage.getItem("playSound") === "true" || localStorage.getItem("playSound") == null;
     if (playSound) {
         core.addClass("sound", "sound-on");
         core.removeClass("sound", "sound-off");

@@ -106,10 +106,7 @@ function _loadAudio(url) {
             }
         });
         audio.src = url;
-        audio.preload = "auto";function fastBonusEnable(player) {
-
-        }
-        //audio.load();
+        audio.preload = "auto";
         audiosCache[url] = false;
     }
 }
@@ -154,6 +151,16 @@ function getImg(url) {
 function getAudio(url) {
     return audiosCache[url];
 }
+
+function getAllAudio() {
+    var arr = [];
+    for (var aud in audiosCache) {
+        if (audiosCache.hasOwnProperty(aud)) {
+            arr.push(audiosCache[aud]);
+        }
+    }
+    return arr;
+}
 /**
  * Add function to functions which will be called then all resources loaded
  * @param func
@@ -168,6 +175,7 @@ module.exports = {
     loadAudios: loadAudios,
     getImg: getImg,
     getAudio: getAudio,
+    getAllAudio: getAllAudio,
     onReady: onReady,
     isReady: isReady,
     progressInPercent: progressInPercent,

@@ -205,6 +205,7 @@ module.exports = {
     loadAudios: resources.loadAudios,
     getImg: resources.getImg,
     getAudio: resources.getAudio,
+    getAllAudio: resources.getAllAudio,
     onResourcesReady: resources.onReady,
     onResourceLoadingError: resources.onErrorLoading,
     createSprite: createSprite,

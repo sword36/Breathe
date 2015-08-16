@@ -26,6 +26,14 @@ function SerialPortStorage() {
 
     var self = this;
     serialPort.list(function (err, ports) {
+        if (ports.length == 0) {
+            console.log("No devices");
+            localStorage.setItem("errorMessage", "Ошибка: невозможно найти устройство для дыхания. Попробуйте переподключить его.");
+            serialPortStorageSingleton.onErrorCallbacks.forEach(function(func) {
+                func();
+            });
+            return;
+        }
         self.ports = ports;
         var arduinoPort = checkPortsForArduino(ports);
         if (arduinoPort) {
@@ -128,12 +136,12 @@ SerialPortStorage.prototype.checkPort = function(portName, callback) {
         } else {
             tempPort.on("data", function(data) {
                 if (!isCorrect) {
+                    clearTimeout(timer);
                     isCorrect = true;
                     console.log(Date.now() - tempPort.createTime);
                     handlePort();
                 }
-                clearTimeout(timer);
-                tempPort.removeAllListeners(); //for break event "on data"
+                //tempPort.removeAllListeners(); //for break event "on data"
             });
         }
     });

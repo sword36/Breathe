@@ -25,7 +25,8 @@
     "resizable": false,
     "fullscreen": false,
     "frame": true,
-    "show": true
+    "show": true,
+    "icon": "img/ico.png"
   },
   "dependencies": {
     "serialport": "^1.7.4"

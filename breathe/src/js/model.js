@@ -28,13 +28,15 @@ function Player() {
 }
 function nextState(next) {
     "use strict";
+    this.done = false;
     if (next in this.statesFrames) {
         this.state = next;
         this.currentFrames = this.statesFrames[this.state];
         this.sprite.setFrames(this.currentFrames, false);
     } else
-        throw new Error("Wrong player next state");
+        throw new Error("Wrong sprite next state");
 }
+
 Player.prototype.setState = function(state) {
     "use strict";
     if (state in this.statesFrames) {
@@ -74,7 +76,36 @@ function Enemy(pos, sprite, speed, type) {
         this.type = "enemy";
     else
         this.type = type;
+
+    this.state = null; //close, far, angry
+    this.statesFrames = {};
+    this.statesFrames.far = [0];
+    this.statesFrames.close = [1, 2, 3, 4, 5];
+    this.statesFrames.angry = [6, 7, 8, 9, 10, 11];
+    this.statesFrames.getAway = [4, 3, 2, 1, 0];
+    this.currentFrames = [];
 }
+
+Enemy.prototype.setState = function(state) {
+    "use strict";
+    if (state in this.statesFrames) {
+        if (state != this.state) {
+            if ((this.state == "angry" && state == "close") || (this.state == "far" && state == "getAway")) return;
+            this.state = state;
+            this.currentFrames = this.statesFrames[this.state];
+            if (state == "close") {
+                this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "angry"));
+            } else if (state == "getAway") {
+                debugger;
+                this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "far"));
+            } else {
+                this.sprite.setFrames(this.currentFrames, false);
+            }
+        }
+    }
+    else
+        throw new Error("Wrong player state");
+};
 
 function Active(enable, disable) {
     "use strict";
@@ -207,11 +238,16 @@ Model.prototype.createEnemy = function createEnemy(pos, sprite, type) {
         case "bird":
             s = config.topEnemiesSpeed;
             break;
+        case "cloud":
+            s = config.bottomEnemiesSpeed;
+            break;
         default:
             throw new Error("Wrong type of enemy");
     }
 
-    this.enemies.push(new Enemy(pos, sprite, s, type));
+    var createdEnemy = new Enemy(pos, sprite, s, type);
+    this.enemies.push(createdEnemy);
+    return createdEnemy;
 };
 /**
  * Add bonus to bonuses

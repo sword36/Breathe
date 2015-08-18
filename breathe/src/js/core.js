@@ -165,7 +165,7 @@ function createBackground(sprites) {
 
 function createEnemy(pos, sprite, type) {
     "use strict";
-    model.createEnemy(pos, sprite, type);
+    return model.createEnemy(pos, sprite, type);
 }
 
 function createBonus(pos, sprite, type) {

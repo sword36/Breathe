@@ -25,6 +25,10 @@ function boxCollides(pos, size, pos2, size2) {
         pos2[0], pos2[1], pos2[0] + size2[0], pos2[1] + size2[1]);
 }
 
+function distanceBetween (pos1, pos2) {
+    return Math.sqrt((pos1[0] - pos2[0]) * (pos1[0] - pos2[0]) + (pos1[1] - pos2[1]) * (pos1[1] - pos2[1]));
+}
+
 var win = gui.Window.get();
 win.on("loaded", function() {
     "use strict";
@@ -58,9 +62,14 @@ function createMapObject(sprites) {
     for (var i = 0; i < mapObjects.length; i++) {
         var mapObject = mapObjects[i];
         if (mapObject.class == "enemy") {
+            var createdEnemy = null;
             switch (mapObject.type) {
                 case "bird":
                     core.createEnemy(mapObject.pos, sprites.bird, mapObject.type);
+                    break;
+                case "cloud":
+                    createdEnemy = core.createEnemy(mapObject.pos, sprites.cloud, mapObject.type);
+                    createdEnemy.setState("far");
                     break;
                 default : throw new Error("Wrong map object type");
             }
@@ -98,12 +107,18 @@ function reset() {
         frame22.push(i);
     }
 
+    var frame12 = [];
+    for (var i = 0; i < 12; i++) {
+        frame12.push(i);
+    }
+
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
     var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, [100, 80], frame22);
-    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [0]);
-    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [1]);
-    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
-    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [3]);
+    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 11, [146, 100], frame12);
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [0]);
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [1]);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [2]);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [3]);
 
     core.createPlayer(
         [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
@@ -122,6 +137,7 @@ function reset() {
 
     createMapObject({
         bird: birdSprite,
+        cloud: cloudSprite,
         big: bonusBigSprite,
         small: bonusSmallSprite,
         fast: bonusFastSprite,
@@ -197,6 +213,11 @@ function checkColisions(pos) {
             case "bird":
                 sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] / 2];
                 posEnemy = [enemies[i].pos[0], enemies[i].pos[1] +  sizeEnemy[1] / 2];
+                break;
+            case "cloud":
+                sizeEnemy = [enemies[i].sprite.sizeToDraw[0] / 7 * 5, enemies[i].sprite.sizeToDraw[1] / 4 * 3];
+                posEnemy = [enemies[i].pos[0] + enemies[i].sprite.sizeToDraw[0] / 7, enemies[i].pos[1] +
+                                 enemies[i].sprite.sizeToDraw[1] / 4];
                 break;
             default :
                 sizeEnemy = enemies[i].sprite.sizeToDraw;
@@ -467,11 +488,21 @@ function updateEnemies(dt) {
     "use strict";
     var enemies = core.getEnemies(),
         i,
-        motion;
+        motion,
+        player = core.getPlayer(),
+        distanceToPlayer;
     for (i = 0; i < enemies.length; i++) {
         enemies[i].sprite.update(dt);
         motion = enemies[i].speed * dt;
         enemies[i].pos = [enemies[i].pos[0] - motion, enemies[i].pos[1]];
+        if (enemies[i].type == "cloud") {
+            distanceToPlayer = distanceBetween(enemies[i].pos, player.pos);
+            if (distanceToPlayer <= config.distanceToAngryCloud ) {
+                enemies[i].setState("close");
+            } else if (enemies[i].pos[0] < player.pos[0]) {
+                enemies[i].setState("getAway");
+            }
+        }
     }
 }
 
@@ -541,7 +572,8 @@ core.loadImages([
     "img/fon2.jpg",
     "img/sphereSpriteSheet.png",
     "img/bird.png",
-    "img/bonuses.png"
+    "img/bonuses.png",
+    "img/cloud.png"
 ]);
 
 core.loadAudios([

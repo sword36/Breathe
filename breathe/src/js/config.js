@@ -28,5 +28,6 @@ module.exports = {
     cellHeight: 100,
     debugSprite: false,
     bonusWaveSpeed: 5,
-    bonusWaveSize: 0.5
+    bonusWaveSize: 0.5,
+    distanceToAngryCloud: 300
 };

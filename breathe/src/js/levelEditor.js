@@ -5,7 +5,7 @@ var config = require("./config.js");
 var levelPlan = [
     "                         e                               e ",
     "                                 F   e           b         ",
-    "            e                                              ",
+    "            c                                              ",
     "                         s              S   e              ",
     "         S                     e                   e     s ",
     "                                                           ",
@@ -17,7 +17,8 @@ var legend = {
     "s": {class: "bonus", type: "small"},
     "F": {class: "bonus", type: "fast"},
     "S": {class: "bonus", type: "slow"},
-    "e": {class: "enemy", type: "bird"}
+    "e": {class: "enemy", type: "bird"},
+    "c": {class: "enemy", type: "cloud"}
 };
 
 function MapObject(legend, x, y) {

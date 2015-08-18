@@ -115,10 +115,10 @@ function reset() {
     var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
     var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, [100, 80], frame22);
     var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 11, [146, 100], frame12);
-    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [0]);
-    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [1]);
-    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [2]);
-    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 0, [127, 102], [3]);
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [0]);
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [1]);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [3]);
 
     core.createPlayer(
         [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
@@ -493,7 +493,14 @@ function updateEnemies(dt) {
         distanceToPlayer;
     for (i = 0; i < enemies.length; i++) {
         enemies[i].sprite.update(dt);
-        motion = enemies[i].speed * dt;
+
+        //for synchron with map edit
+        if (enemies[i].pos[0] <= config.width) {
+            motion = enemies[i].speed * dt;
+        } else {
+            motion = core.background.speed * dt;
+        }
+
         enemies[i].pos = [enemies[i].pos[0] - motion, enemies[i].pos[1]];
         if (enemies[i].type == "cloud") {
             distanceToPlayer = distanceBetween(enemies[i].pos, player.pos);

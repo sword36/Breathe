@@ -1,2 +1,3 @@
-onError from serialPort catch during the session
-gameEditor: moving of object with over the scene with background speed
+onError from serialPort catch during the session	--- done
+gameEditor: moving of object with over the scene with background speed   --- done
+make adaptive image to fullscreen

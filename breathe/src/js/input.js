@@ -16,8 +16,6 @@ function input() {    //type - keyboard, medicine, smartphone
 
         var port = serialPortStorage.port;
         port.removeAllListeners();
-        console.log(port.isOpen());
-        debugger;
         port.on('data', function(data) {
             data = data.toString();
             var splitDataAll = data.split("\r\n");
@@ -33,6 +31,17 @@ function input() {    //type - keyboard, medicine, smartphone
                 pressed.breathe = data;
             }
         });
+
+        port.on("disconnect", function(err) {
+            debugger;
+        });
+        port.on("close", function(err) {
+            debugger;
+        });
+        port.options.disconnectedCallback = function(err) {
+            debugger;
+        };
+        debugger;
     }
 
     function handler(event) {

@@ -3,8 +3,10 @@ var config = require("./config.js");
 
 var imagesCache = {};
 var audiosCache = {};
+var isLevelLoaded = false;
 var readyCallbacks = [];
 var resourcesCount = 0;
+resourcesCount += 1; // for loading level
 var resourcesLoaded = 0; // 1 for best view
 readyCallbacks.done = false;
 
@@ -56,6 +58,10 @@ function isReady() {
             return ready;
         }
     }
+    if (!isLevelLoaded) {
+        ready = false;
+        return ready;
+    }
     if (config.inputType == "serialport") {
         if (!SerialPortStorage.isConnect) {
             ready = false;
@@ -63,6 +69,17 @@ function isReady() {
     }
 
     return ready;
+}
+
+function onLevelLoaded() {
+    isLevelLoaded = true;
+    resourcesLoaded += 1;
+    changeLoading();
+    if (isReady()) {
+        readyCallbacks.forEach(function (func) {
+            func();
+        });
+    }
 }
 
 function _loadImg(url) {
@@ -181,7 +198,9 @@ module.exports = {
     progressInPercent: progressInPercent,
     audios: audiosCache,
     images: imagesCache,
-    onErrorLoading: onErrorLoading
+    onErrorLoading: onErrorLoading,
+    onLevelLoaded: onLevelLoaded
+
 };
 makePublisher(module.exports);
 

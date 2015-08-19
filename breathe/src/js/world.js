@@ -589,6 +589,8 @@ core.loadAudios([
     "audio/Special-Day.ogg"
 ]);
 
+core.loadLevel(core.onLevelLoaded);
+
 function pauseGame() {
     "use strict";
     isPaused = true;

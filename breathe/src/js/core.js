@@ -208,6 +208,7 @@ module.exports = {
     getAllAudio: resources.getAllAudio,
     onResourcesReady: resources.onReady,
     onResourceLoadingError: resources.onErrorLoading,
+    onLevelLoaded: resources.onLevelLoaded,
     createSprite: createSprite,
     getInput: input,
     createPlayer: createPlayer,
@@ -247,6 +248,7 @@ module.exports = {
     closeWindow: closeWindow,
     setCheckedRadioButton: setCheckedRadioButton,
     getMapObjects: levelEditor.getMapObjects,
+    loadLevel: levelEditor.loadLevel,
     addEventToChildren: addEventToChildren
 };
 

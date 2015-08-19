@@ -26,6 +26,7 @@ module.exports = {
     scoreRate: 0.1,
     cellWidth: 100,
     cellHeight: 100,
+    lineCountInLevel: 6,
     debugSprite: false,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5,

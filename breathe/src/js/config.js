@@ -24,6 +24,7 @@ module.exports = {
     bonusTime: 5,
     timeoutToPortConnection: 5000,
     scoreRate: 0.1,
+    levelFromTxt: true,
     cellWidth: 100,
     cellHeight: 100,
     lineCountInLevel: 6,

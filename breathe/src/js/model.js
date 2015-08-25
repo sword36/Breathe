@@ -96,7 +96,6 @@ Enemy.prototype.setState = function(state) {
             if (state == "close") {
                 this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "angry"));
             } else if (state == "getAway") {
-                debugger;
                 this.sprite.setFrames(this.currentFrames, true, nextState.bind(this, "far"));
             } else {
                 this.sprite.setFrames(this.currentFrames, false);

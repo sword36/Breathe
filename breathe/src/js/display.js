@@ -41,8 +41,9 @@ function flipHorizontally(context, around) {
 function CanvasDisplay() {
     "use strict";
     this.canvas = document.querySelector("#canvas");
-    this.canvas.width = config.width;
-    this.canvas.height = config.height;
+    this.wrapper = document.querySelector(".wrapper");
+    this.canvas.width = config.width = this.wrapper.clientWidth;
+    this.canvas.height = config.height = this.wrapper.clientHeight;
     this.scoreEl = document.querySelector(".score");
     this.scoreEndEl = document.querySelector("#score");
     this.cx = this.canvas.getContext('2d');
@@ -379,6 +380,23 @@ CanvasDisplay.prototype.hideError = function() {
     errMes.removeChild(errMes.childNodes[errMes.childNodes.length - 1]);
     this.hideElement("errorMessage");
     this.hideElement("game_over_overlay");
+};
+
+CanvasDisplay.prototype.getViewport = function() {
+    return {
+        width: this.canvas.width,
+        height: this.canvas.height
+    }
+};
+
+CanvasDisplay.prototype.setViewport = function(opt) {
+    this.canvas.width = opt.width;
+    this.canvas.height = opt.height;
+};
+
+CanvasDisplay.prototype.syncViewport = function () {
+    this.canvas.width = config.width = this.wrapper.clientWidth;
+    this.canvas.height = config.height =  this.wrapper.clientHeight;
 };
 
 module.exports = {

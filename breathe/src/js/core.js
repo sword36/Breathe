@@ -18,10 +18,11 @@ function createSprite(url, pos, size, speed, sizeToDraw, frames, dir, once) {
 
 function getViewport() {
     "use strict";
-    return {
-        width: config.width,
-        height: config.height
-    };
+    return display.getViewport();
+}
+
+function setViewport(opt) {
+    display.setViewport(opt);
 }
 
 function render() {
@@ -231,6 +232,8 @@ module.exports = {
     showElement: showElement,
     hideElement: hideElement,
     getViewport: getViewport,
+    setViewport: setViewport,
+    syncViewport: display.syncViewport.bind(display),
     chooseMenu: chooseMenu,
     unChooseMenu: unChooseMenu,
     onButtonClick: onButtonClick,

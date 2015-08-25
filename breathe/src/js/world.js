@@ -14,7 +14,6 @@ var lastTime,
     bgSounds,
     bgSoundsCount,
     bgSoundsCurrent;
-var viewport = core.getViewport();
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
     return (r >= x2 && x < r2 && y < b2 && b >= y2);
@@ -30,6 +29,18 @@ function distanceBetween (pos1, pos2) {
 }
 
 var win = gui.Window.get();
+var oldSizes = [];
+
+win.on("resize", function(e) {
+    //console.log("win " + win.width + ", " + win.height);
+    //console.log("clie wid " + document.querySelector(".wrapper").clientWidth + "client height " + document.querySelector(".wrapper").clientHeight);
+    oldSizes = [config.width, config.height];
+    core.syncViewport();
+    reCountSprites();
+    //console.log("canvas " + core.getViewport().width + ", " + core.getViewport().height);
+
+});
+
 win.on("loaded", function() {
     "use strict";
     win.show();
@@ -48,6 +59,55 @@ win.on("focus", function() {
         checkPauseOff();
     }
 });
+
+function reCountSprites() {
+    var width = config.width;
+    var height = config.height;
+
+    var player = core.getPlayer();
+    var enemies = core.getEnemies();
+    var bonuses = core.getBonuses();
+
+    player.sprite.sizeToDraw = [
+        width * config.playerWidth,
+        height * config.playerHeight
+    ];
+
+    enemies.forEach(function(enemy) {
+        switch (enemy.type) {
+            case "bird":
+                enemy.sprite.sizeToDraw = [
+                    width * config.birdWidth,
+                    height * config.birdHeight
+                ];
+                break;
+            case "cloud":
+                enemy.sprite.sizeToDraw = [
+                    width * config.cloudWidth,
+                    height * config.cloudHeight
+                ];
+                break;
+            default : throw new Error("Wrong type of enemies");
+        }
+    });
+
+    bonuses.forEach(function(bonus) {
+        bonus.sprite.sizeToDraw = [
+            width * config.bonusWidth,
+            height * config.bonusHeight
+        ];
+    });
+
+    debugger;
+    bg.sprites.forEach(function(sprite) {
+        sprite.sizeToDraw = [width * 2, height];
+    });
+    if (oldSizes.length != 0) {
+        updateBackground(0);
+    }
+
+    config.forestLine = config.height * config.forestLineScale;
+}
 
 function createMapObject(sprites) {
     "use strict";
@@ -120,10 +180,12 @@ function reset() {
     var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
     var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [3]);
 
+
     core.createPlayer(
-        [viewport.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
+        [config.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
         playerSprite
     );
+
     core.getPlayer().setState("float");
 
     var bgSprite1 = core.createSprite("img/fon1.jpg");
@@ -131,6 +193,9 @@ function reset() {
     core.createBackground(
         [bgSprite1, bgSprite2]
     );
+
+    reCountSprites();
+    core.getPlayer().pos = [config.width / 2 - playerSprite.sizeToDraw[0] / 2, 50]; //because sizes was recount
 
     core.clearEnemies();
     core.clearBonuses();
@@ -166,7 +231,7 @@ function updateBackground(dt) {
     var cur = bg.currentSprite,
             next = bg.nextSprite;
     var newBgPos = bg.positions[cur] - bg.speed * dt,
-        newRightCorner = newBgPos + bg.sprites[cur].size[0];
+        newRightCorner = newBgPos + bg.sprites[cur].sizeToDraw[0];
 
     if (newRightCorner < config.width) {
         if (bg.isOneTexture) {
@@ -180,7 +245,7 @@ function updateBackground(dt) {
             cur = bg.currentSprite = next;
             next = bg.nextSprite = (cur + 1) % bg.spritesLength;
             bg.positions[cur] = bg.positions[cur] - bg.speed * dt;
-            if (bg.sprites[cur].size[0] <= config.width) {   //if texture's size equal window width
+            if (bg.sprites[cur].sizeToDraw[0] <= config.width) {   //if texture's size equal window width
                 bg.positions[next] = bg.positions[next] - bg.speed * dt;
             } else {
                 bg.isOneTexture = true;
@@ -188,6 +253,9 @@ function updateBackground(dt) {
         }
     } else {
         bg.positions[cur] = newBgPos;
+        if (dt === 0) {
+            bg.positions[next] = config.width;
+        }
     }
 }
 
@@ -444,14 +512,12 @@ function updatePlayer(dt) {
     if (!isGameOver) {
         if (config.inputType == "serialport") {
             if (pressed.breathe > config.lowerLimitOfBreathe) {
-                console.log("UP");
                 player.setState("up");
                 if (player.speed.y > -config.maxSpeed) {
                     player.speed.y -= config.breatheFactor * pressed.breathe * dt;
                 }
             } else {
                 player.setState("down");
-                console.log("Down");
             }
         } else {
             if (pressed['up']) {

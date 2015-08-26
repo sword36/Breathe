@@ -159,9 +159,9 @@ function createPlayer(pos, sprite) {
     model.createPlayer(pos, sprite);
 }
 
-function createBackground(sprites) {
+function createBackground(sprites, viewport) {
     "use strict";
-    model.createBackground(sprites);
+    model.createBackground(sprites, viewport);
 }
 
 function createEnemy(pos, sprite, type) {

@@ -36,7 +36,7 @@ win.on("resize", function(e) {
     //console.log("clie wid " + document.querySelector(".wrapper").clientWidth + "client height " + document.querySelector(".wrapper").clientHeight);
     oldSizes = [config.width, config.height];
     core.syncViewport();
-    reCountSprites();
+    reCountSpritesSize();
     //console.log("canvas " + core.getViewport().width + ", " + core.getViewport().height);
 
 });
@@ -60,53 +60,33 @@ win.on("focus", function() {
     }
 });
 
-function reCountSprites() {
+function reCountSpritesSize() {
     var width = config.width;
     var height = config.height;
 
-    var player = core.getPlayer();
-    var enemies = core.getEnemies();
-    var bonuses = core.getBonuses();
-
-    player.sprite.sizeToDraw = [
-        width * config.playerWidth,
-        height * config.playerHeight
+    config.playerSize = [
+        width * config.playerSizeScale[0],
+        height * config.playerSizeScale[1]
     ];
 
-    enemies.forEach(function(enemy) {
-        switch (enemy.type) {
-            case "bird":
-                enemy.sprite.sizeToDraw = [
-                    width * config.birdWidth,
-                    height * config.birdHeight
-                ];
-                break;
-            case "cloud":
-                enemy.sprite.sizeToDraw = [
-                    width * config.cloudWidth,
-                    height * config.cloudHeight
-                ];
-                break;
-            default : throw new Error("Wrong type of enemies");
-        }
-    });
+    config.birdSize = [
+        width * config.birdSizeScale[0],
+        height * config.birdSizeScale[1]
+    ];
 
-    bonuses.forEach(function(bonus) {
-        bonus.sprite.sizeToDraw = [
-            width * config.bonusWidth,
-            height * config.bonusHeight
-        ];
-    });
+    config.cloudSize = [
+        width * config.cloudSizeScale[0],
+        height * config.cloudSizeScale[1]
+    ];
 
-    debugger;
-    bg.sprites.forEach(function(sprite) {
-        sprite.sizeToDraw = [width * 2, height];
-    });
-    if (oldSizes.length != 0) {
-        updateBackground(0);
-    }
+    config.bonusSize = [
+        width * config.bonusSizeScale[0],
+        height * config.bonusSizeScale[1]
+    ];
 
-    config.forestLine = config.height * config.forestLineScale;
+    config.forestLine = height * config.forestLineScale;
+
+    config.distanceToAngryCloud = width * config.distanceToAngryCloudScale;
 }
 
 function createMapObject(sprites) {
@@ -172,13 +152,13 @@ function reset() {
         frame12.push(i);
     }
 
-    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, [92, 150]);
-    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, [100, 80], frame22);
-    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 11, [146, 100], frame12);
-    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [0]);
-    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [1]);
-    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [2]);
-    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, [127, 102], [3]);
+    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, config.playerSize); //rate: 0.613
+    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, config.birdSize, frame22); //rate: 1.254
+    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 11, config.cloudSize, frame12); //rate: 1.465
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [0]); //rate: 1.257
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [1]);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [3]);
 
 
     core.createPlayer(
@@ -191,11 +171,9 @@ function reset() {
     var bgSprite1 = core.createSprite("img/fon1.jpg");
     var bgSprite2 = core.createSprite("img/fon2.jpg");
     core.createBackground(
-        [bgSprite1, bgSprite2]
+        [bgSprite1, bgSprite2],
+        [config.width, config.height]
     );
-
-    reCountSprites();
-    core.getPlayer().pos = [config.width / 2 - playerSprite.sizeToDraw[0] / 2, 50]; //because sizes was recount
 
     core.clearEnemies();
     core.clearBonuses();
@@ -776,6 +754,8 @@ function resetInput(type) {
 
 core.onResourcesReady(initSounds);
 core.onResourcesReady(mainMenu); //order is important
+core.onResourcesReady(core.syncViewport);
+core.onResourcesReady(reCountSpritesSize);
 core.onResourceLoadingError(resetInput.bind(null, "keyboard"));
 
 var errorOnLoading = localStorage.getItem("errorMessage");

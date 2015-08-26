@@ -205,10 +205,13 @@ Model.prototype.createPlayer = function createPlayer(pos, sprite) {
  * @param sprites
  * @returns background
  */
-Model.prototype.createBackground = function createBackground(sprites) { //2 min
+Model.prototype.createBackground = function createBackground(sprites, viewport) { //2 min
     "use strict";
     this.background.positions = [];
     this.background.sprites = sprites;
+    this.background.sprites.forEach(function(sprite) {
+        sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
+    });
     this.background.speed = config.backgroundSpeed;
     this.background.currentSprite = 0;
     this.background.nextSprite = 1;
@@ -232,13 +235,13 @@ Model.prototype.createEnemy = function createEnemy(pos, sprite, type) {
     var s;
     switch (type) {
         case "bottom":
-            s = config.bottomEnemiesSpeed;
+            s = config.cloudSpeed;
             break;
         case "bird":
-            s = config.topEnemiesSpeed;
+            s = config.birdSpeed;
             break;
         case "cloud":
-            s = config.bottomEnemiesSpeed;
+            s = config.cloudSpeed;
             break;
         default:
             throw new Error("Wrong type of enemy");

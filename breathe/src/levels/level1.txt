@@ -1,7 +1,19 @@
-                         e                               e 
-            c                    F   e           b         
-                                                           
-                         s              S   e              
-         S                     e                   e     s 
-                                                           
-         1024      2048      3         4         5        
+***************************************************************
+*                         e                               e   *
+*            c                    F   e           b           *
+*                                                             *
+*                         s              S   e                *
+*         S                     e                   e     s   *
+*                                                             *
+*^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^*
+***************************************************************
+ 0        1         2         3         4         5         6
+
+legend = {
+    "b": {class: "bonus", type: "big"},
+    "s": {class: "bonus", type: "small"},
+    "F": {class: "bonus", type: "fast"},
+    "S": {class: "bonus", type: "slow"},
+    "e": {class: "enemy", type: "bird"},
+    "c": {class: "enemy", type: "cloud"}
+};

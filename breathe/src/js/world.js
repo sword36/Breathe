@@ -30,6 +30,7 @@ function distanceBetween (pos1, pos2) {
 
 var win = gui.Window.get();
 var oldSizes = [];
+core.syncViewport();
 
 win.on("resize", function(e) {
     //console.log("win " + win.width + ", " + win.height);
@@ -87,6 +88,8 @@ function reCountSpritesSize() {
     config.forestLine = height * config.forestLineScale;
 
     config.distanceToAngryCloud = width * config.distanceToAngryCloudScale;
+
+    config.cellSize = [width * config.cellSizeScale[0], height * config.cellSizeScale[1]];
 }
 
 function createMapObject(sprites) {

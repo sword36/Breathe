@@ -18,7 +18,7 @@
     "position": "center",
     "resizable": false,
     "fullscreen": false,
-    "kiosk": true,
+    "kiosk": false,
     "frame": true,
     "show": true,
     "icon": "img/ico.png"

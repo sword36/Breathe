@@ -66,7 +66,7 @@ canvas {
 }
 
 #menu.main {
-    background-image: url("../../img/menu.jpg");
+    background-image: url("../../img/menuHD.jpg");
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -130,7 +130,7 @@ canvas {
 
 #storageButtons {
     position: absolute;
-    right: 5%;
+    right: 10%;
     width: 250px;
     top: 0;
     color: #c8c8c8;
@@ -387,32 +387,54 @@ input[type="radio"] + label:hover {
     font-weight: bold;
 }
 
-.sound, .pause{
+.sound, .pause, .fullScreen{
     display: none;
     position: absolute;
     top: 10px;
-    width: 30px;
-    height: 25px;
+    width: 49px;
+    height: 50px;
     cursor: pointer;
     z-index: 4;
 }
 
 .sound {
     left: 10px;
+    height: 52px;
 }
 
 .pause {
-    right: 40px;
+    right: 30px;
+    height: 52px;
 }
 
-.sound-on, .pause-on {
-    background-image: url("../../img/soundOn.png");
-    background-repeat: no-repeat;
+.fullScreen {
+    right: 30px;
+    height: 54px;
+    width: 52px;
 }
 
-.sound-off, .pause-off {
-    background-image: url("../../img/soundOff.png");
-    background-repeat: no-repeat;
+.sound-on {
+    background: url("../../img/iconsSprite.png") -1px 0;
+}
+
+.sound-off{
+    background: url("../../img/iconsSprite.png") -49px 0;
+}
+
+.pause-on {
+    background: url("../../img/iconsSprite.png") -100px 0;
+}
+
+.pause-off {
+    background: url("../../img/iconsSprite.png") -146.5px 0;
+}
+
+.fullScreen-on {
+    background: url("../../img/iconsSprite.png") -245.6px 0;
+}
+
+.fullScreen-off {
+    background: url("../../img/iconsSprite.png") -194px 0;
 }
 
 #errorMessage {

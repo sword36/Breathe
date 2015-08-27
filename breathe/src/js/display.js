@@ -67,6 +67,7 @@ function CanvasDisplay() {
     this.p = document.querySelector("#p");
     this.sound = document.querySelector(".sound");
     this.pause = document.querySelector(".pause");
+    this.fullScreen = document.querySelector(".fullScreen");
     this.storageButtons = document.querySelector("#storageButtons");
     this.inputButtons = document.querySelector("#inputButtons");
     this.storageRadio = document.getElementsByName("storage");

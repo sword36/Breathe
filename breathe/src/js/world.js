@@ -13,7 +13,8 @@ var lastTime,
     isPaused,
     bgSounds,
     bgSoundsCount,
-    bgSoundsCurrent;
+    bgSoundsCurrent,
+    isFullScreen = false;
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
     return (r >= x2 && x < r2 && y < b2 && b >= y2);
@@ -148,9 +149,9 @@ function reset() {
         frame12.push(i);
     }
 
-    var playerSprite = core.createSprite("img/sphereSpriteSheet.png", [0, 0], [184, 300], 16, config.playerSize); //rate: 0.613
+    var playerSprite = core.createSprite("img/sphereHD.png", [0, 0], [200, 325], 16, config.playerSize); //rate: 0.613
     var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, config.birdSize, frame22); //rate: 1.254
-    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 11, config.cloudSize, frame12); //rate: 1.465
+    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 4, config.cloudSize, frame12); //rate: 1.465
     var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [0]); //rate: 1.257
     var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [1]);
     var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
@@ -607,6 +608,7 @@ function init() {
     reset();
     lastTime = Date.now();
     core.showElement("pause");
+    core.hideElement("fullScreen");
     core.showElement("scoreEl");
     main();
 
@@ -622,7 +624,7 @@ function init() {
 core.loadImages([
     "img/fon1.jpg",
     "img/fon2.jpg",
-    "img/sphereSpriteSheet.png",
+    "img/sphereHD.png",
     "img/bird.png",
     "img/bonuses.png",
     "img/cloud.png"
@@ -685,6 +687,7 @@ function mainMenu() {
     core.hideElement("progress");
     core.chooseMenu("main");
     core.showElement("sound");
+    core.showElement("fullScreen");
     bgSoundStart();
     pressed = core.getInput();
 }
@@ -728,6 +731,7 @@ function backToMenu() {
     addNameToRecords();
     core.hideGameOver();
     core.hideElement("pause");
+    core.showElement("fullScreen");
     core.hideElement("scoreEl");
     core.showElement("menu");
 }
@@ -865,7 +869,21 @@ function openLink(e) {
     gui.Shell.openExternal(e.target.title);
 }
 
+function switchFullScreen() {
+    isFullScreen = !isFullScreen;
+    if (isFullScreen) {
+        core.removeClass("fullScreen", "fullScreen-off");
+        core.addClass("fullScreen", "fullScreen-on");
+        win.enterKioskMode();
+    } else {
+        core.removeClass("fullScreen", "fullScreen-on");
+        core.addClass("fullScreen", "fullScreen-off");
+        win.leaveKioskMode();
+    }
+}
+
 core.onButtonClick("pause", checkPause, true);
+core.onButtonClick("fullScreen", switchFullScreen, true);
 core.onButtonClick("credits", creditsMenu);
 core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);

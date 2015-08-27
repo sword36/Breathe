@@ -147,6 +147,20 @@ CanvasDisplay.prototype.render = function() {
     this.renderEnemies();
     this.renderBonuses();
     this.renderPlayer();
+
+    if (config.debugSprite) {
+        this.cx.fillStyle = "#000000";
+        this.cx.beginPath();
+        for (var i = 0; i < 7; i++) { //vertical line
+            this.cx.moveTo(0, i * config.cellSize[1]);
+            this.cx.lineTo(config.width, i * config.cellSize[1]);
+        }
+        for (var i = 0; i < 10; i++) {//horizontal
+            this.cx.moveTo(i * config.cellSize[0], 0);
+            this.cx.lineTo(i * config.cellSize[0], config.height);
+        }
+        this.cx.stroke();
+    }
 };
 
 CanvasDisplay.prototype.showElement = function(el) {

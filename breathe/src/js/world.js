@@ -94,13 +94,7 @@ function reCountSpritesSize() {
 
 function createMapObject(sprites) {
     "use strict";
-    var mapObjects;
-    if (createMapObject.cache == null) {
-        mapObjects = core.getMapObjects();
-        createMapObject.cache = mapObjects;
-    } else {
-        mapObjects = createMapObject.cache;
-    }
+    var mapObjects = core.getMapObjects();
 
     for (var i = 0; i < mapObjects.length; i++) {
         var mapObject = mapObjects[i];
@@ -135,7 +129,6 @@ function createMapObject(sprites) {
         }
     }
 }
-createMapObject.cache = null;
 
 function reset() {
     "use strict";
@@ -192,6 +185,7 @@ function reset() {
 }
 
 function gameOver() {
+    debugger;
     "use strict";
     isGameOver = true;
     core.setScore(score, true);
@@ -446,6 +440,10 @@ function deleteBonus(bonus) {
 }
 function collidePlayer(pos) {
     "use strict";
+    if (isGameOver) {  //move after game over and dont check collision
+        return true;
+    }
+
     var player = core.getPlayer();
     var collision = checkColisions(pos),
         i = 0;

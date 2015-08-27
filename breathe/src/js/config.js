@@ -2,8 +2,8 @@
  * Created by USER on 10.07.2015.
  */
 module.exports = {
-    width: 0,
-    height: 0,
+    width: 1024,
+    height: 576,
     inputType: "keyboard", //"keyboard", "serialport"
     backgroundSpeed: 100,
     cloudSpeed: 170,

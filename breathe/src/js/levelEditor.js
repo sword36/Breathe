@@ -5,13 +5,11 @@ var config = require("./config.js");
 var fs = require("fs");
 
 var levelPlan = [];
-debugger;
 
 function parseTxtToLevel(data, level, callback) {
     var text = data.toString();
-    console.log(text);
     var lines = text.split("\n");
-    for (var i = 1; i < config.lineCountInLevel - 1; i++) { // from 1 because first is '*' block and to lineCountInLevel-1
+    for (var i = 1; i < config.lineCountInLevel; i++) { // from 1 because first is '*' block and to lineCountInLevel-1
         level[i - 1] = lines[i];                                // because last line of level is forest
         level[i - 1] = level[i - 1].substring(1, level[i - 1].length - 2); // to cut '*' from start and end
     }
@@ -59,6 +57,7 @@ function getMapObjects() {
     var mapObjects = [];
     var width = levelPlan[0].length;
     var mapObject;
+    debugger;
     for (var y = 0; y < config.lineCountInLevel - 1; y++) {
         for (var x = 0; x < width; x++) {
             if (levelPlan[y][x] !== " " && levelPlan[y][x] in legend) {

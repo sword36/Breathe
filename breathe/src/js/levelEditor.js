@@ -57,7 +57,6 @@ function getMapObjects() {
     var mapObjects = [];
     var width = levelPlan[0].length;
     var mapObject;
-    debugger;
     for (var y = 0; y < config.lineCountInLevel - 1; y++) {
         for (var x = 0; x < width; x++) {
             if (levelPlan[y][x] !== " " && levelPlan[y][x] in legend) {

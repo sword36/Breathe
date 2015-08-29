@@ -134,6 +134,7 @@ function createMapObject(sprites) {
 function reset() {
     "use strict";
     core.hideGameOver();
+    core.addClass("canvas", "hideCursor");
     isGameOver = false;
     isPaused = false;
     score = 0;
@@ -186,11 +187,11 @@ function reset() {
 }
 
 function gameOver() {
-    debugger;
     "use strict";
     isGameOver = true;
     core.setScore(score, true);
     core.renderGameOver();
+    core.removeClass("canvas", "hideCursor");
     var curName = core.tableOfRecords.getCurrentName();
     if (curName) {
         core.setName(curName);

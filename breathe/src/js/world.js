@@ -166,8 +166,8 @@ function reset() {
 
     core.getPlayer().setState("float");
 
-    var bgSprite1 = core.createSprite("img/fon1.jpg");
-    var bgSprite2 = core.createSprite("img/fon2.jpg");
+    var bgSprite1 = core.createSprite("img/fonHD1.jpg");
+    var bgSprite2 = core.createSprite("img/fonHD2.jpg");
     core.createBackground(
         [bgSprite1, bgSprite2],
         [config.width, config.height]
@@ -623,8 +623,8 @@ function init() {
 }
 
 core.loadImages([
-    "img/fon1.jpg",
-    "img/fon2.jpg",
+    "img/fonHD1.jpg",
+    "img/fonHD2.jpg",
     "img/sphereHD.png",
     "img/bird.png",
     "img/bonuses.png",

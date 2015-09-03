@@ -14,7 +14,7 @@
     "title": "Breathe and Play",
     "width": 1024,
     "height": 576,
-    "toolbar": false,
+    "toolbar": true,
     "position": "center",
     "resizable": false,
     "fullscreen": false,

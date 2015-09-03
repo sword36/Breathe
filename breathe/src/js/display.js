@@ -85,7 +85,7 @@ CanvasDisplay.prototype.clear = function() {
 
 CanvasDisplay.prototype.clearDisplay = function() {
     "use strict";
-    this.cx.fillStyle = "rgb(52, 166, 251)";
+    this.cx.fillStyle = "#89E3FB";
     this.cx.fillRect(0, 0, config.width, config.height);
 };
 
@@ -100,19 +100,35 @@ CanvasDisplay.prototype._render = function(enemy) {
 };
 
 var bg = model.background;
-function moveBgSprite(index) {
+
+function moveBgSprite(bgItem, index) {
     "use strict";
     this.cx.save();
-    this.cx.translate(bg.positions[index], 0);
-    bg.sprites[index].render(this.cx);
+    var top = 0;
+    if (bgItem == "forest") {
+        top = config.height * config.forestTopScale;
+    } else if (bgItem == "clouds") {
+        top = config.height * config.cloudTopScale;
+    }
+
+    this.cx.translate(bg[bgItem].positions[index], top);
+    if (index > 1) {
+        debugger;
+    }
+    bg[bgItem].sprites[index].render(this.cx);
     this.cx.restore();
 }
 CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
     "use strict";
     var move = moveBgSprite.bind(this);
-    move(bg.currentSprite);
-    if (!bg.isOneTexture) {
-        move(bg.nextSprite);
+    var bgNames = ["clouds", "mountains", "forest"];
+    debugger;
+    for (var i = 0; i < 3; i++) {
+        var curBg = bgNames[i];
+        move(curBg, bg[curBg].currentSprite);
+        if (!bg[curBg].isOneTexture) {
+            move(curBg, bg[curBg].nextSprite);
+        }
     }
 };
 

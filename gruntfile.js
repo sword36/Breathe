@@ -4,9 +4,10 @@ module.exports = function(grunt) {
     grunt.initConfig({
         nwjs: {
             options: {
-                platforms: ['win64'],
+                platforms: ['win32'],
                 buildDir: './webkitbuilds', // Where the build version of my NW.js app is saved
-                winIco: 'breathe/img/breathe.ico'
+                winIco: 'breathe/img/breathe.ico',
+                version: '0.12.3'
             },
             src: ['./breathe/**/*']
         }

@@ -167,7 +167,10 @@ function Model() { //pattern singleton
         return Model.cache;
     else {
         this.player = new Player();
-        this.background = new Background();
+        this.background = {};
+        this.background.mountains = new Background();
+        this.background.forest = new Background();
+        this.background.clouds = new Background();
         this.bonuses = [];
         this.enemies = [];
         Model.cache = this;
@@ -207,23 +210,82 @@ Model.prototype.createPlayer = function createPlayer(pos, sprite) {
  */
 Model.prototype.createBackground = function createBackground(sprites, viewport) { //2 min
     "use strict";
-    this.background.positions = [];
-    this.background.sprites = sprites;
-    this.background.sprites.forEach(function(sprite) {
-        sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
-    });
-    this.background.speed = config.backgroundSpeed;
-    this.background.currentSprite = 0;
-    this.background.nextSprite = 1;
-    this.background.spritesLength = sprites.length;
-    this.background.isOneTexture = true;
-    for (var i = 0; i < sprites.length; i++) {
-        if (i === 0) {
-            this.background.positions[0] = 0;
-        } else {
-            this.background.positions[i] = config.width;
+    for (var i in this.background) {
+        if (this.background.hasOwnProperty(i)) {
+            this.background[i].positions = [];
+            this.background[i].sprites = sprites[i] ? sprites[i] : [];
+
+            var j = 0; //for counting clouds sprites
+            this.background[i].sprites.forEach(function(sprite) {
+                switch (i) {
+                    case "mountains":
+                        sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
+                        this.background[i].speed = config.backgroundSpeed;
+
+                        this.background[i].currentSprite = 0;
+                        this.background[i].nextSprite = 1;
+                        this.background[i].spritesLength = this.background[i].sprites.length;
+                        this.background[i].isOneTexture = true;
+
+                        for (var l = 0; l < this.background[i].sprites.length; l++) {
+                            if (l === 0) {
+                                this.background[i].positions[0] = 0;
+                            } else {
+                                this.background[i].positions[l] = config.width;
+                            }
+                        }
+                        break;
+                    case "forest":
+                        sprite.sizeToDraw = [viewport[0] * 2, viewport[1] * config.forestHeightScale];
+                        this.background[i].speed = config.backgroundSpeed * 1.3;
+
+                        this.background[i].currentSprite = 0;
+                        this.background[i].nextSprite = 1;
+                        this.background[i].spritesLength = this.background[i].sprites.length;
+                        this.background[i].isOneTexture = true;
+
+                        for (var l = 0; l < this.background[i].sprites.length; l++) {
+                            if (l === 0) {
+                                this.background[i].positions[0] = 0;
+                            } else {
+                                this.background[i].positions[l] = config.width;
+                            }
+                        }
+                        break;
+                    case "clouds":
+                        if (j == 0) {
+                            sprite.sizeToDraw = [viewport[0] * config.cloud1Scale[0],
+                                    viewport[1] * config.cloud1Scale[1]];
+                        } else if (j == 1) {
+                            sprite.sizeToDraw = [viewport[0] * config.cloud1Scale[0],
+                                    viewport[1] * config.cloud2Scale[1]];
+                        } else {
+                            throw "Wrong number of clouds sprites";
+                        }
+
+                        this.background[i].speed = config.backgroundSpeed * 0.7;
+                        this.background[i].currentSprite = 0;
+                        this.background[i].nextSprite = 1;
+                        this.background[i].spritesLength = this.background[i].sprites.length;
+                        this.background[i].isOneTexture = true;
+
+                        for (var l = 0; l < this.background[i].sprites.length; l++) {
+                            if (l === 0) {
+                                this.background[i].positions[0] = config.width * 0.05;
+                            } else {
+                                this.background[i].positions[l] = config.width;
+                            }
+                        }
+                        break;
+                    default :
+                        throw "Wrong type of background";
+                }
+                j++;
+            }, this);
+            j = 0;
         }
     }
+
 };
 /**
  * Add enemy to enemies

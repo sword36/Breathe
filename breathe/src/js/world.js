@@ -158,7 +158,6 @@ function reset() {
     var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
     var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [3]);
 
-
     core.createPlayer(
         [config.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
         playerSprite
@@ -166,10 +165,18 @@ function reset() {
 
     core.getPlayer().setState("float");
 
-    var bgSprite1 = core.createSprite("img/fonHD1.jpg");
-    var bgSprite2 = core.createSprite("img/fonHD2.jpg");
+    var mountainSprite1 = core.createSprite("img/mountains1HD.png");
+    var mountainSprite2 = core.createSprite("img/mountains2HD.png");
+    var forestSprite = core.createSprite("img/forestHD.png");
+    var cloudSprite1 = core.createSprite("img/cloud1HD.png");
+    var cloudSprite2 = core.createSprite("img/cloud2HD.png");
+
     core.createBackground(
-        [bgSprite1, bgSprite2],
+        {
+            "mountains": [mountainSprite1, mountainSprite2],
+            "forest": [forestSprite, forestSprite],
+            "clouds": [cloudSprite1, cloudSprite2]
+        },
         [config.width, config.height]
     );
 
@@ -205,33 +212,44 @@ var bg = core.background;
 function updateBackground(dt) {
     "use strict";
 
-    var cur = bg.currentSprite,
-            next = bg.nextSprite;
-    var newBgPos = bg.positions[cur] - bg.speed * dt,
-        newRightCorner = newBgPos + bg.sprites[cur].sizeToDraw[0];
-
-    if (newRightCorner < config.width) {
-        if (bg.isOneTexture) {
-            bg.isOneTexture = false;
-        }
-        if (newRightCorner > 0) {
-            bg.positions[cur] = newBgPos;
-            bg.positions[next] = bg.positions[next] - bg.speed * dt;
-        } else {
-            bg.positions[cur] = config.width;
-            cur = bg.currentSprite = next;
-            next = bg.nextSprite = (cur + 1) % bg.spritesLength;
-            bg.positions[cur] = bg.positions[cur] - bg.speed * dt;
-            if (bg.sprites[cur].sizeToDraw[0] <= config.width) {   //if texture's size equal window width
-                bg.positions[next] = bg.positions[next] - bg.speed * dt;
-            } else {
-                bg.isOneTexture = true;
+    for (var v in bg) { //sorry, mum
+        if (bg.hasOwnProperty(v)) {
+            var b = bg[v];
+            var cur = b.currentSprite,
+                next = b.nextSprite;
+            var newBgPos = b.positions[cur] - b.speed * dt,
+                newRightCorner = newBgPos + b.sprites[cur].sizeToDraw[0];
+            debugger;
+            if (v == "clouds") {
+                newRightCorner += config.width * 0.1; //because texture of clouds have no air from left and right
+            } else if (v == "mountains") {
+                newRightCorner -= config.width * 0.0015; //because texture not pixel to pixel
             }
-        }
-    } else {
-        bg.positions[cur] = newBgPos;
-        if (dt === 0) {
-            bg.positions[next] = config.width;
+
+            if (newRightCorner < config.width) {
+                if (b.isOneTexture) {
+                    b.isOneTexture = false;
+                }
+                if (newRightCorner > 0) {
+                    b.positions[cur] = newBgPos;
+                    b.positions[next] = b.positions[next] - b.speed * dt;
+                } else {
+                    b.positions[cur] = config.width;
+                    cur = b.currentSprite = next;
+                    next = b.nextSprite = (cur + 1) % b.spritesLength;
+                    b.positions[cur] = b.positions[cur] - b.speed * dt;
+                    //if (b.sprites[cur].sizeToDraw[0] <= config.width) {   //if texture's size equal window width
+                    //    bg.positions[next] = bg.positions[next] - bg.speed * dt;
+                    //} else {
+                        b.isOneTexture = true;
+                    //}
+                }
+            } else {
+                b.positions[cur] = newBgPos;
+                if (dt === 0) {
+                    b.positions[next] = config.width;
+                }
+            }
         }
     }
 }
@@ -290,7 +308,9 @@ function fastAll() {
         var i;
         var enemies = core.getEnemies();
         var bonuses = core.getBonuses();
-        core.background.speed *= xSpeed;
+        core.background.mountains.speed *= xSpeed;
+        core.background.clouds.speed *= xSpeed;
+        core.background.forest.speed *= xSpeed;
         for (i = 0; i < enemies.length; i++) {
             enemies[i].speed *= xSpeed;
         }
@@ -306,7 +326,11 @@ function unFastAll() {
     var i;
     var enemies = core.getEnemies();
     var bonuses = core.getBonuses();
-    core.background.speed /= xSpeed;
+
+    core.background.mountains.speed /= xSpeed;
+    core.background.clouds.speed /= xSpeed;
+    core.background.forest.speed /= xSpeed;
+
     for (i = 0; i < enemies.length; i++) {
         enemies[i].speed /= xSpeed;
     }
@@ -324,7 +348,10 @@ function slowAll() {
         var i;
         var enemies = core.getEnemies();
         var bonuses = core.getBonuses();
-        core.background.speed *= xSpeed;
+        core.background.mountains.speed *= xSpeed;
+        core.background.clouds.speed *= xSpeed;
+        core.background.forest.speed *= xSpeed;
+
         for (i = 0; i < enemies.length; i++) {
             enemies[i].speed *= xSpeed;
         }
@@ -340,7 +367,10 @@ function unSlowAll() {
     var i;
     var enemies = core.getEnemies();
     var bonuses = core.getBonuses();
-    core.background.speed /= xSpeed;
+    core.background.mountains.speed /= xSpeed;
+    core.background.clouds.speed /= xSpeed;
+    core.background.forest.speed /= xSpeed;
+
     for (i = 0; i < enemies.length; i++) {
         enemies[i].speed /= xSpeed;
     }
@@ -545,7 +575,7 @@ function updateEnemies(dt) {
         if (enemies[i].pos[0] <= config.width) {
             motion = enemies[i].speed * dt;
         } else {
-            motion = core.background.speed * dt;
+            motion = core.background.mountains.speed * dt;
         }
 
         enemies[i].pos = [enemies[i].pos[0] - motion, enemies[i].pos[1]];
@@ -581,7 +611,7 @@ function update(dt) {
         updateEnemies(dt);
         updateBackground(dt);
         updateBonuses(dt);
-        score += bg.speed * dt * config.scoreRate;
+        score += bg.mountains.speed * dt * config.scoreRate;
     }
     updatePlayer(dt);
 }
@@ -623,12 +653,15 @@ function init() {
 }
 
 core.loadImages([
-    "img/fonHD1.jpg",
-    "img/fonHD2.jpg",
-    "img/sphereHD.png",
+    "img/mountains1HD.png",
+    "img/mountains2HD.png",
+    "img/forestHD.png",
+    "img/cloud1HD.png",
+    "img/cloud2HD.png",
     "img/bird.png",
     "img/bonuses.png",
-    "img/cloud.png"
+    "img/cloud.png",
+    "img/sphereHD.png"
 ]);
 
 core.loadAudios([

@@ -15,14 +15,14 @@ module.exports = {
     breatheFactor: 10, //50 for turbine, 10 for temperature
     lowerLimitOfBreathe: 30,//40 for turbine, 364 for temperature
     forestLine: 0,
-    forestLineScale: 0.8571,
+    forestLineScale: 0.8671,
     imageSmoothingEnabled: true,
     fastBonusSpeed: 2,
     slowBonusSpeed: 0.6,
     increaseBonusSize: 1.5,
     decreaseBonusSize: 0.65,
     playerSpeedX: 1,
-    bonusTime: 5,
+    bonusTime: 6,
     timeoutToPortConnection: 5000,
     scoreRate: 0.1,
     levelFromTxt: true,
@@ -42,5 +42,10 @@ module.exports = {
     cloudSizeScale: [0.1178, 0.1429],
     cloudSize: [],
     bonusSizeScale: [0.1010, 0.1429],
-    bonusSize: []
+    bonusSize: [],
+    forestHeightScale: 0.1509,
+    cloud1Scale: [0.9576, 0.3037],
+    cloud2Scale: [0.7237, 0.1806],
+    forestTopScale: 0.8488,
+    cloudTopScale: 0.05
 };

@@ -268,6 +268,11 @@ function checkColisions(pos) {
         enemies = core.getEnemies(),
         bonuses = core.getBonuses();
 
+    if (config.debugCollision) {
+        cx.fillStyle = "#0000FF";
+        cx.strokeRect(pos[0], pos[1], size[0], size[1]);
+    }
+
     if (pos[1] < 0) {
         collision.push({type: "top"});
     }
@@ -280,18 +285,22 @@ function checkColisions(pos) {
         var posEnemy = [0, 0];
         switch (enemies[i].type) {
             case "bird":
-                sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] / 2];
-                posEnemy = [enemies[i].pos[0], enemies[i].pos[1] +  sizeEnemy[1] / 2];
-
+                sizeEnemy = [enemies[i].sprite.sizeToDraw[0] / 4 * 3, enemies[i].sprite.sizeToDraw[1] / 2];
+                posEnemy = [enemies[i].pos[0] + sizeEnemy[0] * 4 / 3 / 5, enemies[i].pos[1] +  sizeEnemy[1] / 2];
                 break;
             case "cloud":
-                sizeEnemy = [enemies[i].sprite.sizeToDraw[0] / 7 * 5, enemies[i].sprite.sizeToDraw[1] / 4 * 3];
-                posEnemy = [enemies[i].pos[0] + enemies[i].sprite.sizeToDraw[0] / 7, enemies[i].pos[1] +
+                sizeEnemy = [enemies[i].sprite.sizeToDraw[0] / 5 * 3, enemies[i].sprite.sizeToDraw[1] / 5 * 3];
+                posEnemy = [enemies[i].pos[0] + enemies[i].sprite.sizeToDraw[0] / 4, enemies[i].pos[1] +
                                  enemies[i].sprite.sizeToDraw[1] / 4];
                 break;
             default :
                 sizeEnemy = enemies[i].sprite.sizeToDraw;
                 posEnemy = enemies[i].pos;
+        }
+
+        if (config.debugCollision) {
+            cx.fillStyle = "#0000FF";
+            cx.strokeRect(posEnemy[0], posEnemy[1], sizeEnemy[0], sizeEnemy[1]);
         }
 
         if (boxCollides(pos, size, posEnemy, sizeEnemy)) {
@@ -300,7 +309,14 @@ function checkColisions(pos) {
     }
 
     for (i = 0; i < bonuses.length; i++) {
-        if (boxCollides(pos, size, bonuses[i].pos, bonuses[i].sprite.sizeToDraw) && !isGameOver) {
+        var sizeBonus = [bonuses[i].sprite.sizeToDraw[0] / 2, bonuses[i].sprite.sizeToDraw[1] / 2];
+        var posBonus = [bonuses[i].pos[0] + sizeBonus[0] / 2, bonuses[i].pos[1] + sizeBonus[1] / 2];
+
+        if (config.debugCollision) {
+            cx.fillStyle = "#0000FF";
+            cx.strokeRect(posBonus[0], posBonus[1], sizeBonus[0], sizeBonus[1]);
+        }
+        if (boxCollides(pos, size, posBonus, sizeBonus) && !isGameOver) {
             collision.push({type: "bonus", target: bonuses[i]});
         }
     }

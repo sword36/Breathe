@@ -388,6 +388,37 @@ input[type="radio"] + label:hover {
     font-size: 1.8em;
 }
 
+.bonusIcons {
+    display: none;
+    position: absolute;
+    z-index: 4;
+    width: 48px;
+    height: 50px;
+    top: 10px;
+    background-image: url("../../img/bonusIco.png");
+}
+
+.bonusBig {
+    left: calc(50% + 150px);
+    background-position: 0 0;
+}
+
+.bonusSmall{
+    left: calc(50% - 300px);
+    background-position: -50px 0;
+}
+
+.bonusFast {
+    left: calc(50% + 250px);
+    background-position: -98px 0;
+}
+
+.bonusSlow {
+    left: calc(50% - 200px);
+    background-position: -148px 0;
+    width: 48px;
+}
+
 .sound, .pause, .fullScreen{
     display: none;
     position: absolute;

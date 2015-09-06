@@ -76,6 +76,10 @@ function CanvasDisplay() {
     this.errorMessage = document.querySelector("#errorMessage");
     this.closeErrorButton = document.querySelector("#errorMessage .close");
     this.creditsList = document.querySelector("#credits ul");
+    this.bonusBigIco = document.getElementsByClassName("bonusBig")[0];
+    this.bonusSmallIco = document.getElementsByClassName("bonusSmall")[0];
+    this.bonusFastIco = document.getElementsByClassName("bonusFast")[0];
+    this.bonusSlowIco = document.getElementsByClassName("bonusSlow")[0];
 }
 
 CanvasDisplay.prototype.clear = function() {
@@ -112,9 +116,6 @@ function moveBgSprite(bgItem, index) {
     }
 
     this.cx.translate(bg[bgItem].positions[index], top);
-    if (index > 1) {
-        debugger;
-    }
     bg[bgItem].sprites[index].render(this.cx);
     this.cx.restore();
 }
@@ -122,7 +123,6 @@ CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
     "use strict";
     var move = moveBgSprite.bind(this);
     var bgNames = ["clouds", "mountains", "forest"];
-    debugger;
     for (var i = 0; i < 3; i++) {
         var curBg = bgNames[i];
         move(curBg, bg[curBg].currentSprite);

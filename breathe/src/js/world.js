@@ -204,6 +204,12 @@ function gameOver() {
         core.setName(curName);
     }
     core.focusEl("inputName");
+
+    core.hideElement("bonusBigIco");
+    core.hideElement("bonusSmallIco");
+    core.hideElement("bonusFastIco");
+    core.hideElement("bonusSlowIco");
+
 }
 
 
@@ -219,7 +225,6 @@ function updateBackground(dt) {
                 next = b.nextSprite;
             var newBgPos = b.positions[cur] - b.speed * dt,
                 newRightCorner = newBgPos + b.sprites[cur].sizeToDraw[0];
-            debugger;
             if (v == "clouds") {
                 newRightCorner += config.width * 0.1; //because texture of clouds have no air from left and right
             } else if (v == "mountains") {
@@ -253,6 +258,7 @@ function updateBackground(dt) {
         }
     }
 }
+var cx = document.querySelector("canvas").getContext("2d"); //for debug collision
 
 function checkColisions(pos) {
     "use strict";
@@ -276,6 +282,7 @@ function checkColisions(pos) {
             case "bird":
                 sizeEnemy = [enemies[i].sprite.sizeToDraw[0], enemies[i].sprite.sizeToDraw[1] / 2];
                 posEnemy = [enemies[i].pos[0], enemies[i].pos[1] +  sizeEnemy[1] / 2];
+
                 break;
             case "cloud":
                 sizeEnemy = [enemies[i].sprite.sizeToDraw[0] / 7 * 5, enemies[i].sprite.sizeToDraw[1] / 4 * 3];
@@ -496,6 +503,22 @@ function collidePlayer(pos) {
             case "bonus":
                 initBonus(collision[i].target.type);  //order is important
                 collision[i].target.active.enable(player);
+
+                switch (collision[i].target.type) {
+                    case "big":
+                        core.showElement("bonusBigIco");
+                        break;
+                    case "small":
+                        core.showElement("bonusSmallIco");
+                        break;
+                    case "fast":
+                        core.showElement("bonusFastIco");
+                        break;
+                    case "slow":
+                        core.showElement("bonusSlowIco");
+                        break;
+                }
+
                 if (collision[i].target.type in player.activeBonuses) {
                     player.activeBonuses[collision[i].target.type] = collision[i].target;
                 }
@@ -553,7 +576,23 @@ function updatePlayer(dt) {
         if (activeBonuses.hasOwnProperty(i) && activeBonuses[i] !== null && !isGameOver) { //!isGameOver for not transform sprite after gameover
             activeBonusesTime[i] -= dt;
             if (activeBonusesTime[i] < 0) {
+                switch(i) {
+                    case "big":
+                        core.hideElement("bonusBigIco");
+                        break;
+                    case "small":
+                        core.hideElement("bonusSmallIco");
+                        break;
+                    case "fast":
+                        core.hideElement("bonusFastIco");
+                        break;
+                    case "slow":
+                        core.hideElement("bonusSlowIco");
+                        break;
+                }
+
                 player.activeBonuses[i].active.disable(player);
+
                 undoBonus(player.activeBonuses[i].type);
                 player.activeBonuses[i] = null;
             }

@@ -30,6 +30,7 @@ module.exports = {
     cellSizeScale: [0.1, 0.1429],
     lineCountInLevel: 7,
     debugSprite: false,
+    debugCollision: true,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5,
     distanceToAngryCloudScale: 0.25,

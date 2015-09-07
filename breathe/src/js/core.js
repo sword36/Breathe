@@ -6,6 +6,7 @@ var display_ =  require("./display.js");
 var TableOfRecords = require("./tableOfRecords.js");
 var levelEditor = require("./levelEditor.js");
 var config = require("./config.js");
+var tableRecords = require("./tableRecords");
 
 var display = new display_.CanvasDisplay();
 var model = new model_();

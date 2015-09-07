@@ -3,7 +3,6 @@ if (localStorage.getItem("inputType") != null) {
     config.inputType = localStorage.getItem("inputType");
 }
 var core = require("./core.js");
-
 var lastTime,
     isGameOver = true,
     isPausedByButton = false,

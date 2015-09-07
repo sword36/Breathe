@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "backbone": "^1.2.3",
+    "backbone.localstorage": "^1.1.16",
     "backbone.paginator": "^2.0.2",
     "serialport": "^1.7.4",
     "underscore": "^1.8.3"

@@ -16,35 +16,36 @@ var Records = Backbone.PageableCollection.extend({
     },
 
     initialize: function() {
-        this.on("change:storageMode", this.switchMode, this);
+        this.on("change:storageMode", this.switchStorageMode, this);
     },
 
     comparator: function (model) {
         return model.get("scores");
     },
 
-    currentRecordID: null,
-    getCurrentRecord: function() {
-        if (this.currentRecordID != null) {
-            return this.currentRecordID;
+    currentRecordName: null,
+    getCurrentRecordName: function() {
+        if (this.currentRecordName != null) {
+            return this.currentRecordName;
         } else {
-            var currentRecordId = localStorage.getItem("currentRecordID");
-            if (currentRecordId != null) {
-                this.currentRecordId = currentRecordId;
-                return currentRecordId;
+            var name = localStorage.getItem("currentRecordName");
+            if (name != null) {
+                this.currentRecordName = name;
+                return name;
             } else
                 return null;
         }
     },
-    setCurrentRecord: function(id) {
+    setCurrentRecordName: function(name) {
         "use strict";
-        this.currentRecordID = id;
-        localStorage.setItem("currentRecordID", id);
-        this.trigger("change:currentRecordID");
+        if (name !== this.currentRecordName) {
+            this.currentRecordName = name;
+            localStorage.setItem("currentRecordName", name);
+            this.trigger("change:currentRecordName");
+        }
     },
 
-    switchMode: function(mode) {
-        debugger;
+    switchStorageMode: function(mode) {
     }
 });
 

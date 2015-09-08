@@ -2,6 +2,23 @@ var config = require("./config.js");
 if (localStorage.getItem("inputType") != null) {
     config.inputType = localStorage.getItem("inputType");
 }
+
+global.UUID = (function() {
+    var self = {};
+    var lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
+    self.generate = function() {
+        var d0 = Math.random()*0xffffffff|0;
+        var d1 = Math.random()*0xffffffff|0;
+        var d2 = Math.random()*0xffffffff|0;
+        var d3 = Math.random()*0xffffffff|0;
+        return lut[d0&0xff]+lut[d0>>8&0xff]+lut[d0>>16&0xff]+lut[d0>>24&0xff]+'-'+
+            lut[d1&0xff]+lut[d1>>8&0xff]+'-'+lut[d1>>16&0x0f|0x40]+lut[d1>>24&0xff]+'-'+
+            lut[d2&0x3f|0x80]+lut[d2>>8&0xff]+'-'+lut[d2>>16&0xff]+lut[d2>>24&0xff]+
+            lut[d3&0xff]+lut[d3>>8&0xff]+lut[d3>>16&0xff]+lut[d3>>24&0xff];
+    };
+    return self;
+})().generate;
+
 var core = require("./core.js");
 var lastTime,
     isGameOver = true,
@@ -198,7 +215,7 @@ function gameOver() {
     core.setScore(score, true);
     core.renderGameOver();
     core.removeClass("canvas", "hideCursor");
-    var curName = core.tableOfRecords.getCurrentName();
+    var curName = core.getCurrentRecordName();
     if (curName) {
         core.setName(curName);
     }
@@ -738,12 +755,27 @@ function unPauseGame() {
     main();
 }
 
+function getHostComputer() {
+    var host = localStorage.getItem("hostComputer");
+    if (host != null) {
+        return host;
+    } else {
+        host = UUID();
+        localStorage.setItem("hostComputer", host);
+        return host;
+    }
+}
+
 function addNameToRecords() {
     "use strict";
     var name = core.getName();
     if (name) {
-        core.tableOfRecords.setCurrentName(name);
-        core.tableOfRecords.setRecord(name, score);
+        core.setCurrentRecordName(name);
+        core.addRecord({
+            name: name,
+            scores: score,
+            hostComputer: getHostComputer()
+        });
     }
 }
 
@@ -782,14 +814,14 @@ function mainMenu() {
 
 function recordsMenu() {
     "use strict";
-    var tableOfRecords = core.tableOfRecords;
+    //var tableOfRecords = core.tableOfRecords;
     core.hideElement("main");
     core.showElement("records");
     core.chooseMenu("records");
 
-    var records = tableOfRecords.getRecords(typeStorage);
-    var curName = tableOfRecords.getCurrentName();
-    core.drawRecords(records, curName);
+    //var records = tableOfRecords.getRecords(typeStorage);
+    //var curName = tableOfRecords.getCurrentName();
+    //core.drawRecords(records, curName);
 }
 
 function backFromRecords() {
@@ -881,6 +913,7 @@ core.onButtonClick("closeError", function() {
 });
 
 var typeStorage = "local";
+/*
 core.onButtonClick("storageButtons", function() {
     var newStorageType = core.checkRadioButton("storage");
     if (typeStorage != newStorageType) {
@@ -899,6 +932,7 @@ core.onButtonClick("storageButtons", function() {
         }
     }
 }, true, "change");
+*/
 
 core.onButtonClick("inputButtons", function() {
     var newInputType = core.checkRadioButton("input");

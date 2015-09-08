@@ -26,12 +26,12 @@ var RecordsView = NativeView.extend({
         this.listenTo(this.collection, "all", this.render);
 
         this.table = this.el.querySelector("#recordsTable");
-
-        this.collection.getFirstPage();
+        this.collection.getFirstPage({reset: true, fetch: true});
         this.render();
     },
 
     render: function() {
+        this.addAll();
         console.log("render");
     },
 
@@ -47,7 +47,6 @@ var RecordsView = NativeView.extend({
         "<td>Имя</td>" +
         "<td>Очки</td>" +
         "</tr>";
-
         this.collection.each(this.addOne, this);
     },
 

@@ -29,7 +29,7 @@ module.exports = {
     cellSize: [],
     cellSizeScale: [0.1, 0.1429],
     lineCountInLevel: 7,
-    debugSprite: false,
+    debugSprite: true,
     debugCollision: true,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5,

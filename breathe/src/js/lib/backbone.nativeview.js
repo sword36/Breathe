@@ -18,7 +18,6 @@
   // Caches a local reference to `Element.prototype` for faster access.
   var ElementProto = (typeof Element !== 'undefined' && Element.prototype) || {};
   // Cross-browser event listener shims
-  debugger;
   var elementAddEventListener = window.addEventListener;
   var elementRemoveEventListener = window.removeEventListener;
 

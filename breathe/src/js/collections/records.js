@@ -12,15 +12,13 @@ var Records = Backbone.PageableCollection.extend({
     },
     state: {
         sortKey: "scores",
-        pageSize: 10
+        order: 1,
+        pageSize: 5
     },
 
     initialize: function() {
         this.on("change:storageMode", this.switchStorageMode, this);
-    },
-
-    comparator: function (model) {
-        return model.get("scores");
+        this.on("change", this.sort, this);
     },
 
     currentRecordName: null,

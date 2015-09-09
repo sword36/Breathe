@@ -11,7 +11,6 @@ var recordView = new RecordsView();
 var RecordModel = require("./models/record");
 
 function addRecord(bookData) {
-    debugger;
     var record = recordView.collection.find(function(rec) {
         return rec.get("name") === bookData.name;
     });
@@ -20,8 +19,13 @@ function addRecord(bookData) {
             record.save({scores: bookData.scores});
         }
     } else {
-        recordView.collection.create(new RecordModel(bookData));
+        //recordView.collection.create(new RecordModel(bookData));
+        debugger;
+        recordView.collection.fullCollection.create(bookData);
     }
+    /*recordView.collection.sync("update", recordView.collection);
+    debugger;
+    recordView.collection.models.sort();*/
 }
 
 function getCurrentRecordName() {

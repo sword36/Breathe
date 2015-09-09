@@ -19,18 +19,23 @@ var RecordsView = NativeView.extend({
     storageMode: "local",  //local/online
 
     initialize: function() {
-        this.collection = new Records();
+        this.collection = new Records([], {
+            comparator: function (a, b) {
+                return a.get("scores") > b.get("scores") ? -1 : 1;
+            }
+        });
 
-        this.listenTo(this.collection, "reset", this.addAll);
-        this.listenTo(this.collection, "add", this.addOne);
-        this.listenTo(this.collection, "all", this.render);
+        this.listenTo(this.collection, "reset", this.render);
+        this.listenTo(this.collection, "update", this.render);
+        this.listenTo(this.collection, "change", this.render);
+        //this.listenTo(this.collection, "all", this.render);
 
         this.table = this.el.querySelector("#recordsTable");
         this.collection.getFirstPage({reset: true, fetch: true});
-        this.render();
+        //this.render();
     },
 
-    render: function() {
+    render: function(e) {
         this.addAll();
         console.log("render");
     },

@@ -15,7 +15,12 @@ var RecordView = NativeView.extend({
     },
 
     render: function() {
+        var isCurrent = this.model.collection.getCurrentRecordName() == this.model.get("name");
+
         this.el.innerHTML = this.template(this.model.attributes);
+        if (isCurrent) {
+            this.el.classList.add("currentPlayer");
+        }
         return this;
     }
 });

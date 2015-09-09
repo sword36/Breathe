@@ -5,8 +5,8 @@ var Record = Backbone.Model.extend({
     default: {
         name: "",
         scores: 0,
-        hostComputer: ""
-        //place: 0
+        hostComputer: "",
+        place: 0
     }
 });
 

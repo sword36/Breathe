@@ -25,9 +25,16 @@ var RecordsView = NativeView.extend({
             }
         });
 
-        this.listenTo(this.collection, "reset", this.render);
-        this.listenTo(this.collection, "update", this.render);
-        this.listenTo(this.collection, "change", this.render);
+        this.collection.fullCollection.comparator = function (a, b) {
+            return a.get("scores") > b.get("scores") ? -1 : 1;
+        };
+
+        this.listenTo(this.collection.fullCollection, "reset", this.render);
+        this.listenTo(this.collection.fullCollection, "update", this.render);
+        this.listenTo(this.collection.fullCollection, "change", this.render);
+
+        this.collection.fullCollection.on("update change", this.collection.fullCollection.sort,
+                this.collection.fullCollection);
         //this.listenTo(this.collection, "all", this.render);
 
         this.table = this.el.querySelector("#recordsTable");
@@ -36,6 +43,7 @@ var RecordsView = NativeView.extend({
     },
 
     render: function(e) {
+        debugger;
         this.addAll();
         console.log("render");
     },

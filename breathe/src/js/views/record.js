@@ -15,7 +15,7 @@ var RecordView = NativeView.extend({
     },
 
     render: function() {
-        var isCurrent = this.model.collection.getCurrentRecordName() == this.model.get("name");
+        var isCurrent = Backbone.getCurrentRecordName() == this.model.get("name");
 
         this.el.innerHTML = this.template(this.model.attributes);
         if (isCurrent) {

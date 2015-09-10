@@ -20,7 +20,6 @@ function addRecord(bookData) {
         }
     } else {
         //recordView.collection.create(new RecordModel(bookData));
-        debugger;
         recordView.collection.fullCollection.create(bookData);
     }
     /*recordView.collection.sync("update", recordView.collection);
@@ -29,11 +28,11 @@ function addRecord(bookData) {
 }
 
 function getCurrentRecordName() {
-    return recordView.collection.getCurrentRecordName();
+    return Backbone.getCurrentRecordName();
 }
 
 function setCurrentRecordName(name) {
-    recordView.collection.setCurrentRecordName(name);
+    Backbone.setCurrentRecordName(name);
 }
 
 module.exports = {

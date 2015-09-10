@@ -18,28 +18,28 @@ var Records = Backbone.PageableCollection.extend({
 
     initialize: function() {
         this.on("change:storageMode", this.switchStorageMode, this);
-        this.on("change", this.sort, this);
-    },
+        //this.on("change", this.sort, this);
 
-    currentRecordName: null,
-    getCurrentRecordName: function() {
-        if (this.currentRecordName != null) {
-            return this.currentRecordName;
-        } else {
-            var name = localStorage.getItem("currentRecordName");
-            if (name != null) {
-                this.currentRecordName = name;
-                return name;
-            } else
-                return null;
-        }
-    },
-    setCurrentRecordName: function(name) {
-        "use strict";
-        if (name !== this.currentRecordName) {
-            this.currentRecordName = name;
-            localStorage.setItem("currentRecordName", name);
-            this.trigger("change:currentRecordName");
+        Backbone.currentRecordName = null; //not repeat at home!
+        Backbone.getCurrentRecordName = function() {
+            if (Backbone.currentRecordName != null) {
+                return Backbone.currentRecordName;
+            } else {
+                var name = localStorage.getItem("currentRecordName");
+                if (name != null) {
+                    Backbone.currentRecordName = name;
+                    return name;
+                } else
+                    return null;
+            }
+        };
+        Backbone.setCurrentRecordName = function(name) {
+            "use strict";
+            if (name !== Backbone.currentRecordName) {
+                Backbone.currentRecordName = name;
+                localStorage.setItem("currentRecordName", name);
+                Backbone.trigger("change:currentRecordName");
+            }
         }
     },
 

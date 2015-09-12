@@ -522,3 +522,40 @@ input[type="radio"] + label:hover {
 .hideCursor {
     cursor: none;
 }
+
+.paginatorWrapper {
+    text-align: center;
+    font-size: 1em;
+    color: white;
+    text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
+    margin-bottom: 5px;
+}
+
+.paginatorWrapper ul {
+    display: inline-block;
+    width: 60%;
+}
+
+.paginatorWrapper li {
+    display: inline-block;
+    text-decoration: underline;
+    padding: 0;
+}
+
+.paginatorWrapper li:first-child div{
+    text-decoration: none;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right:20px solid #ffffff;
+}
+
+.paginatorWrapper li:last-child div{
+    text-decoration: none;
+    width: 0;
+    height: 0;
+    border-top: 20px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-left:20px solid #ffffff;
+}

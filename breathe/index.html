@@ -61,6 +61,14 @@
                     </tr>
                 </table>
             </div>
+            <div class="paginatorWrapper">
+                <ul id="paginator">
+                    <li id="prevPage"><a href="#"><div></div></a></li>
+                    <li id="firstPage"><a href="#">Начало</a></li>
+                    <li id="lastPage"><a href="#">Конец</a></li>
+                    <li id="nextPage"><a href="#"><div></div></a></li>
+                </ul>
+            </div>
             <a href="javascript:void(0)" class="button back">Назад</a>
         </div>
         <div id="credits">
@@ -89,10 +97,8 @@
 </div>
 
 <script type="text/template" id="recordTemplate">
-    <tr>
         <td><%- name %></td>
         <td><%= scores %></td>
-    </tr>
 </script>
 
 <script type="text/template" id="tableTemplate">

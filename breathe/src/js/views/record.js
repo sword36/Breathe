@@ -6,7 +6,6 @@ var NativeView = require("../lib/backbone.nativeview");
 
 var RecordView = NativeView.extend({
     tagName: "tr",
-    templateEl: document.querySelector("#recordTemplate"),
     template: _.template(document.querySelector("#recordTemplate").innerHTML),
 
     initialize: function() {

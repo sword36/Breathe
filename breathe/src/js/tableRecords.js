@@ -6,9 +6,12 @@ global.Backbone = require("backbone");
 require("backbone.paginator");
 Backbone.LocalStorage = require("backbone.localstorage");
 Backbone.ajax = require('./lib/backbone.nativeajax');
+
 var RecordsView = require("./views/records");
 var recordView = new RecordsView();
-var RecordModel = require("./models/record");
+
+//var PaginatorView = require("./views/paginator");
+//var paginatorView = new PaginatorView();
 
 function addRecord(bookData) {
     var record = recordView.collection.find(function(rec) {

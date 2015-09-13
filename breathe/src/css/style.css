@@ -126,6 +126,7 @@ canvas {
     color: #ffffff;
     text-shadow: -2px -2px 0 #000, -2px 2px 0 #000, 2px -2px 0 #000, 2px 2px 0 #000;
     font-size: 2em;
+    margin-bottom: 20px;
 }
 
 #storageButtons {
@@ -184,7 +185,13 @@ input[type="radio"] + label:hover {
 }
 
 #wrapperTable {
-    height: 65%;
+    height: 70%;
+}
+
+@media (max-width: 1025px) {
+    #wrapperTable {
+        height: 60%;
+    }
 }
 
 #wrapperTable table {
@@ -194,6 +201,10 @@ input[type="radio"] + label:hover {
     overflow: auto;
     border-collapse: collapse;
     text-align: center;
+}
+
+#wrapperTable table tr {
+    height: 35px;
 }
 
 #wrapperTable table tr:first-child {

@@ -23,11 +23,7 @@ var RecordsView = NativeView.extend({
     storageMode: "local",  //local/online
 
     initialize: function() {
-        this.collection = new Records([], {
-            comparator: function (a, b) {
-                return a.get("scores") > b.get("scores") ? -1 : 1;
-            }
-        });
+        this.collection = new Records([]);
 
         this.collection.fullCollection.comparator = function (a, b) {
             return a.get("scores") > b.get("scores") ? -1 : 1;
@@ -49,6 +45,7 @@ var RecordsView = NativeView.extend({
 
     sortFull: function() {
         console.log("sort full");
+        debugger;
         this.collection.fullCollection.sort();
         for (var i = 0; i < this.collection.fullCollection.models.length; i++) {
             var model = this.collection.fullCollection.models[i];
@@ -87,7 +84,9 @@ var RecordsView = NativeView.extend({
         "<td>Имя</td>" +
         "<td>Очки</td>" +
         "</tr>";
-        this.collection.each(this.addOne, this);
+        for (var i = 0; i < this.collection.models.length; i++) {
+            this.addOne(this.collection.models[i]);
+        }
     },
 
     checkRadio: function(e) {

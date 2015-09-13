@@ -15,7 +15,13 @@ var RecordView = NativeView.extend({
     render: function() {
         var isCurrent = Backbone.getCurrentRecordName() == this.model.get("name");
 
-        this.el.innerHTML = this.template(this.model.attributes);
+        var attr = {
+            name: this.model.attributes.name,
+            scores: Math.round(this.model.attributes.scores),
+            place: this.model.attributes.place
+        };
+
+        this.el.innerHTML = this.template(attr);
         if (isCurrent) {
             this.el.classList.add("currentPlayer");
         }

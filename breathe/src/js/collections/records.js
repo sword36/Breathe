@@ -13,7 +13,7 @@ var Records = Backbone.PageableCollection.extend({
     state: {
         sortKey: "scores",
         order: 1,
-        pageSize: 5
+        pageSize: 7
     },
 
     initialize: function() {

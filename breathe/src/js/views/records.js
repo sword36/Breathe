@@ -38,6 +38,7 @@ var RecordsView = NativeView.extend({
         this.listenTo(this.collection.fullCollection, "change", this.sortFull);
         this.listenTo(this.collection.fullCollection, "change", this.render);
         this.listenTo(this.collection, "reset", this.render);
+        this.listenTo(Backbone, "change:currentRecordName", this.render);  //fixed bug with noupdated curent name in view
 
 
         this.table = this.el.querySelector("#recordsTable");

@@ -65,6 +65,7 @@
                 <ul id="paginator">
                     <li id="prevPage"><a href="#"><div></div></a></li>
                     <li id="firstPage"><a href="#">Начало</a></li>
+                    <li id="currentPage">1</li>
                     <li id="lastPage"><a href="#">Конец</a></li>
                     <li id="nextPage"><a href="#"><div></div></a></li>
                 </ul>
@@ -97,6 +98,7 @@
 </div>
 
 <script type="text/template" id="recordTemplate">
+        <td><%= place %></td>
         <td><%- name %></td>
         <td><%= scores %></td>
 </script>

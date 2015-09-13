@@ -559,3 +559,7 @@ input[type="radio"] + label:hover {
     border-bottom: 20px solid transparent;
     border-left:20px solid #ffffff;
 }
+
+#currentPage {
+    text-decoration: none;
+}

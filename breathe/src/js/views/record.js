@@ -9,7 +9,6 @@ var RecordView = NativeView.extend({
     template: _.template(document.querySelector("#recordTemplate").innerHTML),
 
     initialize: function() {
-        this.listenTo(this.model, "change", this.render);
         this.listenTo(this.model, "destroy", this.remove);
     },
 

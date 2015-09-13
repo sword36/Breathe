@@ -10,11 +10,9 @@ Backbone.ajax = require('./lib/backbone.nativeajax');
 var RecordsView = require("./views/records");
 var recordView = new RecordsView();
 
-//var PaginatorView = require("./views/paginator");
-//var paginatorView = new PaginatorView();
-
 function addRecord(bookData) {
-    var record = recordView.collection.find(function(rec) {
+    debugger;
+    var record = recordView.collection.fullCollection.find(function(rec) {
         return rec.get("name") === bookData.name;
     });
     if (record != null) {
@@ -25,6 +23,7 @@ function addRecord(bookData) {
         //recordView.collection.create(new RecordModel(bookData));
         recordView.collection.fullCollection.create(bookData);
     }
+    recordView.updatePageState();
     /*recordView.collection.sync("update", recordView.collection);
     debugger;
     recordView.collection.models.sort();*/

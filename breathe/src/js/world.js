@@ -773,8 +773,9 @@ function addNameToRecords() {
         core.setCurrentRecordName(name);
         core.addRecord({
             name: name,
-            scores: score,
-            hostComputer: getHostComputer()
+            scores: Math.round(score),
+            hostComputer: getHostComputer(),
+            place: 0
         });
     }
 }

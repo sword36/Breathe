@@ -210,7 +210,7 @@ CanvasDisplay.prototype.hideGameOver = function() {
 
 CanvasDisplay.prototype.setScore = function(score, finish) {
     "use strict";
-    score = Math.floor(score);
+    score = Math.round(score);
     this.scoreEl.innerHTML = score.toString();
     if (finish)
         this.scoreEndEl.innerHTML = score.toString();

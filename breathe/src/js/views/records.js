@@ -9,6 +9,7 @@ var NativeView = require("../lib/backbone.nativeview");
 var RecordsView = NativeView.extend({
     el: document.querySelector("#records"),
     templateTable: _.template(document.querySelector("#tableTemplate").innerHTML),
+    currentPageEl: document.querySelector("#currentPage"),
 
     events: {
         "click  #local"     : "checkRadio",
@@ -32,25 +33,45 @@ var RecordsView = NativeView.extend({
             return a.get("scores") > b.get("scores") ? -1 : 1;
         };
 
+        this.listenTo(this.collection.fullCollection, "reset", this.sortFull);
         this.listenTo(this.collection.fullCollection, "reset", this.render);
-        this.listenTo(this.collection.fullCollection, "update", this.render);
+        this.listenTo(this.collection.fullCollection, "change", this.sortFull);
         this.listenTo(this.collection.fullCollection, "change", this.render);
         this.listenTo(this.collection, "reset", this.render);
 
-        this.collection.fullCollection.on("update change", this.collection.fullCollection.sort,
-                this.collection.fullCollection);
-        //this.listenTo(this.collection, "all", this.render);
 
         this.table = this.el.querySelector("#recordsTable");
         this.collection.getFirstPage({reset: true, fetch: true});
+        this.updatePageState();
         //this.render();
     },
 
-    render: function(e) {
+    sortFull: function() {
+        console.log("sort full");
+        this.collection.fullCollection.sort();
+        for (var i = 0; i < this.collection.fullCollection.models.length; i++) {
+            var model = this.collection.fullCollection.models[i];
+            model.set("place", i + 1, {silent: true});
+        }
+    },
+
+    updatePageState: function() {
         debugger;
+        var state = this.collection.state;
+        var currentRecord = this.collection.fullCollection.findWhere({name: Backbone.getCurrentRecordName()});
+        if (currentRecord) {
+            var currentRecordPlace = currentRecord.get("place");
+            var newPageNumber = Math.ceil(currentRecordPlace / state.pageSize);
+            if (newPageNumber != state.currentPage) {
+                debugger;
+                this.collection.getPage(newPageNumber, {reset: true});
+            }
+        }
+    },
+
+    render: function(e) {
         this.addAll();
         console.log("render");
-        //Backbone.trigger("state:change", _.clone(this.collection.state));
     },
 
     addOne: function(record) {
@@ -79,6 +100,7 @@ var RecordsView = NativeView.extend({
         if (this.collection.state.currentPage > 1) {
             console.log("prev page");
             this.collection.getPreviousPage({reset: true});
+            this.currentPageEl.innerHTML = this.collection.state.currentPage;
         }
     },
 
@@ -86,17 +108,20 @@ var RecordsView = NativeView.extend({
         if (this.collection.state.currentPage < this.collection.state.totalPages) {
             console.log("next page");
             this.collection.getNextPage({reset: true});
+            this.currentPageEl.innerHTML = this.collection.state.currentPage;
         }
     },
 
     firstPage: function() {
         console.log("first page");
         this.collection.getFirstPage({reset: true});
+        this.currentPageEl.innerHTML = this.collection.state.currentPage;
     },
 
     lastPage: function() {
         console.log("last page");
         this.collection.getLastPage({reset: true});
+        this.currentPageEl.innerHTML = this.collection.state.currentPage;
     }
 });
 

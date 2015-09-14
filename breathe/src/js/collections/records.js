@@ -2,17 +2,19 @@
  * Created by USER on 07.09.2015.
  */
 var Record = require("../models/record");
+var config =require("../config");
 
 var Records = Backbone.PageableCollection.extend({
     model: Record,
-    localStorage: new Backbone.LocalStorage("TestCollection"),
+    url: config.serverUrl + "/api/records",
+    //localStorage: new Backbone.LocalStorage("TestCollection"),
     mode: "client",
     queryParams: {
 
     },
     state: {
-        sortKey: "scores",
-        order: 1,
+        //sortKey: "scores",
+        //order: 1,
         pageSize: 7
     },
 

@@ -1,5 +1,6 @@
 global.window = window;
 global.document = window.document;
+global.XMLHttpRequest = window.XMLHttpRequest;
 global.Image = window.Image;
 global.Audio = window.Audio;
 global.requestAnimationFrame = window.requestAnimationFrame;

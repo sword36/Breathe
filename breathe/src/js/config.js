@@ -48,5 +48,6 @@ module.exports = {
     cloud1Scale: [0.9576, 0.3037],
     cloud2Scale: [0.7237, 0.1806],
     forestTopScale: 0.8488,
-    cloudTopScale: 0.05
+    cloudTopScale: 0.05,
+    serverUrl: "http://localhost:3000"
 };

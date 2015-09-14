@@ -6,7 +6,12 @@ var Record = Backbone.Model.extend({
         name: "",
         scores: 0,
         hostComputer: "",
-        place: 0
+        place: 1
+    },
+
+    parse: function(responce) {
+        responce.id = responce._id;
+        return responce;
     }
 });
 

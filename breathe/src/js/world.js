@@ -776,7 +776,7 @@ function addNameToRecords() {
             name: name,
             scores: score,
             hostComputer: getHostComputer(),
-            place: 0
+            place: 1
         });
     }
 }

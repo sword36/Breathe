@@ -55,6 +55,7 @@ win.on("resize", function(e) {
     oldSizes = [config.width, config.height];
     core.syncViewport();
     reCountSpritesSize();
+    Backbone.trigger("window:resize", config.width, config.height);
     //console.log("canvas " + core.getViewport().width + ", " + core.getViewport().height);
 
 });
@@ -811,6 +812,7 @@ function mainMenu() {
     core.showElement("fullScreen");
     bgSoundStart();
     pressed = core.getInput();
+    Backbone.trigger("window:resize", config.width, config.height);
 }
 
 function recordsMenu() {

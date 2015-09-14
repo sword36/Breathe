@@ -36,6 +36,9 @@ var RecordsView = NativeView.extend({
         this.listenTo(this.collection, "reset", this.render);
         this.listenTo(Backbone, "change:currentRecordName", this.render);  //fixed bug with noupdated curent name in view
 
+        this.listenTo(Backbone, "window:resize", this.resizeTable);
+
+
 
         this.table = this.el.querySelector("#recordsTable");
         this.collection.getFirstPage({reset: true, fetch: true});
@@ -43,9 +46,21 @@ var RecordsView = NativeView.extend({
         //this.render();
     },
 
+    resizeTable: function(newWidth, newHeight) {
+        var tableHeight = 0;
+        if (newWidth < 1025) {
+            tableHeight = newHeight * 0.6;
+        } else {
+            tableHeight = newHeight * 0.68;
+        }
+
+        var rowCount = Math.floor(tableHeight / 35) - 2;
+        this.collection.setPageSize(rowCount);
+        this.updatePageState();
+    },
+
     sortFull: function() {
         console.log("sort full");
-        debugger;
         this.collection.fullCollection.sort();
         for (var i = 0; i < this.collection.fullCollection.models.length; i++) {
             var model = this.collection.fullCollection.models[i];
@@ -54,14 +69,12 @@ var RecordsView = NativeView.extend({
     },
 
     updatePageState: function() {
-        debugger;
         var state = this.collection.state;
         var currentRecord = this.collection.fullCollection.findWhere({name: Backbone.getCurrentRecordName()});
         if (currentRecord) {
             var currentRecordPlace = currentRecord.get("place");
             var newPageNumber = Math.ceil(currentRecordPlace / state.pageSize);
             if (newPageNumber != state.currentPage) {
-                debugger;
                 this.collection.getPage(newPageNumber, {reset: true});
             }
         }

@@ -7,7 +7,7 @@ var config =require("../config");
 var Records = Backbone.PageableCollection.extend({
     model: Record,
     url: config.serverUrl + "/api/records",
-    //localStorage: new Backbone.LocalStorage("TestCollection"),
+    localStorage: new Backbone.LocalStorage("TestCollection"),
     mode: "client",
     queryParams: {
 
@@ -46,6 +46,9 @@ var Records = Backbone.PageableCollection.extend({
     },
 
     switchStorageMode: function(mode) {
+        if (mode == "online") {
+            this.fullCollection.getFirstPage({reset: true, fetch: true});
+        }
     }
 });
 

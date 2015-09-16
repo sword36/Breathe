@@ -10,6 +10,14 @@ Backbone.ajax = require('./lib/backbone.nativeajax');
 var RecordsView = require("./views/records");
 var recordView = new RecordsView();
 
+window.addEventListener("online", function() {
+    Backbone.trigger("online");
+});
+
+window.addEventListener("offline", function() {
+    Backbone.trigger("offline");
+});
+
 function addRecord(bookData) {
     debugger;
     var record = recordView.collection.fullCollection.find(function(rec) {

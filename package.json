@@ -1,14 +1,16 @@
 {
-    "name": "Breathe_and_play",
-    "version": "1.0.0",
-    "description": "",
-    "main": "index.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "nw": "0.12.3"
-    }
+  "name": "Breathe_and_play",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "backbone": "^1.2.3",
+    "backbone.localstorage": "^1.1.16",
+    "nw": "0.12.3"
+  }
 }

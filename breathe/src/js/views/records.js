@@ -10,6 +10,7 @@ var RecordsView = NativeView.extend({
     el: document.querySelector("#records"),
     templateTable: _.template(document.querySelector("#tableTemplate").innerHTML),
     currentPageEl: document.querySelector("#currentPage"),
+    errorMessageEl: document.querySelector("#errorMessage"),
 
     events: {
         "click  #local"     : "checkRadio",
@@ -20,10 +21,11 @@ var RecordsView = NativeView.extend({
         "click  #lastPage" : "lastPage"
     },
 
-    storageMode: "local",  //local/online
+
 
     initialize: function() {
         this.collection = new Records([]);
+        Backbone.storageMode =  "local";  //local/online
 
         this.collection.fullCollection.comparator = function (a, b) {
             return a.get("scores") > b.get("scores") ? -1 : 1;
@@ -38,11 +40,14 @@ var RecordsView = NativeView.extend({
 
         this.listenTo(Backbone, "window:resize", this.resizeTable);
 
-
-
         this.table = this.el.querySelector("#recordsTable");
-        this.collection.getFirstPage({reset: true, fetch: true});
-        this.updatePageState();
+        this.collection.getFirstPage({
+            reset: true,
+            fetch: true,
+            success: this.updatePageState.bind(this),
+            error: this.showNetworkError.bind(this)
+        });
+        //this.updatePageState();
         //this.render();
     },
 
@@ -103,9 +108,20 @@ var RecordsView = NativeView.extend({
     },
 
     checkRadio: function(e) {
-        if (e.target.value != this.storageMode) {
-            this.storageMode = e.target.value;
-            this.collection.trigger("change:storageMode", this.storageMode);
+        if (e.target.value != Backbone.storageMode) {
+            if (e.target.value == "online" && window.navigator.onLine != true) {
+                e.preventDefault();
+                this.showNetworkError();
+                return;
+            }
+            Backbone.storageMode = e.target.value;
+            //this.collection.trigger("change:storageMode", Backbone.storageMode);
+            this.collection.getFirstPage({
+                reset: true,
+                fetch: true,
+                success: this.updatePageState.bind(this),
+                error: this.showNetworkError.bind(this)
+            });
         }
     },
 
@@ -135,6 +151,23 @@ var RecordsView = NativeView.extend({
         console.log("last page");
         this.collection.getLastPage({reset: true});
         this.currentPageEl.innerHTML = this.collection.state.currentPage;
+    },
+
+    showNetworkError: function() {
+        var msg = "Ошибка";
+        if (arguments.length == 0) {
+            msg = "Не удаётся подключиться к сети. Проверьте интернет соединение.";
+        } else if (arguments[0].status != 404) { //xhr.status
+            msg = "Не удаётся подключиться к базе. Попробуйте позднее.";
+            Backbone.storageMode = "local";
+            document.querySelector("#local").checked = true;
+            document.querySelector("#online").checked = false;
+        } else { //error 404
+            console.log("error 404");
+            return;
+        }
+        this.errorMessageEl.appendChild(document.createTextNode(msg));
+        this.errorMessageEl.style.display = "block";
     }
 });
 

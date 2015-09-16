@@ -1,4 +1,6 @@
 onError from serialPort catch during the session	--- done
 gameEditor: moving of object with over the scene with background speed   --- done
-make adaptive image to fullscreen
+make adaptive image to fullscreen --done
 garbage statistic of each session
+take level from server if new version aviable
+use D3 on statistic page

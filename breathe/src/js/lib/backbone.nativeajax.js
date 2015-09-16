@@ -32,8 +32,9 @@
 
     var isValid = function(xhr) {
       return (xhr.status >= 200 && xhr.status < 300) ||
-        (xhr.status === 304) ||
-        (xhr.status === 0 && window.location.protocol === 'file:')
+        (xhr.status === 304); // ||
+        // not for me
+        //(xhr.status === 0 && window.location.protocol === 'file:')
     };
 
     var end = function(xhr, options, promise, resolve, reject) {

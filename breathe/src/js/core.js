@@ -9,6 +9,8 @@ var config = require("./config.js");
 var tableRecords = require("./tableRecords");
 
 var display = new display_.CanvasDisplay();
+display.clearDisplay(); //optimization
+
 var model = new model_();
 //var tableOfRecords = new TableOfRecords();
 

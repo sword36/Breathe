@@ -86,8 +86,10 @@ var RecordsView = NativeView.extend({
     },
 
     render: function(e) {
+        console.time("render");
         this.addAll();
-        console.log("render");
+        console.timeEnd("render");
+        //console.log("render");
     },
 
     addOne: function(record) {

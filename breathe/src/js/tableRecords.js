@@ -18,6 +18,9 @@ window.addEventListener("offline", function() {
     Backbone.trigger("offline");
 });
 
+function doubleCreateSync(model) {
+    Backbone.sync("create", model, {doubleSync: true});
+}
 function addRecord(bookData) {
     var record = recordView.collection.fullCollection.find(function(rec) {
         return rec.get("name") === bookData.name;
@@ -28,7 +31,11 @@ function addRecord(bookData) {
         }
     } else {
         //recordView.collection.create(new RecordModel(bookData));
-        recordView.collection.fullCollection.create(bookData);
+        var opt = {};
+        if (Backbone.storageMode == "online") {
+            opt.success = doubleCreateSync;
+        }
+        recordView.collection.fullCollection.create(bookData, opt);
     }
     recordView.updatePageState();
     /*recordView.collection.sync("update", recordView.collection);

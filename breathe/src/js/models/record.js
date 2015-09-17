@@ -10,7 +10,9 @@ var Record = Backbone.Model.extend({
     },
 
     parse: function(responce) {
-        responce.id = responce._id;
+        if (responce._id) {
+            responce.id = responce._id;
+        }
         return responce;
     }
 });

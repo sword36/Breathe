@@ -45,6 +45,10 @@ var Records = Backbone.PageableCollection.extend({
         }
     },
 
+    syncWith: function() {
+
+    },
+
     switchStorageMode: function(mode) {
         if (mode == "online") {
             this.fullCollection.getFirstPage({reset: true, fetch: true});

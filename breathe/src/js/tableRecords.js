@@ -19,7 +19,6 @@ window.addEventListener("offline", function() {
 });
 
 function addRecord(bookData) {
-    debugger;
     var record = recordView.collection.fullCollection.find(function(rec) {
         return rec.get("name") === bookData.name;
     });

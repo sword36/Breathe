@@ -61,7 +61,6 @@ var RecordsView = NativeView.extend({
 
         var rowCount = Math.floor(tableHeight / 35) - 2;
         this.collection.setPageSize(rowCount);
-        this.updatePageState();
     },
 
     sortFull: function() {
@@ -81,6 +80,7 @@ var RecordsView = NativeView.extend({
             var newPageNumber = Math.ceil(currentRecordPlace / state.pageSize);
             if (newPageNumber != state.currentPage) {
                 this.collection.getPage(newPageNumber, {reset: true});
+                this.currentPageEl.innerHTML = this.collection.state.currentPage;
             }
         }
     },

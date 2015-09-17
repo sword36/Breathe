@@ -3,8 +3,8 @@
  */
 global.Backbone = require("backbone");
 
-require("backbone.paginator");
-Backbone.LocalStorage = require("backbone.localstorage");
+require("./lib/backbone.paginator");
+Backbone.LocalStorage = require("./lib/backbone.localstorage");
 Backbone.ajax = require('./lib/backbone.nativeajax');
 
 var RecordsView = require("./views/records");

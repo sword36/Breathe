@@ -35,6 +35,7 @@ function addRecord(bookData) {
         if (Backbone.storageMode == "online") {
             opt.success = doubleCreateSync;
         }
+        debugger;
         recordView.collection.fullCollection.create(bookData, opt);
     }
     recordView.updatePageState();

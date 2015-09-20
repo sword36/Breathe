@@ -5,6 +5,10 @@ var Record = require("../models/record");
 var config = require("../config");
 var _ = require("underscore");
 
+function updateIdAfterOnlineSync(model, resp) {
+    model.save({id: resp._id, _id: resp._id});
+}
+
 function prepareLocalToOnline(resp) {
     debugger;
 
@@ -17,11 +21,10 @@ function prepareLocalToOnline(resp) {
                         ajaxSync: true
                     });
                     status = "synced";
-                    return true; //for break some
                 } else {
                     status = "doesNotNeedSync"; //if scores does not increase
-                    return false;
                 }
+                return true; //for break some
             } else {
                 status = "notExist";
                 return false;
@@ -29,30 +32,14 @@ function prepareLocalToOnline(resp) {
         }, this);
 
         if (status == "notExist") {
-            model.set("_id", model.get("id"));
+            //model.set("_id", model.get("id"));
             this.sync("create", model, {
                 ajaxSync: true,
-                url: config.serverUrl + "/api/records"
+                url: config.serverUrl + "/api/records",
+                success: updateIdAfterOnlineSync.bind(this, model)
             })
         }
-        /*var record = _.findWhere(resp, {_id: model.id});
-        if (record) {
-            if (record.hostComputer == resp.hostComputer && record.scores > resp.scores) {
-                record.save({scores: resp.scores}, {
-                    ajaxSync: true
-                });
-            }
-        }*/
     }, this);
-
-    /*resp.forEach(function(model) {
-        var record = this.fullCollection.findWhere({id: model._id});
-        if (record) {
-            record.save({scores: resp.scores}, {
-                ajaxSync: true
-            });
-        }
-    }, this)*/
 }
 
 var Records = Backbone.PageableCollection.extend({

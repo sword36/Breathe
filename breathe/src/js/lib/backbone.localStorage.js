@@ -273,7 +273,6 @@ Backbone.getSyncMethod = function(model, options) {
 // the original 'Backbone.sync' is still available in 'Backbone.ajaxSync'
 Backbone.sync = function(method, model, options) {
   //Added the support of double sync (local and online) on saving records
-  debugger;
   //for same unique id in both storage
   if (method != "read" && Backbone.storageMode == "online" && (options.doubleSync || method == "update")) {
     var tempOpt = options;

@@ -8,12 +8,12 @@ var _ = require("underscore");
 function prepareLocalToOnline(resp) {
     this.fullCollection.forEach(function(model) {
         var status = "notExist";
-        var self = this;
         resp.some(function(respModel) {
             if (respModel._id == model.id && respModel.hostComputer == model.get("hostComputer")) {
                 if (respModel.scores < model.get("scores")) {
                     model.save({scores: model.get("scores")}, {
-                        ajaxSync: true
+                        ajaxSync: true,
+                        localSync: true
                     });
                     status = "synced";
                 } else {
@@ -33,8 +33,10 @@ function prepareLocalToOnline(resp) {
                 success: function(resp) {
                     model.destroy({
                         silent: true,
+                        localSync: true,
                         success: function(model) {
                             model.save(resp, {
+                                localSync: true,
                                 silent: true
                             });
                         }

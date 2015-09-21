@@ -253,9 +253,10 @@ Backbone.ajaxSync = Backbone.sync;
 
 Backbone.getSyncMethod = function(model, options) {
   var forceAjaxSync = options && options.ajaxSync;
+  var forceLocalSync = options && options.localSync;
 
   if(!forceAjaxSync && (result(model, 'localStorage') || result(model.collection, 'localStorage'))) {
-    if (options.doubleSync || Backbone.storageMode == "local") {
+    if (options.doubleSync || Backbone.storageMode == "local" || forceLocalSync) {
       console.log("Local sync");
       return Backbone.localSync;
     }

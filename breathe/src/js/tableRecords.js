@@ -27,15 +27,22 @@ function addRecord(bookData) {
     });
     if (record != null) {
         if (bookData.scores > record.get("scores")) {
-            record.save({scores: bookData.scores});
+            record.save({scores: bookData.scores}, {
+                success: function() {
+                    if (Backbone.storageMode == "local" && window.navigator.onLine === true) {
+                        Backbone.trigger("online"); //to call syncLocalToOnline
+                    }
+                }
+            });
+
         }
     } else {
-        //recordView.collection.create(new RecordModel(bookData));
         var opt = {};
         if (Backbone.storageMode == "online") {
             opt.success = doubleCreateSync;
+        } else if (Backbone.storageMode == "local" && window.navigator.onLine === true) {
+            opt.success = function() {Backbone.trigger("online");};//to call syncLocalToOnline
         }
-        debugger;
         recordView.collection.fullCollection.create(bookData, opt);
     }
     recordView.updatePageState();

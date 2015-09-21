@@ -5,14 +5,7 @@ var Record = require("../models/record");
 var config = require("../config");
 var _ = require("underscore");
 
-function updateIdAfterOnlineSync(model, resp) {
-
-    //model.save({id: resp._id, _id: resp._id});
-}
-
 function prepareLocalToOnline(resp) {
-    var l = this.fullCollection.length;
-    var current = 0;
     this.fullCollection.forEach(function(model) {
         var status = "notExist";
         var self = this;
@@ -20,20 +13,10 @@ function prepareLocalToOnline(resp) {
             if (respModel._id == model.id && respModel.hostComputer == model.get("hostComputer")) {
                 if (respModel.scores < model.get("scores")) {
                     model.save({scores: model.get("scores")}, {
-                        ajaxSync: true,
-                        success: function() {
-                            current++;
-                            if (current == l) {
-                                //self.fullCollection.trigger("syncFromOnline", true);
-                            }
-                        }
+                        ajaxSync: true
                     });
                     status = "synced";
                 } else {
-                    current++;
-                    if (current == l) {
-                        //self.fullCollection.trigger("syncFromOnline", true);
-                    }
                     status = "doesNotNeedSync"; //if scores does not increase
                 }
                 return true; //for break some
@@ -44,23 +27,15 @@ function prepareLocalToOnline(resp) {
         }, this);
 
         if (status == "notExist") {
-            //model.set("_id", model.get("id"));
             this.sync("create", model, {
                 ajaxSync: true,
                 url: config.serverUrl + "/api/records",
                 success: function(resp) {
-                    var m = model;
-                    m.destroy({
+                    model.destroy({
                         silent: true,
                         success: function(model) {
                             model.save(resp, {
-                                silent: true,
-                                success: function() {
-                                    current++;
-                                    if (current == l) {
-                                        //self.fullCollection.trigger("syncFromOnline", true);
-                                    }
-                                }
+                                silent: true
                             });
                         }
                     });

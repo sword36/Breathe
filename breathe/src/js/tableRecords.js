@@ -21,6 +21,18 @@ window.addEventListener("offline", function() {
 function doubleCreateSync(model) {
     Backbone.sync("create", model, {doubleSync: true});
 }
+
+/*
+1.When new record added in onlineStorageMode it at first create in server, generated _id, send it to client and
+in doubleCreateSync create new record in localStorage with same id like in server
+2.When new record added in localStorageMode with available online connection or then online connection appears,
+it at first create record in localStorage, after that 'online' event is triggered and it lead to syncLocalToOnline:
+send request to server, when get response, compare it with local data and if it different (there is no such record in
+server or scores in server less than in client) send second request for create/update to server. If create method:
+in success callback delete old model from localStorage and create new, using _id from response from server. Make it
+with silent options because we dont want to rerender all model because of changing id attribute.
+ */
+
 function addRecord(bookData) {
     var record = recordView.collection.fullCollection.find(function(rec) {
         return rec.get("name") === bookData.name;

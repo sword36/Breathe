@@ -14,7 +14,7 @@ function prepareLocalToOnline(resp) {
                 debugger;
                 if (respModel.scores < model.get("scores")) {
                     model.save({scores: model.get("scores")}, {
-                        ajaxSync: true,
+                        ajaxSync: true
                     });
                     status = "synced";
                 } else {
@@ -27,16 +27,20 @@ function prepareLocalToOnline(resp) {
             }
         }, this);
 
+        var collection = this.fullCollection;
+
         if (status == "notExist") {
             this.sync("create", model, {
                 ajaxSync: true,
                 url: config.serverUrl + "/api/records",
+
                 success: function(resp) {
                     model.destroy({
                         silent: true,
                         localSync: true,
                         success: function(model) {
-                            model.save(resp, {
+                            collection.remove(model, {silent: true});
+                            collection.create(resp, {
                                 localSync: true,
                                 silent: true
                             });

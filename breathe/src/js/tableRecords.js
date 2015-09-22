@@ -27,6 +27,7 @@ function addRecord(bookData) {
     });
     if (record != null) {
         if (bookData.scores > record.get("scores")) {
+            debugger;
             record.save({scores: bookData.scores}, {
                 success: function() {
                     if (Backbone.storageMode == "local" && window.navigator.onLine === true) {

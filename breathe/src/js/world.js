@@ -220,7 +220,7 @@ function gameOver() {
     if (curName) {
         core.setName(curName);
     }
-    core.focusEl("inputName");
+    //core.focusEl("inputName");
 
     core.hideElement("bonusBigIco");
     core.hideElement("bonusSmallIco");

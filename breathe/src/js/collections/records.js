@@ -42,7 +42,8 @@ function prepareLocalToOnline(resp) {
                             collection.remove(model, {silent: true});
                             collection.create(resp, {
                                 localSync: true,
-                                silent: true
+                                silent: true,
+                                parse: true
                             });
                         }
                     });

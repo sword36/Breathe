@@ -6,12 +6,10 @@ var config = require("../config");
 var _ = require("underscore");
 
 function prepareLocalToOnline(resp) {
-    debugger;
     this.fullCollection.forEach(function(model) {
         var status = "notExist";
         resp.some(function(respModel) {
             if (respModel._id == model.id && respModel.hostComputer == model.get("hostComputer")) {
-                debugger;
                 if (respModel.scores < model.get("scores")) {
                     model.save({scores: model.get("scores")}, {
                         ajaxSync: true

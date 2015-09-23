@@ -767,18 +767,26 @@ function getHostComputer() {
     }
 }
 
+var regName = /^[a-zа-яёЁ0-9]{0,15}$/i;
+
 function addNameToRecords() {
     "use strict";
     var name = core.getName();
     if (name) {
-        core.setCurrentRecordName(name);
-        core.addRecord({
-            name: name,
-            scores: score,
-            hostComputer: getHostComputer(),
-            place: 1
-        });
+        if (regName.test(name)) {
+            core.setCurrentRecordName(name);
+            core.addRecord({
+                name: name,
+                scores: score,
+                hostComputer: getHostComputer(),
+                place: 1
+            });
+        } else {
+            core.showElement("errorName");
+            return false;
+        }
     }
+    return true;
 }
 
 var bgSoundsCurrent = 0;
@@ -851,12 +859,14 @@ function backFromCredits() {
 function backToMenu() {
     "use strict";
     isPaused = true;
-    addNameToRecords();
-    core.hideGameOver();
-    core.hideElement("pause");
-    core.showElement("fullScreen");
-    core.hideElement("scoreEl");
-    core.showElement("menu");
+    if (addNameToRecords()) {
+        core.hideGameOver();
+        core.hideElement("errorName");
+        core.hideElement("pause");
+        core.showElement("fullScreen");
+        core.hideElement("scoreEl");
+        core.showElement("menu");
+    }
 }
 function initSounds() {
     "use strict";
@@ -900,9 +910,11 @@ core.onButtonClick("play", function() {
 
 core.onButtonClick("restart", function() {
     "use strict";
-    addNameToRecords();
-    core.hideGameOver();
-    reset();
+    if (addNameToRecords()) {
+        core.hideElement("errorName");
+        core.hideGameOver();
+        reset();
+    }
 });
 
 core.onButtonClick("exit", function() {

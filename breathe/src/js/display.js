@@ -74,6 +74,7 @@ function CanvasDisplay() {
     this.inputRadio = document.getElementsByName("input");
     this.inputName = document.querySelector("#game-over input");
     this.errorMessage = document.querySelector("#errorMessage");
+    this.errorName = document.querySelector("div.errorName");
     this.closeErrorButton = document.querySelector("#errorMessage .close");
     this.creditsList = document.querySelector("#credits ul");
     this.bonusBigIco = document.getElementsByClassName("bonusBig")[0];

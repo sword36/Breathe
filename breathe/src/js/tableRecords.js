@@ -33,14 +33,13 @@ in success callback delete old model from localStorage and create new, using _id
 with silent options because we dont want to rerender all model because of changing id attribute.
  */
 
-function addRecord(bookData) {
+function addRecord(recordData) {
     var record = recordView.collection.fullCollection.find(function(rec) {
-        return rec.get("name") === bookData.name;
+        return rec.get("name") === recordData.name;
     });
     if (record != null) {
-        if (bookData.scores > record.get("scores")) {
-            debugger;
-            record.save({scores: bookData.scores}, {
+        if (recordData.scores > record.get("scores")) {
+            record.save({scores: recordData.scores}, {
                 success: function() {
                     if (Backbone.storageMode == "local" && window.navigator.onLine === true) {
                         Backbone.trigger("online"); //to call syncLocalToOnline
@@ -56,12 +55,9 @@ function addRecord(bookData) {
         } else if (Backbone.storageMode == "local" && window.navigator.onLine === true) {
             opt.success = function() {Backbone.trigger("online");};//to call syncLocalToOnline
         }
-        recordView.collection.fullCollection.create(bookData, opt);
+        recordView.collection.fullCollection.create(recordData, opt);
     }
     recordView.updatePageState();
-    /*recordView.collection.sync("update", recordView.collection);
-    debugger;
-    recordView.collection.models.sort();*/
 }
 
 function getCurrentRecordName() {

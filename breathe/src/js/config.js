@@ -31,6 +31,7 @@ module.exports = {
     lineCountInLevel: 7,
     debugSprite: true,
     debugCollision: true,
+    debugPath: true,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5,
     distanceToAngryCloudScale: 0.25,
@@ -49,5 +50,6 @@ module.exports = {
     cloud2Scale: [0.7237, 0.1806],
     forestTopScale: 0.8488,
     cloudTopScale: 0.05,
-    serverUrl: "http://localhost:3000"
+    serverUrl: "http://localhost:3000",
+    trackingInterval: 100
 };

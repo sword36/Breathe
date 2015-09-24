@@ -30,7 +30,9 @@ var lastTime,
     bgSounds,
     bgSoundsCount,
     bgSoundsCurrent,
-    isFullScreen = false;
+    isFullScreen = false,
+    pathPoints = [],
+    pathTrackingInterval;
 
 function collides(x, y, r, b, x2, y2, r2, b2) {
     return (r >= x2 && x < r2 && y < b2 && b >= y2);
@@ -148,6 +150,11 @@ function createMapObject(sprites) {
     }
 }
 
+function trackPath() {
+    var player = core.getPlayer();
+    pathPoints.push([score / config.scoreRate, player.pos[1] + player.sprite.sizeToDraw[1] / 2]);
+}
+
 function reset() {
     "use strict";
     core.hideGameOver();
@@ -155,7 +162,9 @@ function reset() {
     isGameOver = false;
     isPaused = false;
     score = 0;
+    pathPoints = [];
 
+    pathTrackingInterval = setInterval(trackPath, config.trackingInterval);
 
     var frame22 = [];
     for (var i = 0; i < 22; i++) {
@@ -222,11 +231,12 @@ function gameOver() {
     }
     //core.focusEl("inputName");
 
+    clearInterval(pathTrackingInterval);
+
     core.hideElement("bonusBigIco");
     core.hideElement("bonusSmallIco");
     core.hideElement("bonusFastIco");
     core.hideElement("bonusSlowIco");
-
 }
 
 
@@ -275,7 +285,7 @@ function updateBackground(dt) {
         }
     }
 }
-var cx = document.querySelector("canvas").getContext("2d"); //for debug collision
+var cx = document.querySelector("canvas").getContext("2d"); //for debug drawing
 
 function checkColisions(pos) {
     "use strict";
@@ -684,6 +694,13 @@ function update(dt) {
         updateBackground(dt);
         updateBonuses(dt);
         score += bg.mountains.speed * dt * config.scoreRate;
+    } else {
+        if (config.debugPath) {
+            cx.fillStyle = "#FFFFFF";
+            for (var i = 0; i < pathPoints.length; i++) {
+                cx.fillRect(pathPoints[i][0], pathPoints[i][1], 5, 5);
+            }
+        }
     }
     updatePlayer(dt);
 }
@@ -703,6 +720,13 @@ function main() {
         update(dt);
         lastTime = now;
         requestAnimationFrame(main);
+    } else {
+        if (config.debugPath) {
+            cx.fillStyle = "#FFFFFF";
+            for (var i = 0; i < pathPoints.length; i++) {
+                cx.fillRect(pathPoints[i][0], pathPoints[i][1], 5, 5);
+            }
+        }
     }
 }
 

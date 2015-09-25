@@ -222,6 +222,7 @@ function reset() {
     currentGameStatistic.id = UUID();
     currentGameStatistic.start = Date.now();
     currentGameStatistic.collisions = [];
+    currentGameStatistic.viewPort = [config.width, config.height];
     breatheAmount = 0;
 }
 

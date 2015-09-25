@@ -32,8 +32,7 @@ var lastTime,
     bgSoundsCurrent,
     isFullScreen = false,
     pathPoints = [],
-    pathTrackingInterval;
-
+    isExited = false;
 function collides(x, y, r, b, x2, y2, r2, b2) {
     return (r >= x2 && x < r2 && y < b2 && b >= y2);
 }
@@ -152,7 +151,10 @@ function createMapObject(sprites) {
 
 function trackPath() {
     var player = core.getPlayer();
-    pathPoints.push([score / config.scoreRate, player.pos[1] + player.sprite.sizeToDraw[1] / 2]);
+    pathPoints.push({p: [Math.round(score / config.scoreRate), Math.round(player.pos[1] + player.sprite.sizeToDraw[1] / 2)]});
+    if (!isPaused && !isGameOver) {
+        setTimeout(trackPath.bind(this), config.trackingInterval);
+    }
 }
 
 function reset() {
@@ -163,8 +165,6 @@ function reset() {
     isPaused = false;
     score = 0;
     pathPoints = [];
-
-    pathTrackingInterval = setInterval(trackPath, config.trackingInterval);
 
     var frame22 = [];
     for (var i = 0; i < 22; i++) {
@@ -217,6 +217,12 @@ function reset() {
         fast: bonusFastSprite,
         slow: bonusSlowSprite
     });
+
+    trackPath();
+    currentGameStatistic.id = UUID();
+    currentGameStatistic.start = Date.now();
+    currentGameStatistic.collisions = [];
+    breatheAmount = 0;
 }
 
 function gameOver() {
@@ -231,7 +237,11 @@ function gameOver() {
     }
     //core.focusEl("inputName");
 
-    clearInterval(pathTrackingInterval);
+    //console.dir(pathPoints);
+    currentGameStatistic.end = Date.now();
+    currentGameStatistic.path = pathPoints;
+    currentGameStatistic.scores = Math.round(score);
+    currentGameStatistic.breatheAmount = Math.round(breatheAmount);
 
     core.hideElement("bonusBigIco");
     core.hideElement("bonusSmallIco");
@@ -332,6 +342,11 @@ function checkColisions(pos) {
 
         if (boxCollides(pos, size, posEnemy, sizeEnemy)) {
             collision.push({type: "enemy", target: enemies[i]});
+            currentGameStatistic.collisions.push({
+                class: "enemy",
+                type: enemies[i].type,
+                position: [Math.round(score / config.scoreRate), Math.round(posEnemy[1])]
+            });
         }
     }
 
@@ -345,6 +360,11 @@ function checkColisions(pos) {
         }
         if (boxCollides(pos, size, posBonus, sizeBonus) && !isGameOver) {
             collision.push({type: "bonus", target: bonuses[i]});
+            currentGameStatistic.collisions.push({
+                class: "bonus",
+                type: bonuses[i].type,
+                position: [Math.round(score / config.scoreRate), Math.round(posBonus[1])]
+            });
         }
     }
     return collision;
@@ -573,6 +593,8 @@ function collidePlayer(pos) {
     return false;
 }
 
+var breatheAmount = 0;
+
 function updatePlayer(dt) {
     "use strict";
     var i,
@@ -586,19 +608,24 @@ function updatePlayer(dt) {
         player.speed.y += config.gravity * dt;
     }
 
+    var a;
     if (!isGameOver) {
         if (config.inputType == "serialport") {
             if (pressed.breathe > config.lowerLimitOfBreathe) {
                 player.setState("up");
                 if (player.speed.y > -config.maxSpeed) {
-                    player.speed.y -= config.breatheFactor * pressed.breathe * dt;
+                    a = config.breatheFactor * pressed.breathe * dt;
+                    player.speed.y -= a;
+                    breatheAmount += a;
                 }
             } else {
                 player.setState("down");
             }
         } else {
             if (pressed['up']) {
-                player.speed.y -= config.breatheSpeed * dt;
+                a = config.breatheSpeed * dt;
+                breatheAmount += a;
+                player.speed.y -= a;
                 player.setState("up");
             } else {
                 player.setState("down");
@@ -698,7 +725,7 @@ function update(dt) {
         if (config.debugPath) {
             cx.fillStyle = "#FFFFFF";
             for (var i = 0; i < pathPoints.length; i++) {
-                cx.fillRect(pathPoints[i][0], pathPoints[i][1], 5, 5);
+                cx.fillRect(pathPoints[i].p[0], pathPoints[i].p[1], 5, 5);
             }
         }
     }
@@ -778,6 +805,7 @@ function unPauseGame() {
     isPaused = false;
     lastTime = Date.now();
     main();
+    trackPath();
 }
 
 function getHostComputer() {
@@ -835,6 +863,17 @@ function bgSoundStart() {
         });
     }*/
 }
+
+var sessionStatistic = Object.create(null);
+var currentGameStatistic = Object.create(null);
+
+function addCurrentGameToSession() {
+    debugger;
+    var game = JSON.parse(JSON.stringify(currentGameStatistic));
+    currentGameStatistic = Object.create(null);
+    sessionStatistic.games.push(game);
+}
+
 function mainMenu() {
     "use strict";
     core.showElement("main");
@@ -842,10 +881,47 @@ function mainMenu() {
     core.chooseMenu("main");
     core.showElement("sound");
     core.showElement("fullScreen");
+
     bgSoundStart();
     pressed = core.getInput();
     Backbone.trigger("window:resize", config.width, config.height);
+
+    sessionStatistic.start = Date.now();
+    sessionStatistic.hostComputer = getHostComputer();
+    sessionStatistic.games = [];
 }
+
+function saveSessionToLocal() {
+
+}
+
+function beforeClose() {
+    if (!isExited) { //if a lot clicks on exit
+        sessionStatistic.end = Date.now();
+        debugger;
+        var sessionJSON = JSON.stringify(sessionStatistic);
+        if (window.navigator.onLine) {
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", config.serverUrl + "/api/sessions", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState != 4) return;
+                if (xhr.status == 200) {
+                    debugger;
+                    win.close(true);
+                } else { //error
+                    saveSessionToLocal();
+                }
+            };
+            xhr.send(sessionJSON);
+        } else {
+            saveSessionToLocal();
+        }
+        isExited = true;
+    }
+}
+
+win.on("close", beforeClose.bind(this));
 
 function recordsMenu() {
     "use strict";
@@ -890,6 +966,9 @@ function backToMenu() {
         core.showElement("fullScreen");
         core.hideElement("scoreEl");
         core.showElement("menu");
+
+        currentGameStatistic.playerName = core.getCurrentRecordName();
+        addCurrentGameToSession();
     }
 }
 function initSounds() {
@@ -937,6 +1016,10 @@ core.onButtonClick("restart", function() {
     if (addNameToRecords()) {
         core.hideElement("errorName");
         core.hideGameOver();
+
+        currentGameStatistic.playerName = core.getCurrentRecordName();
+        addCurrentGameToSession();
+
         reset();
     }
 });

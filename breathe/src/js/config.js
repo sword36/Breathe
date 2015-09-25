@@ -51,5 +51,5 @@ module.exports = {
     forestTopScale: 0.8488,
     cloudTopScale: 0.05,
     serverUrl: "http://localhost:3000",
-    trackingInterval: 100
+    trackingInterval: 200
 };

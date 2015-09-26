@@ -219,7 +219,6 @@ function reset() {
     });
 
     trackPath();
-    currentGameStatistic.id = UUID();
     currentGameStatistic.start = Date.now();
     currentGameStatistic.collisions = [];
     currentGameStatistic.viewPort = [config.width, config.height];
@@ -890,10 +889,68 @@ function mainMenu() {
     sessionStatistic.start = Date.now();
     sessionStatistic.hostComputer = getHostComputer();
     sessionStatistic.games = [];
+
+    checkForSyncSessionToOnline.call(this);
 }
 
-function saveSessionToLocal() {
+function checkForSyncSessionToOnline() {
+    debugger;
+    if (window.navigator.onLine) {
+        syncSessionWithOnline.call(this, function(err) {
+            if (!err) {
+                window.localStorage.setItem("localSessions", "");
+            }
+        });
+    }
+}
 
+window.addEventListener("online", checkForSyncSessionToOnline.bind(this));
+
+function saveSessionToLocal() {
+    debugger;
+    var sessions;
+    var sessionsJSON = window.localStorage.getItem("localSessions");
+    if (!sessionsJSON || sessionsJSON === "") {
+        sessions = [];
+    } else {
+        sessions = JSON.parse(sessionsJSON);
+        if (!sessions || !Array.isArray(sessions)) {
+            sessions = [];
+        }
+    }
+
+    sessions.push(sessionStatistic);
+
+    sessionsJSON = JSON.stringify(sessions);
+    window.localStorage.setItem("localSessions", sessionsJSON);
+}
+
+function syncSessionWithOnline(calb) {
+    var sessions = window.localStorage.getItem("localSessions");
+    if (sessions && sessions.length > 0) {
+        pushSessionsToServer.call(this, sessions, function(err) {
+            if (!err) {
+                calb.call(this, false);
+            } else {
+                calb.call(this, true);
+            }
+        });
+    }
+}
+
+function pushSessionsToServer(data, calb) {
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", config.serverUrl + "/api/sessions", true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState != 4) return;
+        if (xhr.status == 200) {
+            calb.call(this, false);
+        } else { //error
+            calb.call(this, true);
+        }
+    };
+    xhr.send(data);
 }
 
 function beforeClose() {
@@ -902,21 +959,20 @@ function beforeClose() {
         debugger;
         var sessionJSON = JSON.stringify(sessionStatistic);
         if (window.navigator.onLine) {
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", config.serverUrl + "/api/sessions", true);
-            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState != 4) return;
-                if (xhr.status == 200) {
+            debugger;
+            pushSessionsToServer.call(this, sessionJSON, function(err) {
+                if (!err) {
                     debugger;
                     win.close(true);
-                } else { //error
-                    saveSessionToLocal();
+                } else {
+                    debugger;
+                    saveSessionToLocal.call(this);
+                    win.close();
                 }
-            };
-            xhr.send(sessionJSON);
+            });
         } else {
-            saveSessionToLocal();
+            saveSessionToLocal.call(this);
+            win.close(true);
         }
         isExited = true;
     }

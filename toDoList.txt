@@ -4,5 +4,6 @@ make adaptive image to fullscreen --done
 garbage statistic of each session
 take level from server if new version aviable
 use D3 on statistic page
-merge local and online data on sync
+merge local and online data on sync --done
 add preload during changing local to online records
+add gamebots (with webworkers) with changeble speed

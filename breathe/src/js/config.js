@@ -8,7 +8,7 @@ module.exports = {
     imageSmoothingEnabled: true,
 
     //input
-    inputType: "keyboard", //"keyboard", "serialport", "bot"
+    inputType: "bot", //"keyboard", "serialport", "bot"
     breatheChanel: "turbine", //"temperature", "turbine"
     breatheSpeed: 350,
     breatheFactor: 10, //50 for turbine, 10 for temperature
@@ -20,6 +20,7 @@ module.exports = {
     maxSpeed: 200,
     backgroundSpeed: 100,
     scoreRate: 0.1,
+    gameSpeed: 1,
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes
@@ -67,8 +68,15 @@ module.exports = {
     debugSprite: true,
     debugCollision: true,
     debugPath: true,
+    debugCollisionsOff: true,
 
     //statistics
     serverUrl: "http://localhost:3000", //https://breatheserver.herokuapp.com http://localhost:3000
-    trackingInterval: 200
+    trackingInterval: 200,
+
+    //bot
+    botDistanceToEnemy: 0,
+    botDistanceToEnemyScale: 0.2,
+    botDistanceToForest: 0,
+    botDistanceToForestScale: 0.4
 };

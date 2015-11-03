@@ -1,5 +1,5 @@
 var config = require("./config.js");
-if (localStorage.getItem("inputType") != null) {
+if (localStorage.getItem("inputType") != null && config.inputType != "bot") {
     config.inputType = localStorage.getItem("inputType");
 }
 
@@ -105,10 +105,10 @@ function reCountSpritesSize() {
     ];
 
     config.forestLine = height * config.forestLineScale;
-
     config.distanceToAngryCloud = width * config.distanceToAngryCloudScale;
-
     config.cellSize = [width * config.cellSizeScale[0], height * config.cellSizeScale[1]];
+    config.botDistanceToEnemy = width * config.botDistanceToEnemyScale;
+    config.botDistanceToForest = height * config.botDistanceToForestScale;
 }
 
 function createMapObject(sprites) {
@@ -561,6 +561,7 @@ function collidePlayer(pos) {
                 gameOver();
                 return true;
             case "enemy":
+                if (config.debugCollisionsOff) return true;
                 gameOver();
                 return true;
             case "bonus":
@@ -595,6 +596,22 @@ function collidePlayer(pos) {
 
 var breatheAmount = 0;
 
+function getNearestEnemy() {
+    var nearest = null;
+    var enemies = core.getEnemies();
+    var player = core.getPlayer();
+    var smallestDistance = 100000;
+
+    for (var i = 0; i < enemies.length; i++) {
+        var dist = distanceBetween(player.pos, enemies[i].pos);
+        if (dist < smallestDistance && player.pos[0] < enemies[i].pos[0]) {
+            smallestDistance = dist;
+            nearest = enemies[i];
+        }
+    }
+    return nearest;
+}
+
 function updatePlayer(dt) {
     "use strict";
     var i,
@@ -621,7 +638,27 @@ function updatePlayer(dt) {
             } else {
                 player.setState("down");
             }
-        } else if (config.inputType == "keyboard") {
+        } else if (config.inputType == "keyboard" || config.inputType == "bot") {
+            if (config.inputType == "bot") {
+                pressed['up'] = false;
+
+                //go up if enemy near
+                var nearestEnemy = getNearestEnemy();
+                if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
+                    debugger;
+                    if (nearestEnemy.pos[1] < player.pos[1]) {
+                        pressed['up'] = false;
+                    } else {
+                        pressed['up'] = true;
+                    }
+                }
+
+                //go up if forest near
+                if (player.pos[1] + player.sprite.sizeToDraw[1] > config.forestLine - config.botDistanceToForest) {
+                    pressed['up'] = true;
+                }
+            }
+
             if (pressed['up']) {
                 a = config.breatheSpeed * dt;
                 breatheAmount += a;
@@ -630,8 +667,6 @@ function updatePlayer(dt) {
             } else {
                 player.setState("down");
             }
-        } else if (config.inputType == "bot") {
-
         }
     } else {//gameOver
         player.setState("down");
@@ -746,7 +781,7 @@ function main() {
         var now = Date.now();
         var dt = (now - lastTime) / 1000;
         render();
-        update(dt);
+        update(dt * config.gameSpeed);
         lastTime = now;
         requestAnimationFrame(main);
     } else {

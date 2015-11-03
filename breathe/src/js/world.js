@@ -621,7 +621,7 @@ function updatePlayer(dt) {
             } else {
                 player.setState("down");
             }
-        } else {
+        } else if (config.inputType == "keyboard") {
             if (pressed['up']) {
                 a = config.breatheSpeed * dt;
                 breatheAmount += a;
@@ -630,6 +630,8 @@ function updatePlayer(dt) {
             } else {
                 player.setState("down");
             }
+        } else if (config.inputType == "bot") {
+
         }
     } else {//gameOver
         player.setState("down");
@@ -940,7 +942,7 @@ function syncSessionWithOnline(calb) {
 
 function pushSessionsToServer(data, calb) {
     var xhr = new XMLHttpRequest();
-    xhr.open("POST", config.serverUrl + "/api/sessions", true);
+    xhr.open("POST", config.serverUrl + "/api/statistics", true);
     xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
     xhr.onreadystatechange = function() {
         if (xhr.readyState != 4) return;

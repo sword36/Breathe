@@ -73,6 +73,7 @@ module.exports = {
     //statistics
     serverUrl: "http://localhost:3000", //https://breatheserver.herokuapp.com http://localhost:3000
     trackingInterval: 200,
+    maxTimeToServerConnection: 2000,
 
     //bot
     botDistanceToEnemy: 0,

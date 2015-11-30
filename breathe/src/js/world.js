@@ -642,20 +642,39 @@ function updatePlayer(dt) {
             if (config.inputType == "bot") {
                 pressed['up'] = false;
 
-                //go up if enemy near
-                var nearestEnemy = getNearestEnemy();
-                if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
-                    debugger;
-                    if (nearestEnemy.pos[1] < player.pos[1]) {
-                        pressed['up'] = false;
-                    } else {
+                if (player.speed.y < 0) {
+
+                    //go up if forest near
+                    if (player.pos[1] + player.sprite.sizeToDraw[1] > config.forestLine - config.botDistanceToForest) {
                         pressed['up'] = true;
                     }
-                }
 
-                //go up if forest near
-                if (player.pos[1] + player.sprite.sizeToDraw[1] > config.forestLine - config.botDistanceToForest) {
-                    pressed['up'] = true;
+                    //go up if enemy near
+                    var nearestEnemy = getNearestEnemy();
+                    if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
+                        debugger;
+                        if (nearestEnemy.pos[1] < player.pos[1]) {
+                            pressed['up'] = false;
+                        } else {
+                            pressed['up'] = true;
+                        }
+                    }
+                } else {
+                    //go up if enemy near
+                    var nearestEnemy = getNearestEnemy();
+                    if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
+                        debugger;
+                        if (nearestEnemy.pos[1] < player.pos[1]) {
+                            pressed['up'] = false;
+                        } else {
+                            pressed['up'] = true;
+                        }
+                    }
+
+                    //go up if forest near
+                    if (player.pos[1] + player.sprite.sizeToDraw[1] > config.forestLine - config.botDistanceToForest) {
+                        pressed['up'] = true;
+                    }
                 }
             }
 
@@ -992,11 +1011,17 @@ function pushSessionsToServer(data, calb) {
 
 function beforeClose() {
     if (!isExited) { //if a lot clicks on exit
+        isExited = true;
         sessionStatistic.end = Date.now();
         debugger;
         var sessionJSON = JSON.stringify(sessionStatistic);
-        if (window.navigator.onLine) {
+        if (window.navigator.onLine) { //also check for server connection
             debugger;
+            //must be improved
+            setInterval(function() {
+                win.close(true);
+            }, config.maxTimeToServerConnection);
+
             pushSessionsToServer.call(this, sessionJSON, function(err) {
                 if (!err) {
                     debugger;
@@ -1011,7 +1036,6 @@ function beforeClose() {
             saveSessionToLocal.call(this);
             win.close(true);
         }
-        isExited = true;
     }
 }
 

@@ -8,7 +8,7 @@ module.exports = {
     imageSmoothingEnabled: true,
 
     //input
-    inputType: "bot", //"keyboard", "serialport", "bot"
+    inputType: "keyboard", //"keyboard", "serialport", "bot"
     breatheChanel: "turbine", //"temperature", "turbine"
     breatheSpeed: 350,
     breatheFactor: 10, //50 for turbine, 10 for temperature
@@ -73,7 +73,7 @@ module.exports = {
     //statistics
     serverUrl: "http://localhost:3000", //https://breatheserver.herokuapp.com http://localhost:3000
     trackingInterval: 200,
-    maxTimeToServerConnection: 2000,
+    maxTimeToServerConnection: 500,
 
     //bot
     botDistanceToEnemy: 0,

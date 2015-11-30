@@ -68,14 +68,14 @@ win.on("loaded", function() {
 
 win.on("blur", function() {
     "use strict";
-    if (!isGameOver) {
+    if (!isGameOver && isGameStarted) {
         checkPauseOn();
     }
 });
 
 win.on("focus", function() {
     "use strict";
-    if (!isGameOver && !isPausedByButton) {
+    if (!isGameOver && !isPausedByButton && isGameStarted) {
         checkPauseOff();
     }
 });
@@ -163,6 +163,7 @@ function reset() {
     core.addClass("canvas", "hideCursor");
     isGameOver = false;
     isPaused = false;
+    isGameStarted = false;
     score = 0;
     pathPoints = [];
 
@@ -802,7 +803,22 @@ function main() {
         render();
         update(dt * config.gameSpeed);
         lastTime = now;
-        requestAnimationFrame(main);
+    } else if (!isGameStarted) {
+        if (config.inputType == "serialport") {
+            if (pressed.breathe > config.lowerLimitOfBreathe) {
+                isGameStarted = true;
+                unPauseGame();
+            }
+        } else if (config.inputType == "keyboard") {
+            if (pressed['up'] == true) {
+                debugger;
+                isGameStarted = true;
+                unPauseGame();
+            }
+        } else {
+            isGameStarted = true;
+            unPauseGame();
+        }
     } else {
         if (config.debugPath) {
             cx.fillStyle = "#FFFFFF";
@@ -811,7 +827,10 @@ function main() {
             }
         }
     }
+    requestAnimationFrame(main);
 }
+
+var isGameStarted = true;
 
 function init() {
     "use strict";
@@ -820,7 +839,11 @@ function init() {
     core.showElement("pause");
     core.hideElement("fullScreen");
     core.showElement("scoreEl");
+
+    //for rendering first frame and pause after that
     main();
+    pauseGame();
+    isGameStarted = false;
 
     /*function hadnler() {
         "use strict";
@@ -1019,6 +1042,7 @@ function beforeClose() {
             debugger;
             //must be improved
             setInterval(function() {
+                saveSessionToLocal.call(this);
                 win.close(true);
             }, config.maxTimeToServerConnection);
 
@@ -1139,6 +1163,11 @@ core.onButtonClick("restart", function() {
         addCurrentGameToSession();
 
         reset();
+
+        //for rendering first frame and pause after that
+        main();
+        pauseGame();
+        isGameStarted = false;
     }
 });
 

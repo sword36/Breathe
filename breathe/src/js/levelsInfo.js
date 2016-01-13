@@ -3,7 +3,7 @@
  */
 module.exports = {
         mountains: {
-            topCount: 2,
+            topCount: 1,
             middleCount: 2,
             downCount: 1,
             bgColor: "89E3FB"

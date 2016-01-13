@@ -168,9 +168,9 @@ function Model() { //pattern singleton
     else {
         this.player = new Player();
         this.background = {};
-        this.background.mountains = new Background();
-        this.background.forest = new Background();
-        this.background.clouds = new Background();
+        this.background.top = new Background();
+        this.background.middle = new Background();
+        this.background.down = new Background();
         this.bonuses = [];
         this.enemies = [];
         Model.cache = this;
@@ -218,7 +218,24 @@ Model.prototype.createBackground = function createBackground(sprites, viewport) 
             var j = 0; //for counting clouds sprites
             this.background[i].sprites.forEach(function(sprite) {
                 switch (i) {
-                    case "mountains":
+                    case "top":
+                        sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
+                        this.background[i].speed = config.backgroundSpeed * 0.7;
+
+                        this.background[i].currentSprite = 0;
+                        this.background[i].nextSprite = 1;
+                        this.background[i].spritesLength = this.background[i].sprites.length;
+                        this.background[i].isOneTexture = true;
+
+                        for (var l = 0; l < this.background[i].sprites.length; l++) {
+                            if (l === 0) {
+                                this.background[i].positions[0] = 0;
+                            } else {
+                                this.background[i].positions[l] = config.width;
+                            }
+                        }
+                        break;
+                    case "middle":
                         sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
                         this.background[i].speed = config.backgroundSpeed;
 
@@ -235,10 +252,10 @@ Model.prototype.createBackground = function createBackground(sprites, viewport) 
                             }
                         }
                         break;
-                    case "forest":
-                        sprite.sizeToDraw = [viewport[0] * 2, viewport[1] * config.forestHeightScale];
-                        this.background[i].speed = config.backgroundSpeed * 1.3;
+                    case "down":
+                        sprite.sizeToDraw = [viewport[0] * 2, viewport[1]];
 
+                        this.background[i].speed = config.backgroundSpeed * 1.3;
                         this.background[i].currentSprite = 0;
                         this.background[i].nextSprite = 1;
                         this.background[i].spritesLength = this.background[i].sprites.length;
@@ -247,31 +264,6 @@ Model.prototype.createBackground = function createBackground(sprites, viewport) 
                         for (var l = 0; l < this.background[i].sprites.length; l++) {
                             if (l === 0) {
                                 this.background[i].positions[0] = 0;
-                            } else {
-                                this.background[i].positions[l] = config.width;
-                            }
-                        }
-                        break;
-                    case "clouds":
-                        if (j == 0) {
-                            sprite.sizeToDraw = [viewport[0] * config.cloud1Scale[0],
-                                    viewport[1] * config.cloud1Scale[1]];
-                        } else if (j == 1) {
-                            sprite.sizeToDraw = [viewport[0] * config.cloud1Scale[0],
-                                    viewport[1] * config.cloud2Scale[1]];
-                        } else {
-                            throw "Wrong number of clouds sprites";
-                        }
-
-                        this.background[i].speed = config.backgroundSpeed * 0.7;
-                        this.background[i].currentSprite = 0;
-                        this.background[i].nextSprite = 1;
-                        this.background[i].spritesLength = this.background[i].sprites.length;
-                        this.background[i].isOneTexture = true;
-
-                        for (var l = 0; l < this.background[i].sprites.length; l++) {
-                            if (l === 0) {
-                                this.background[i].positions[0] = config.width * 0.05;
                             } else {
                                 this.background[i].positions[l] = config.width;
                             }

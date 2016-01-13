@@ -21,6 +21,7 @@ module.exports = {
     backgroundSpeed: 100,
     scoreRate: 0.1,
     gameSpeed: 1,
+    currentLevel: "mountains",
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes
@@ -65,10 +66,10 @@ module.exports = {
     lineCountInLevel: 7,
 
     //debug
-    debugSprite: true,
-    debugCollision: true,
-    debugPath: true,
-    debugCollisionsOff: true,
+    debugSprite: false,
+    debugCollision: false,
+    debugPath: false,
+    debugCollisionsOff: false,
 
     //statistics
     serverUrl: "http://localhost:3000", //https://breatheserver.herokuapp.com http://localhost:3000

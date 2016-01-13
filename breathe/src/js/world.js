@@ -1,4 +1,6 @@
 var config = require("./config.js");
+var levelsInfo = require("./levelsInfo.js");
+
 if (localStorage.getItem("inputType") != null && config.inputType != "bot") {
     config.inputType = localStorage.getItem("inputType");
 }
@@ -20,6 +22,7 @@ global.UUID = (function() {
 })().generate;
 
 var core = require("./core.js");
+
 var lastTime,
     isGameOver = true,
     isPausedByButton = false,
@@ -33,6 +36,9 @@ var lastTime,
     isFullScreen = false,
     pathPoints = [],
     isExited = false;
+
+var currentLevel = config.currentLevel;
+
 function collides(x, y, r, b, x2, y2, r2, b2) {
     return (r >= x2 && x < r2 && y < b2 && b >= y2);
 }
@@ -192,17 +198,36 @@ function reset() {
 
     core.getPlayer().setState("float");
 
-    var mountainSprite1 = core.createSprite("img/mountains1HD.png");
-    var mountainSprite2 = core.createSprite("img/mountains2HD.png");
-    var forestSprite = core.createSprite("img/forestHD.png");
-    var cloudSprite1 = core.createSprite("img/cloud1HD.png");
-    var cloudSprite2 = core.createSprite("img/cloud2HD.png");
+
+    var topSprite1 = core.createSprite("img/" + currentLevel + "/top1.png");
+    var topSprite2;
+    if (levelsInfo[currentLevel].topCount == 2) {
+        topSprite2 = core.createSprite("img/" + currentLevel + "/top2.png");
+    } else {
+        topSprite2 = core.createSprite("img/" + currentLevel + "/top1.png");
+    }
+
+    var middleSprite1 = core.createSprite("img/" + currentLevel + "/middle1.png");
+    var middleSprite2;
+    if (levelsInfo[currentLevel].middleCount == 2) {
+        middleSprite2 = core.createSprite("img/" + currentLevel + "/middle2.png");
+    } else {
+        middleSprite2 = core.createSprite("img/" + currentLevel + "/middle1.png");
+    }
+
+    var downSprite1 = core.createSprite("img/" + currentLevel + "/down1.png");
+    var downSprite2;
+    if (levelsInfo[currentLevel].downCount == 2) {
+        downSprite2 = core.createSprite("img/" + currentLevel + "/down2.png");
+    } else {
+        downSprite2 = core.createSprite("img/" + currentLevel + "/down1.png");
+    }
 
     core.createBackground(
         {
-            "mountains": [mountainSprite1, mountainSprite2],
-            "forest": [forestSprite, forestSprite],
-            "clouds": [cloudSprite1, cloudSprite2]
+            "top": [topSprite1, topSprite2],
+            "middle": [middleSprite1, middleSprite2],
+            "down": [downSprite1, downSprite2]
         },
         [config.width, config.height]
     );
@@ -254,7 +279,7 @@ function gameOver() {
 var bg = core.background;
 
 function updateBackground(dt) {
-    "use strict";
+   "use strict";
 
     for (var v in bg) { //sorry, mum
         if (bg.hasOwnProperty(v)) {
@@ -264,9 +289,9 @@ function updateBackground(dt) {
             var newBgPos = b.positions[cur] - b.speed * dt,
                 newRightCorner = newBgPos + b.sprites[cur].sizeToDraw[0];
             if (v == "clouds") {
-                newRightCorner += config.width * 0.1; //because texture of clouds have no air from left and right
+                //newRightCorner += config.width * 0.1; //because texture of clouds have no air from left and right
             } else if (v == "mountains") {
-                newRightCorner -= config.width * 0.0015; //because texture not pixel to pixel
+                //newRightCorner -= config.width * 0.0015; //because texture not pixel to pixel
             }
 
             if (newRightCorner < config.width) {
@@ -379,9 +404,9 @@ function fastAll() {
         var i;
         var enemies = core.getEnemies();
         var bonuses = core.getBonuses();
-        core.background.mountains.speed *= xSpeed;
-        core.background.clouds.speed *= xSpeed;
-        core.background.forest.speed *= xSpeed;
+        core.background.top.speed *= xSpeed;
+        core.background.middle.speed *= xSpeed;
+        core.background.down.speed *= xSpeed;
         for (i = 0; i < enemies.length; i++) {
             enemies[i].speed *= xSpeed;
         }
@@ -398,9 +423,9 @@ function unFastAll() {
     var enemies = core.getEnemies();
     var bonuses = core.getBonuses();
 
-    core.background.mountains.speed /= xSpeed;
-    core.background.clouds.speed /= xSpeed;
-    core.background.forest.speed /= xSpeed;
+    core.background.top.speed /= xSpeed;
+    core.background.middle.speed /= xSpeed;
+    core.background.down.speed /= xSpeed;
 
     for (i = 0; i < enemies.length; i++) {
         enemies[i].speed /= xSpeed;
@@ -419,9 +444,9 @@ function slowAll() {
         var i;
         var enemies = core.getEnemies();
         var bonuses = core.getBonuses();
-        core.background.mountains.speed *= xSpeed;
-        core.background.clouds.speed *= xSpeed;
-        core.background.forest.speed *= xSpeed;
+        core.background.top.speed *= xSpeed;
+        core.background.middle.speed *= xSpeed;
+        core.background.down.speed *= xSpeed;
 
         for (i = 0; i < enemies.length; i++) {
             enemies[i].speed *= xSpeed;
@@ -438,9 +463,9 @@ function unSlowAll() {
     var i;
     var enemies = core.getEnemies();
     var bonuses = core.getBonuses();
-    core.background.mountains.speed /= xSpeed;
-    core.background.clouds.speed /= xSpeed;
-    core.background.forest.speed /= xSpeed;
+    core.background.top.speed /= xSpeed;
+    core.background.middle.speed /= xSpeed;
+    core.background.down.speed /= xSpeed;
 
     for (i = 0; i < enemies.length; i++) {
         enemies[i].speed /= xSpeed;
@@ -741,7 +766,7 @@ function updateEnemies(dt) {
         if (enemies[i].pos[0] <= config.width) {
             motion = enemies[i].speed * dt;
         } else {
-            motion = core.background.mountains.speed * dt;
+            motion = core.background.middle.speed * dt;
         }
 
         enemies[i].pos = [enemies[i].pos[0] - motion, enemies[i].pos[1]];
@@ -777,7 +802,7 @@ function update(dt) {
         updateEnemies(dt);
         updateBackground(dt);
         updateBonuses(dt);
-        score += bg.mountains.speed * dt * config.scoreRate;
+        score += bg.middle.speed * dt * config.scoreRate;
     } else {
         if (config.debugPath) {
             cx.fillStyle = "#FFFFFF";
@@ -854,17 +879,31 @@ function init() {
     window.setInterval(hadnler, 1000);*/
 }
 
-core.loadImages([
-    "img/mountains1HD.png",
-    "img/mountains2HD.png",
-    "img/forestHD.png",
-    "img/cloud1HD.png",
-    "img/cloud2HD.png",
-    "img/bird.png",
-    "img/bonuses.png",
-    "img/cloud.png",
-    "img/sphereHD.png"
-]);
+function loadImages() {
+    core.loadImages([
+        "img/bird.png",
+        "img/bonuses.png",
+        "img/cloud.png",
+        "img/sphereHD.png",
+        "img/" + currentLevel + "/top1.png",
+        "img/" + currentLevel + "/middle1.png",
+        "img/" + currentLevel + "/down1.png"
+    ]);
+
+    if (levelsInfo[currentLevel].topCount == 2) {
+        core.loadImages("img/" + currentLevel + "/top2.png")
+    }
+
+    if (levelsInfo[currentLevel].middleCount == 2) {
+        core.loadImages("img/" + currentLevel + "/middle2.png")
+    }
+
+    if (levelsInfo[currentLevel].downCount == 2) {
+        core.loadImages("img/" + currentLevel + "/down2.png")
+    }
+}
+
+loadImages();
 
 core.loadAudios([
     "audio/Picnic-Breeze.ogg",

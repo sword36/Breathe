@@ -24,6 +24,7 @@ if (!Array.prototype.findIndex) {
 
 var config = require("./config.js");
 //var core = require("./core.js"); //circular link
+var levelsInfo = require("./levelsInfo.js");
 var model_ = require("./model.js");
 var model = new model_();
 var win = gui.Window.get();
@@ -90,7 +91,7 @@ CanvasDisplay.prototype.clear = function() {
 
 CanvasDisplay.prototype.clearDisplay = function() {
     "use strict";
-    this.cx.fillStyle = "#89E3FB";
+    this.cx.fillStyle = "#" + levelsInfo[config.currentLevel].bgColor;
     this.cx.fillRect(0, 0, config.width, config.height);
 };
 
@@ -123,7 +124,7 @@ function moveBgSprite(bgItem, index) {
 CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
     "use strict";
     var move = moveBgSprite.bind(this);
-    var bgNames = ["clouds", "mountains", "forest"];
+    var bgNames = ["top", "middle", "down"];
     for (var i = 0; i < 3; i++) {
         var curBg = bgNames[i];
         move(curBg, bg[curBg].currentSprite);

@@ -21,7 +21,7 @@ module.exports = {
     backgroundSpeed: 100,
     scoreRate: 0.1,
     gameSpeed: 1,
-    currentLevel: "mountains",
+    currentLevel: "town",
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes

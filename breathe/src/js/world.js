@@ -340,7 +340,7 @@ function checkColisions(pos) {
         collision.push({type: "top"});
     }
     else if (pos[1] + size[1] > config.forestLine) {
-        collision.push({type: "forest"});
+        collision.push({type: "down"});
     }
 
     for (i = 0; i < enemies.length; i++) {
@@ -566,6 +566,12 @@ function deleteBonus(bonus) {
         }
     }
 }
+
+function pauseOnCollide() {
+    pauseGame();
+    isGameStarted = false;
+}
+
 function collidePlayer(pos) {
     "use strict";
     if (isGameOver) {  //move after game over and dont check collision
@@ -583,7 +589,8 @@ function collidePlayer(pos) {
                 player.speed.y = 0;
                 player.pos[1] = 0;
                 break;
-            case "forest":
+            case "down":
+                //pauseOnCollide();
                 gameOver();
                 return true;
             case "enemy":

@@ -4,7 +4,7 @@
 module.exports = {
         mountains: {
             topCount: 1,
-            middleCount: 2,
+            middleCount: 1,
             downCount: 1,
             bgColor: "89E3FB"
         },
@@ -19,5 +19,11 @@ module.exports = {
             middleCount: 1,
             downCount: 1,
             bgColor: "72B9FF"
+        },
+        west: {
+            topCount: 1,
+            middleCount: 1,
+            downCount: 1,
+            bgColor: "FFCA4A"
         }
 };

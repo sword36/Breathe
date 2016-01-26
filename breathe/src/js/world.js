@@ -167,6 +167,7 @@ function reset() {
     "use strict";
     core.hideGameOver();
     core.addClass("canvas", "hideCursor");
+    hideHelp();
     isGameOver = false;
     isPaused = false;
     isGameStarted = false;
@@ -569,6 +570,7 @@ function deleteBonus(bonus) {
 
 function pauseOnCollide() {
     pauseGame();
+    showHelp();
     isGameStarted = false;
 }
 
@@ -590,8 +592,10 @@ function collidePlayer(pos) {
                 player.pos[1] = 0;
                 break;
             case "down":
-                //pauseOnCollide();
-                gameOver();
+                player.speed.y = 0;
+                player.pos[1] -= 3;
+                pauseOnCollide();
+                //gameOver();
                 return true;
             case "enemy":
                 if (config.debugCollisionsOff) return true;
@@ -685,7 +689,6 @@ function updatePlayer(dt) {
                     //go up if enemy near
                     var nearestEnemy = getNearestEnemy();
                     if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
-                        debugger;
                         if (nearestEnemy.pos[1] < player.pos[1]) {
                             pressed['up'] = false;
                         } else {
@@ -696,7 +699,6 @@ function updatePlayer(dt) {
                     //go up if enemy near
                     var nearestEnemy = getNearestEnemy();
                     if (nearestEnemy && distanceBetween(player.pos, nearestEnemy.pos) < config.botDistanceToEnemy) {
-                        debugger;
                         if (nearestEnemy.pos[1] < player.pos[1]) {
                             pressed['up'] = false;
                         } else {
@@ -798,8 +800,13 @@ function updateBonuses(dt) {
         bonuses[i].sprite.update(dt);
         motionX = bonuses[i].speed * dt;
         bonuses[i].wave += config.bonusWaveSpeed * dt;
-        motionY = Math.sin(bonuses[i].wave) * config.bonusWaveSize;
-        bonuses[i].pos = [bonuses[i].pos[0] - motionX, bonuses[i].pos[1] + motionY];
+        motionY = 0;
+        debugger;
+        motionY = Math.cos(bonuses[i].wave) * config.bonusWaveSize;
+
+        bonuses[i].pos[0] -= motionX;
+        bonuses[i].pos[1] += motionY;
+
     }
 }
 
@@ -839,17 +846,19 @@ function main() {
         if (config.inputType == "serialport") {
             if (pressed.breathe > config.lowerLimitOfBreathe) {
                 isGameStarted = true;
+                hideHelp();
                 unPauseGame();
             }
         } else if (config.inputType == "keyboard") {
             if (pressed['up'] == true) {
-                debugger;
                 isGameStarted = true;
+                hideHelp();
                 unPauseGame();
             }
         } else {
-            isGameStarted = true;
-            unPauseGame();
+            //isGameStarted = true;
+            //hideHelp();
+            //unPauseGame();
         }
     } else {
         if (config.debugPath) {
@@ -871,7 +880,7 @@ function init() {
     core.showElement("pause");
     core.hideElement("fullScreen");
     core.showElement("scoreEl");
-
+    showHelp();
     //for rendering first frame and pause after that
     main();
     pauseGame();
@@ -886,28 +895,43 @@ function init() {
     window.setInterval(hadnler, 1000);*/
 }
 
+function loadBgs() {
+    for (var levelName in levelsInfo) {
+        if (levelsInfo.hasOwnProperty(levelName)) {
+            loadBg(levelName);
+        }
+    }
+}
+
+function loadBg(levelName) {
+    core.loadImages([
+        "img/" + levelName + "/top1.png",
+        "img/" + levelName + "/middle1.png",
+        "img/" + levelName + "/down1.png"
+    ]);
+
+    if (levelsInfo[levelName].topCount == 2) {
+        core.loadImages("img/" + levelName + "/top2.png")
+    }
+
+    if (levelsInfo[levelName].middleCount == 2) {
+        core.loadImages("img/" + levelName + "/middle2.png")
+    }
+
+    if (levelsInfo[levelName].downCount == 2) {
+        core.loadImages("img/" + levelName + "/down2.png")
+    }
+}
+
 function loadImages() {
     core.loadImages([
         "img/bird.png",
         "img/bonuses.png",
         "img/cloud.png",
-        "img/sphereHD.png",
-        "img/" + currentLevel + "/top1.png",
-        "img/" + currentLevel + "/middle1.png",
-        "img/" + currentLevel + "/down1.png"
+        "img/sphereHD.png"
     ]);
 
-    if (levelsInfo[currentLevel].topCount == 2) {
-        core.loadImages("img/" + currentLevel + "/top2.png")
-    }
-
-    if (levelsInfo[currentLevel].middleCount == 2) {
-        core.loadImages("img/" + currentLevel + "/middle2.png")
-    }
-
-    if (levelsInfo[currentLevel].downCount == 2) {
-        core.loadImages("img/" + currentLevel + "/down2.png")
-    }
+    loadBgs();
 }
 
 loadImages();
@@ -993,7 +1017,6 @@ var sessionStatistic = Object.create(null);
 var currentGameStatistic = Object.create(null);
 
 function addCurrentGameToSession() {
-    debugger;
     var game = JSON.parse(JSON.stringify(currentGameStatistic));
     currentGameStatistic = Object.create(null);
     sessionStatistic.games.push(game);
@@ -1019,7 +1042,6 @@ function mainMenu() {
 }
 
 function checkForSyncSessionToOnline() {
-    debugger;
     if (window.navigator.onLine) {
         syncSessionWithOnline.call(this, function(err) {
             if (!err) {
@@ -1032,7 +1054,6 @@ function checkForSyncSessionToOnline() {
 window.addEventListener("online", checkForSyncSessionToOnline.bind(this));
 
 function saveSessionToLocal() {
-    debugger;
     var sessions;
     var sessionsJSON = window.localStorage.getItem("localSessions");
     if (!sessionsJSON || sessionsJSON === "") {
@@ -1082,10 +1103,8 @@ function beforeClose() {
     if (!isExited) { //if a lot clicks on exit
         isExited = true;
         sessionStatistic.end = Date.now();
-        debugger;
         var sessionJSON = JSON.stringify(sessionStatistic);
         if (window.navigator.onLine) { //also check for server connection
-            debugger;
             //must be improved
             setInterval(function() {
                 saveSessionToLocal.call(this);
@@ -1094,10 +1113,8 @@ function beforeClose() {
 
             pushSessionsToServer.call(this, sessionJSON, function(err) {
                 if (!err) {
-                    debugger;
                     win.close(true);
                 } else {
-                    debugger;
                     saveSessionToLocal.call(this);
                     win.close();
                 }
@@ -1148,6 +1165,8 @@ function backToMenu() {
     "use strict";
     isPaused = true;
     if (addNameToRecords()) {
+        hideHelp();
+
         core.hideGameOver();
         core.hideElement("errorName");
         core.hideElement("pause");
@@ -1155,10 +1174,28 @@ function backToMenu() {
         core.hideElement("scoreEl");
         core.showElement("menu");
 
+        core.hideElement("bonusBigIco");
+        core.hideElement("bonusSmallIco");
+        core.hideElement("bonusFastIco");
+        core.hideElement("bonusSlowIco");
+
         currentGameStatistic.playerName = core.getCurrentRecordName();
         addCurrentGameToSession();
     }
 }
+
+function hideHelp() {
+    document.querySelector("#helpInfo").style.display = "none";
+    document.querySelector("#game-over-overlay").style.display = "none";
+    document.querySelector(".pause").style.display = "block";
+}
+
+function showHelp() {
+    document.querySelector("#helpInfo").style.display = "block";
+    document.querySelector("#game-over-overlay").style.display = "block";
+    document.querySelector(".pause").style.display = "none";
+}
+
 function initSounds() {
     "use strict";
     bgSounds = core.getAllAudio();
@@ -1214,6 +1251,7 @@ core.onButtonClick("restart", function() {
         main();
         pauseGame();
         isGameStarted = false;
+        hideHelp();
     }
 });
 

@@ -480,7 +480,7 @@ input[type="radio"] + label:hover {
     background: url("../../img/iconsSprite.png") -194px 0;
 }
 
-#errorMessage {
+#errorMessage, #helpInfo {
     display: none;
     position: absolute;
     margin: auto;
@@ -501,6 +501,15 @@ input[type="radio"] + label:hover {
     box-shadow: 0 15px 20px rgba(0,0,0,.22),0 19px 60px rgba(0,0,0,.3);
 }
 
+#helpInfo {
+    width: 300px;
+    height: 150px;
+}
+
+#helpInfo .button {
+    width: 200px;
+    margin-top: 10px;
+}
 .close {
     box-sizing: content-box;
     top: -10px;
@@ -531,7 +540,7 @@ input[type="radio"] + label:hover {
 }
 
 .hideCursor {
-    cursor: none;
+    cursor: default;
 }
 
 .paginatorWrapper {

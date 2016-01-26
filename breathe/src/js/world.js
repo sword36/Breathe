@@ -569,6 +569,7 @@ function deleteBonus(bonus) {
 }
 
 function pauseOnCollide() {
+    debugger;
     pauseGame();
     showHelp();
     isGameStarted = false;
@@ -801,7 +802,6 @@ function updateBonuses(dt) {
         motionX = bonuses[i].speed * dt;
         bonuses[i].wave += config.bonusWaveSpeed * dt;
         motionY = 0;
-        debugger;
         motionY = Math.cos(bonuses[i].wave) * config.bonusWaveSize;
 
         bonuses[i].pos[0] -= motionX;
@@ -851,6 +851,7 @@ function main() {
             }
         } else if (config.inputType == "keyboard") {
             if (pressed['up'] == true) {
+                debugger;
                 isGameStarted = true;
                 hideHelp();
                 unPauseGame();
@@ -953,7 +954,7 @@ function unPauseGame() {
     "use strict";
     isPaused = false;
     lastTime = Date.now();
-    main();
+    //main();
     trackPath();
 }
 

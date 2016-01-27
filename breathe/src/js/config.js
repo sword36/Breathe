@@ -22,6 +22,8 @@ module.exports = {
     scoreRate: 0.1,
     gameSpeed: 1,
     currentLevel: "town",
+    currentMap: "level1", //hard level1
+    isHardMode: true,
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes

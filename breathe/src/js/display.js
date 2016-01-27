@@ -55,6 +55,7 @@ function CanvasDisplay() {
     this.creditsButton = document.querySelector(".credits");
     this.exitButton = document.querySelector(".exit");
     this.menuButton = document.querySelector(".menu");
+    this.backMenuButton = document.querySelector(".backMenu");
     this.restartButton = document.querySelector(".restart");
     this.backFromRecordsButton = document.querySelector("#records .back");
     this.backFromCreditsButton = document.querySelector("#credits .back");

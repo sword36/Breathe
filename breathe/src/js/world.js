@@ -167,7 +167,7 @@ function reset() {
     "use strict";
     core.hideGameOver();
     core.addClass("canvas", "hideCursor");
-    hideHelp();
+    showHelp();
     isGameOver = false;
     isPaused = false;
     isGameStarted = false;
@@ -569,7 +569,6 @@ function deleteBonus(bonus) {
 }
 
 function pauseOnCollide() {
-    debugger;
     pauseGame();
     showHelp();
     isGameStarted = false;
@@ -593,10 +592,13 @@ function collidePlayer(pos) {
                 player.pos[1] = 0;
                 break;
             case "down":
-                player.speed.y = 0;
-                player.pos[1] -= 3;
-                pauseOnCollide();
-                //gameOver();
+                if (config.isHardMode) {
+                    gameOver();
+                } else {
+                    player.speed.y = 0;
+                    player.pos[1] -= 3;
+                    pauseOnCollide();
+                }
                 return true;
             case "enemy":
                 if (config.debugCollisionsOff) return true;
@@ -851,7 +853,6 @@ function main() {
             }
         } else if (config.inputType == "keyboard") {
             if (pressed['up'] == true) {
-                debugger;
                 isGameStarted = true;
                 hideHelp();
                 unPauseGame();
@@ -1164,6 +1165,7 @@ function backFromCredits() {
 
 function backToMenu() {
     "use strict";
+    debugger;
     isPaused = true;
     if (addNameToRecords()) {
         hideHelp();
@@ -1252,7 +1254,7 @@ core.onButtonClick("restart", function() {
         main();
         pauseGame();
         isGameStarted = false;
-        hideHelp();
+        //hideHelp();
     }
 });
 
@@ -1365,6 +1367,7 @@ core.onButtonClick("backFromCredits", backFromCredits);
 core.onButtonClick("records", recordsMenu);
 core.onButtonClick("backFromRecords", backFromRecords);
 core.onButtonClick("menu", backToMenu);
+core.onButtonClick("backMenu", backToMenu);
 core.addEventToChildren("creditsList", "SPAN", openLink);
 
 core.setCheckedRadioButton("input", config.inputType);

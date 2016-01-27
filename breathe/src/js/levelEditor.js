@@ -19,7 +19,7 @@ function parseTxtToLevel(data, level, callback) {
 }
 
 function loadLevel(callback) {
-    fs.readFile("src/levels/level1.txt", function(err, data) {
+    fs.readFile("src/levels/" + config.currentMap + ".txt", function(err, data) {
         if (err || !config.levelFromTxt) {
             levelPlan = [
                 "                         e                               e ",

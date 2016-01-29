@@ -46,6 +46,7 @@ function CanvasDisplay() {
     this.canvas.width = config.width = this.wrapper.clientWidth;
     this.canvas.height = config.height = this.wrapper.clientHeight;
     this.scoreEl = document.querySelector(".score");
+    this.elapsedTimeEl = document.querySelector(".elapsedTime");
     this.scoreEndEl = document.querySelector("#score");
     this.cx = this.canvas.getContext('2d');
     this.menu = document.querySelector("#menu");
@@ -200,6 +201,7 @@ CanvasDisplay.prototype.renderGameOver = function() {
     this.showElement("game_over");
     this.showElement("game_over_overlay");
     this.hideElement("scoreEl");
+    this.hideElement("elapsedTime");
     this.hideElement("pause")
 };
 
@@ -208,6 +210,7 @@ CanvasDisplay.prototype.hideGameOver = function() {
     this.hideElement("game_over");
     this.hideElement("game_over_overlay");
     this.showElement("scoreEl");
+    this.showElement("elapsedTime");
     this.showElement("pause");
 };
 
@@ -217,6 +220,20 @@ CanvasDisplay.prototype.setScore = function(score, finish) {
     this.scoreEl.innerHTML = score.toString();
     if (finish)
         this.scoreEndEl.innerHTML = score.toString();
+};
+
+CanvasDisplay.prototype.setElapsedTime = function(time, finish) {
+    "use strict";
+    var minutes = Math.floor(time / 60).toString();
+    var seconds = Math.floor(time - 60 * minutes).toString();
+
+    minutes = minutes.length == 1 ? "0" + minutes : minutes;
+    seconds = seconds.length == 1 ? "0" + seconds : seconds;
+
+    //if (minutes == 0 && seconds)
+    this.elapsedTimeEl.innerHTML = minutes + ":" + seconds;
+    //if (finish)
+        //this.scoreEndEl.innerHTML = score.toString();
 };
 
 CanvasDisplay.prototype.setProgress = function(value) {

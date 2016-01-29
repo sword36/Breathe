@@ -26,7 +26,7 @@ module.exports = {
     isHardMode: false,
     isBonusActive: false,
     scoreForBonus: 50,
-    timeForGame: 3600,
+    timeForGame: 5, //300
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes

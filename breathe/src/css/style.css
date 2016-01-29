@@ -384,7 +384,7 @@ input[type="radio"] + label:hover {
     width: 200px;
 }
 
-.score {
+.score, .elapsedTime {
     display: none;
     position: absolute;
     top: 10px;
@@ -397,6 +397,10 @@ input[type="radio"] + label:hover {
     text-shadow: -1px -1px 0 #000, -1px 1px 0 #000, 1px -1px 0 #000, 1px 1px 0 #000;
     font-weight: bold;
     font-size: 1.8em;
+}
+
+.elapsedTime {
+    left: 70%;
 }
 
 .bonusIcons {

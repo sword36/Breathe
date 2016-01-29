@@ -32,10 +32,10 @@ var lastTime,
     isPaused,
     bgSounds,
     bgSoundsCount,
-    bgSoundsCurrent,
     isFullScreen = false,
     pathPoints = [],
-    isExited = false;
+    isExited = false,
+    elapsedTime = config.timeForGame;
 
 var currentLevel = config.currentLevel;
 
@@ -165,6 +165,8 @@ function trackPath() {
 
 function reset() {
     "use strict";
+    lastTime = Date.now();
+
     core.hideGameOver();
     core.addClass("canvas", "hideCursor");
     showHelp();
@@ -173,6 +175,7 @@ function reset() {
     isGameStarted = false;
     score = 0;
     pathPoints = [];
+    elapsedTime = config.timeForGame;
 
     var frame22 = [];
     for (var i = 0; i < 22; i++) {
@@ -838,6 +841,7 @@ function render() {
     "use strict";
     core.render();
     core.setScore(score);
+    core.setElapsedTime(elapsedTime);
 }
 
 function main() {
@@ -848,6 +852,12 @@ function main() {
         render();
         update(dt * config.gameSpeed);
         lastTime = now;
+
+        elapsedTime -= dt;
+        if (elapsedTime < 0.6) {
+            gameOver();
+            return;
+        }
     } else if (!isGameStarted) {
         if (config.inputType == "serialport") {
             if (pressed.breathe > config.lowerLimitOfBreathe) {
@@ -882,10 +892,10 @@ var isGameStarted = true;
 function init() {
     "use strict";
     reset();
-    lastTime = Date.now();
     core.showElement("pause");
     core.hideElement("fullScreen");
     core.showElement("scoreEl");
+    core.showElement("elapsedTimeEl");
     showHelp();
     //for rendering first frame and pause after that
     main();
@@ -1169,7 +1179,6 @@ function backFromCredits() {
 
 function backToMenu() {
     "use strict";
-    debugger;
     isPaused = true;
     if (addNameToRecords()) {
         hideHelp();
@@ -1179,6 +1188,7 @@ function backToMenu() {
         core.hideElement("pause");
         core.showElement("fullScreen");
         core.hideElement("scoreEl");
+        core.hideElement("elapsedTimeEl");
         core.showElement("menu");
 
         core.hideElement("bonusBigIco");

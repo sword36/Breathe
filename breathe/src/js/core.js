@@ -53,6 +53,10 @@ function setScore(score, finish) {
     display.setScore(score, finish);
 }
 
+function setElapsedTime(score, finish) {
+    display.setElapsedTime(score, finish);
+}
+
 function showElement(el) {
     "use strict";
     display.showElement(el);
@@ -235,6 +239,7 @@ module.exports = {
     renderGameOver: renderGameOver,
     hideGameOver: hideGameOver,
     setScore: setScore,
+    setElapsedTime: setElapsedTime,
     showElement: showElement,
     hideElement: hideElement,
     getViewport: getViewport,

@@ -117,12 +117,13 @@ function reCountSpritesSize() {
     config.botDistanceToForest = height * config.botDistanceToForestScale;
 }
 
-function createMapObject(sprites) {
+function createMapObject(sprites, deltaX) {
     "use strict";
     var mapObjects = core.getMapObjects();
 
     for (var i = 0; i < mapObjects.length; i++) {
         var mapObject = mapObjects[i];
+        mapObject.pos[0] += deltaX;
         if (mapObject.class == "enemy") {
             var createdEnemy = null;
             switch (mapObject.type) {
@@ -163,6 +164,36 @@ function trackPath() {
     }
 }
 
+function addEntityToLevel(deltaX) {
+    var frame22 = [];
+    for (var i = 0; i < 22; i++) {
+        frame22.push(i);
+    }
+
+    var frame12 = [];
+    for (var i = 0; i < 12; i++) {
+        frame12.push(i);
+    }
+
+    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, config.birdSize, frame22); //rate: 1.254
+    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 4, config.cloudSize, frame12); //rate: 1.465
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [0]); //rate: 1.257
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [1]);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [3]);
+
+    createMapObject({
+        bird: birdSprite,
+        cloud: cloudSprite,
+        big: bonusBigSprite,
+        small: bonusSmallSprite,
+        fast: bonusFastSprite,
+        slow: bonusSlowSprite
+    }, 0);
+}
+
+var nextMapObjectRefresh = 0;
+
 function reset() {
     "use strict";
     lastTime = Date.now();
@@ -177,23 +208,7 @@ function reset() {
     pathPoints = [];
     elapsedTime = config.timeForGame;
 
-    var frame22 = [];
-    for (var i = 0; i < 22; i++) {
-        frame22.push(i);
-    }
-
-    var frame12 = [];
-    for (var i = 0; i < 12; i++) {
-        frame12.push(i);
-    }
-
     var playerSprite = core.createSprite("img/sphereHD.png", [0, 0], [200, 325], 16, config.playerSize); //rate: 0.613
-    var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, config.birdSize, frame22); //rate: 1.254
-    var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 4, config.cloudSize, frame12); //rate: 1.465
-    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [0]); //rate: 1.257
-    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [1]);
-    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
-    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [3]);
 
     core.createPlayer(
         [config.width / 2 - playerSprite.sizeToDraw[0] / 2, 50],
@@ -238,21 +253,16 @@ function reset() {
 
     core.clearEnemies();
     core.clearBonuses();
-
-    createMapObject({
-        bird: birdSprite,
-        cloud: cloudSprite,
-        big: bonusBigSprite,
-        small: bonusSmallSprite,
-        fast: bonusFastSprite,
-        slow: bonusSlowSprite
-    });
+    addEntityToLevel(0);
 
     trackPath();
     currentGameStatistic.start = Date.now();
     currentGameStatistic.collisions = [];
     currentGameStatistic.viewPort = [config.width, config.height];
     breatheAmount = 0;
+
+    debugger;
+    nextMapObjectRefresh = config.currentLevelWidth;
 }
 
 function gameOver() {
@@ -816,6 +826,11 @@ function updateBonuses(dt) {
         bonuses[i].pos[0] -= motionX;
         bonuses[i].pos[1] += motionY;
 
+        if (bonuses[i].pos[0] < -300) {
+            debugger;
+            bonuses.splice(i, 1);
+            i--;
+        }
     }
 }
 
@@ -826,6 +841,16 @@ function update(dt) {
         updateBackground(dt);
         updateBonuses(dt);
         score += bg.middle.speed * dt * config.scoreRate;
+
+        var player = core.getPlayer();
+        var curX = player.pos[0] + config.width / 2;
+        debugger;
+        if (curX > nextMapObjectRefresh) {
+            debugger;
+
+            nextMapObjectRefresh += config.currentLevelWidth;
+            addEntityToLevel(curX);
+        }
     } else {
         if (config.debugPath) {
             cx.fillStyle = "#FFFFFF";

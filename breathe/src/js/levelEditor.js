@@ -66,6 +66,8 @@ function getMapObjects() {
             }
         }
     }
+
+    config.currentLevelWidth = width * config.cellSize[0];
     return mapObjects;
 }
 

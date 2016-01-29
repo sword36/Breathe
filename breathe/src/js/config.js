@@ -23,7 +23,10 @@ module.exports = {
     gameSpeed: 1,
     currentLevel: "town",
     currentMap: "level1", //hard level1
-    isHardMode: true,
+    isHardMode: false,
+    isBonusActive: false,
+    scoreForBonus: 50,
+    timeForGame: 3600,
 
     //formula of rate in 16:9 : width/height = rate * 9 /16
     //sizes

@@ -605,27 +605,31 @@ function collidePlayer(pos) {
                 gameOver();
                 return true;
             case "bonus":
-                initBonus(collision[i].target.type);  //order is important
-                collision[i].target.active.enable(player);
+                if (config.isBonusActive) {
+                    initBonus(collision[i].target.type);  //order is important
+                    collision[i].target.active.enable(player);
 
-                switch (collision[i].target.type) {
-                    case "big":
-                        core.showElement("bonusBigIco");
-                        break;
-                    case "small":
-                        core.showElement("bonusSmallIco");
-                        break;
-                    case "fast":
-                        core.showElement("bonusFastIco");
-                        break;
-                    case "slow":
-                        core.showElement("bonusSlowIco");
-                        break;
+                    switch (collision[i].target.type) {
+                        case "big":
+                            core.showElement("bonusBigIco");
+                            break;
+                        case "small":
+                            core.showElement("bonusSmallIco");
+                            break;
+                        case "fast":
+                            core.showElement("bonusFastIco");
+                            break;
+                        case "slow":
+                            core.showElement("bonusSlowIco");
+                            break;
+                    }
+
+                    if (collision[i].target.type in player.activeBonuses) {
+                        player.activeBonuses[collision[i].target.type] = collision[i].target;
+                    }
                 }
 
-                if (collision[i].target.type in player.activeBonuses) {
-                    player.activeBonuses[collision[i].target.type] = collision[i].target;
-                }
+                score += config.scoreForBonus;
                 deleteBonus(collision[i].target);
                 return true;
             default: return true;

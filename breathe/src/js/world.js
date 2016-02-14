@@ -165,6 +165,9 @@ function trackPath() {
 }
 
 function addEntityToLevel(deltaX) {
+    //core.clearBonuses();
+    //core.clearEnemies();
+
     var frame22 = [];
     for (var i = 0; i < 22; i++) {
         frame22.push(i);
@@ -189,14 +192,16 @@ function addEntityToLevel(deltaX) {
         small: bonusSmallSprite,
         fast: bonusFastSprite,
         slow: bonusSlowSprite
-    }, 0);
+    }, deltaX);
 }
 
 var nextMapObjectRefresh = 0;
+var currentX = 0;
 
 function reset() {
     "use strict";
     lastTime = Date.now();
+    currentX = config.width;
 
     core.hideGameOver();
     core.addClass("canvas", "hideCursor");
@@ -218,35 +223,47 @@ function reset() {
     core.getPlayer().setState("float");
 
 
-    var topSprite1 = core.createSprite("img/" + currentLevel + "/top1.png");
+    var topSprite1;
+    if (levelsInfo[currentLevel].topCount == 1) {
+        topSprite1 = core.createSprite("img/" + currentLevel + "/top1.png");
+    }
+
     var topSprite2;
     if (levelsInfo[currentLevel].topCount == 2) {
         topSprite2 = core.createSprite("img/" + currentLevel + "/top2.png");
-    } else {
+    } else if (levelsInfo[currentLevel].topCount == 1) {
         topSprite2 = core.createSprite("img/" + currentLevel + "/top1.png");
     }
 
-    var middleSprite1 = core.createSprite("img/" + currentLevel + "/middle1.png");
+    var middleSprite1;
+    if (levelsInfo[currentLevel].middleCount == 1) {
+        middleSprite1 = core.createSprite("img/" + currentLevel + "/middle1.png");
+    }
+
     var middleSprite2;
     if (levelsInfo[currentLevel].middleCount == 2) {
         middleSprite2 = core.createSprite("img/" + currentLevel + "/middle2.png");
-    } else {
+    } else if (levelsInfo[currentLevel].middleCount == 1) {
         middleSprite2 = core.createSprite("img/" + currentLevel + "/middle1.png");
     }
 
-    var downSprite1 = core.createSprite("img/" + currentLevel + "/down1.png");
+    var downSprite1;
+    if (levelsInfo[currentLevel].downCount == 1) {
+        downSprite1 = core.createSprite("img/" + currentLevel + "/down1.png");
+    }
+
     var downSprite2;
     if (levelsInfo[currentLevel].downCount == 2) {
         downSprite2 = core.createSprite("img/" + currentLevel + "/down2.png");
-    } else {
+    } else if (levelsInfo[currentLevel].downCount == 1) {
         downSprite2 = core.createSprite("img/" + currentLevel + "/down1.png");
     }
 
     core.createBackground(
         {
-            "top": [topSprite1, topSprite2],
-            "middle": [middleSprite1, middleSprite2],
-            "down": [downSprite1, downSprite2]
+            "top": topSprite1 ? [topSprite1, topSprite2] : null,
+            "middle": middleSprite1 ? [middleSprite1, middleSprite2] : null,
+            "down": downSprite1 ? [downSprite1, downSprite2] : null
         },
         [config.width, config.height]
     );
@@ -261,7 +278,6 @@ function reset() {
     currentGameStatistic.viewPort = [config.width, config.height];
     breatheAmount = 0;
 
-    debugger;
     nextMapObjectRefresh = config.currentLevelWidth;
 }
 
@@ -295,17 +311,19 @@ var bg = core.background;
 function updateBackground(dt) {
    "use strict";
 
+    currentX += config.backgroundSpeed  * dt * 1.3;
+
     for (var v in bg) { //sorry, mum
         if (bg.hasOwnProperty(v)) {
             var b = bg[v];
+            if (b.sprites.length == 0)
+                continue;
             var cur = b.currentSprite,
                 next = b.nextSprite;
             var newBgPos = b.positions[cur] - b.speed * dt,
                 newRightCorner = newBgPos + b.sprites[cur].sizeToDraw[0];
             if (v == "clouds") {
                 //newRightCorner += config.width * 0.1; //because texture of clouds have no air from left and right
-            } else if (v == "mountains") {
-                //newRightCorner -= config.width * 0.0015; //because texture not pixel to pixel
             }
 
             if (newRightCorner < config.width) {
@@ -827,7 +845,6 @@ function updateBonuses(dt) {
         bonuses[i].pos[1] += motionY;
 
         if (bonuses[i].pos[0] < -300) {
-            debugger;
             bonuses.splice(i, 1);
             i--;
         }
@@ -842,14 +859,10 @@ function update(dt) {
         updateBonuses(dt);
         score += bg.middle.speed * dt * config.scoreRate;
 
-        var player = core.getPlayer();
-        var curX = player.pos[0] + config.width / 2;
-        debugger;
-        if (curX > nextMapObjectRefresh) {
+        if (currentX > config.currentLevelWidth) {
             debugger;
-
-            nextMapObjectRefresh += config.currentLevelWidth;
-            addEntityToLevel(curX);
+            currentX = config.width;
+            addEntityToLevel(currentX);
         }
     } else {
         if (config.debugPath) {
@@ -896,6 +909,10 @@ function main() {
                 hideHelp();
                 unPauseGame();
             }
+        } else if(config.inputType == "bot") {
+            hideHelp();
+            isGameStarted = true;
+            unPauseGame();
         } else {
             //isGameStarted = true;
             //hideHelp();
@@ -945,22 +962,31 @@ function loadBgs() {
 }
 
 function loadBg(levelName) {
-    core.loadImages([
-        "img/" + levelName + "/top1.png",
-        "img/" + levelName + "/middle1.png",
-        "img/" + levelName + "/down1.png"
-    ]);
-
     if (levelsInfo[levelName].topCount == 2) {
-        core.loadImages("img/" + levelName + "/top2.png")
+        core.loadImages("img/" + levelName + "/top1.png");
+        core.loadImages("img/" + levelName + "/top2.png");
+    }
+
+    if (levelsInfo[levelName].topCount == 1) {
+        core.loadImages("img/" + levelName + "/top1.png");
     }
 
     if (levelsInfo[levelName].middleCount == 2) {
-        core.loadImages("img/" + levelName + "/middle2.png")
+        core.loadImages("img/" + levelName + "/middle1.png");
+        core.loadImages("img/" + levelName + "/middle2.png");
+    }
+
+    if (levelsInfo[levelName].middleCount == 1) {
+        core.loadImages("img/" + levelName + "/middle1.png");
     }
 
     if (levelsInfo[levelName].downCount == 2) {
-        core.loadImages("img/" + levelName + "/down2.png")
+        core.loadImages("img/" + levelName + "/down1.png");
+        core.loadImages("img/" + levelName + "/down2.png");
+    }
+
+    if (levelsInfo[levelName].downCount == 1) {
+        core.loadImages("img/" + levelName + "/down1.png");
     }
 }
 

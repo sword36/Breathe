@@ -14,15 +14,15 @@ module.exports = {
     breatheFactor: 10, //50 for turbine, 10 for temperature
     lowerLimitOfBreathe: 30,//40 for turbine, 364 for temperature
     timeoutToPortConnection: 5000,
-
+    //honKonk
     //game
     gravity: 250,
     maxSpeed: 200,
     backgroundSpeed: 100,
     scoreRate: 0.1,
     gameSpeed: 1,
-    currentLevel: "town",
-    currentMap: "level1", //hard level1
+    currentLevel: "night",
+    currentMap: "level1", //hard level1 bonus
     isHardMode: false,
     isBonusActive: false,
     scoreForBonus: 50,

@@ -25,5 +25,11 @@ module.exports = {
             middleCount: 1,
             downCount: 1,
             bgColor: "FFCA4A"
+        },
+        night: {
+            topCount: 1,
+            middleCount: 1,
+            downCount: 0,
+            bgColor: "000000"
         }
 };

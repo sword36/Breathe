@@ -128,7 +128,7 @@ function bonusDisable(type, player) {
 
 function Bonus(pos, sprite, type) {
     "use strict";
-    this.speed = config.backgroundSpeed;
+    this.speed = config.backgroundSpeed * 1.3;
 
     if (pos === undefined)
         this.pos = 0;

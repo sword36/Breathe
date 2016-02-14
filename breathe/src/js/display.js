@@ -129,6 +129,8 @@ CanvasDisplay.prototype.renderBackground = function() {  //WTF?!
     var bgNames = ["top", "middle", "down"];
     for (var i = 0; i < 3; i++) {
         var curBg = bgNames[i];
+        if (bg[curBg].sprites.length == 0) return;
+
         move(curBg, bg[curBg].currentSprite);
         if (!bg[curBg].isOneTexture) {
             move(curBg, bg[curBg].nextSprite);

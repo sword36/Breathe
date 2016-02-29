@@ -37,7 +37,8 @@ var lastTime,
     isFullScreen = false,
     pathPoints = [],
     isExited = false,
-    elapsedTime = config.timeForGame;
+    elapsedTime = config.timeForGame,
+    needKillMain = false;
 
 var currentLevel = config.currentLevel;
 
@@ -901,6 +902,10 @@ function render() {
 
 function main() {
     "use strict";
+    if (needKillMain) {
+        needKillMain = false;
+        return;
+    }
     if (!isPaused) {
         var now = Date.now();
         var dt = (now - lastTime) / 1000;
@@ -1267,6 +1272,7 @@ function backToMenu() {
 
         currentGameStatistic.playerName = core.getCurrentRecordName();
         addCurrentGameToSession();
+        needKillMain = true;
     }
 }
 

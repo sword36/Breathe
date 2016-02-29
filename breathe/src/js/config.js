@@ -14,7 +14,6 @@ module.exports = {
     breatheFactor: 10, //50 for turbine, 10 for temperature
     lowerLimitOfBreathe: 30,//40 for turbine, 364 for temperature
     timeoutToPortConnection: 5000,
-    //honKonk
     //game
     gravity: 250,
     maxSpeed: 200,
@@ -34,6 +33,8 @@ module.exports = {
     forestLineScale: 0.8671,
     cellSize: [],
     cellSizeScale: [0.1, 0.1429],
+    randBonusSizeScale: [0.0804, 0.1429],
+    randBonusSize: [],
     birdSizeScale: [0.0917, 0.13],
     birdSize: [],
     cloudSizeScale: [0.1178, 0.1429],
@@ -60,6 +61,7 @@ module.exports = {
     bonusTime: 6,
     bonusWaveSpeed: 5,
     bonusWaveSize: 0.5,
+    randBonusesCount: 5,
 
     //player
     playerSizeScale: [0.069, 0.21],

@@ -5,6 +5,8 @@ if (localStorage.getItem("inputType") != null && config.inputType != "bot") {
     config.inputType = localStorage.getItem("inputType");
 }
 
+function rand(mi, ma) { return Math.random() * (ma - mi + 1) + mi; }
+
 global.UUID = (function() {
     var self = {};
     var lut = []; for (var i=0; i<256; i++) { lut[i] = (i<16?'0':'')+(i).toString(16); }
@@ -110,6 +112,11 @@ function reCountSpritesSize() {
         height * config.bonusSizeScale[1]
     ];
 
+    config.randBonusSize = [
+        width * config.randBonusSizeScale[0],
+        height * config.randBonusSizeScale[1]
+    ];
+
     config.forestLine = height * config.forestLineScale;
     config.distanceToAngryCloud = width * config.distanceToAngryCloudScale;
     config.cellSize = [width * config.cellSizeScale[0], height * config.cellSizeScale[1]];
@@ -150,6 +157,10 @@ function createMapObject(sprites, deltaX) {
                 case "slow":
                     core.createBonus(mapObject.pos, sprites.slow, mapObject.type);
                     break;
+                case "rand":
+                    core.createBonus(mapObject.pos, sprites.rand[Math.floor(Math.random() * sprites.rand.length)],
+                        mapObject.type);
+                    break;
                 default : throw new Error("Wrong map object type");
             }
         }
@@ -180,10 +191,15 @@ function addEntityToLevel(deltaX) {
 
     var birdSprite = core.createSprite("img/bird.png", [0, 0], [173, 138], 6, config.birdSize, frame22); //rate: 1.254
     var cloudSprite = core.createSprite("img/cloud.png", [0, 0], [501, 342], 4, config.cloudSize, frame12); //rate: 1.465
-    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [0]); //rate: 1.257
-    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [1]);
-    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [2]);
-    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, [3]);
+    var bonusBigSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, 0); //rate: 1.257
+    var bonusSmallSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, 1);
+    var bonusFastSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, 2);
+    var bonusSlowSprite = core.createSprite("img/bonuses.png", [0, 0], [254, 202], 1, config.bonusSize, 3);
+
+    var randBonusesSprites = [];
+    for (var j = 0; j < config.randBonusesCount; j++) {
+        randBonusesSprites.push(core.createSprite("img/randBonuses.png", [0, 0], [250, 250], 1, config.randBonusSize, j));
+    }
 
     createMapObject({
         bird: birdSprite,
@@ -191,7 +207,8 @@ function addEntityToLevel(deltaX) {
         big: bonusBigSprite,
         small: bonusSmallSprite,
         fast: bonusFastSprite,
-        slow: bonusSlowSprite
+        slow: bonusSlowSprite,
+        rand: randBonusesSprites
     }, deltaX);
 }
 
@@ -995,7 +1012,8 @@ function loadImages() {
         "img/bird.png",
         "img/bonuses.png",
         "img/cloud.png",
-        "img/sphereHD.png"
+        "img/sphereHD.png",
+        "img/randBonuses.png"
     ]);
 
     loadBgs();
@@ -1334,26 +1352,6 @@ core.onButtonClick("closeError", function() {
 });
 
 var typeStorage = "local";
-/*
-core.onButtonClick("storageButtons", function() {
-    var newStorageType = core.checkRadioButton("storage");
-    if (typeStorage != newStorageType) {
-        var records;
-        typeStorage = newStorageType;
-        var tableOfRecords = core.tableOfRecords;
-        switch (typeStorage) {
-            case "local":
-                records = tableOfRecords.getRecords(typeStorage);
-                core.drawRecords(records);
-                break;
-            case "online":
-                records = [];
-                core.drawRecords(records); //mocha
-                break;
-        }
-    }
-}, true, "change");
-*/
 
 core.onButtonClick("inputButtons", function() {
     var newInputType = core.checkRadioButton("input");

@@ -16,7 +16,13 @@ var model = new model_();
 
 function createSprite(url, pos, size, speed, sizeToDraw, frames, dir, once) {
     "use strict";
-    return new Sprite(url, pos, size, speed, sizeToDraw, frames, dir, once);
+    var framesArr = [];
+    if (!Array.isArray(frames)) {
+        framesArr.push(frames);
+    } else {
+        framesArr = frames;
+    }
+    return new Sprite(url, pos, size, speed, sizeToDraw, framesArr, dir, once);
 }
 
 function getViewport() {

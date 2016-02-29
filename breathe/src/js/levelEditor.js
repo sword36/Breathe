@@ -43,7 +43,8 @@ var legend = {
     "F": {class: "bonus", type: "fast"},
     "S": {class: "bonus", type: "slow"},
     "e": {class: "enemy", type: "bird"},
-    "c": {class: "enemy", type: "cloud"}
+    "c": {class: "enemy", type: "cloud"},
+    "r": {class: "bonus", type: "rand"}
 };
 
 function MapObject(legend, x, y) {
